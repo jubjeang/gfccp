@@ -20,7 +20,7 @@ export default {
 }
 </script>
 <style scoped>
-nav{  background-color: #676a6c;}
+nav{  background-color:darkgrey}
 #nav {
   padding: 0px;
   text-align: center;

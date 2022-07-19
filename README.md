@@ -1,4 +1,4 @@
-# vue3-sidebar
+# GFCCP
 
 ## Project setup
 ```

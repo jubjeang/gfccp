@@ -8,7 +8,7 @@
         justify-content-between
         py-4
         px-4 px-xl-5
-        bg-dark
+        bg-primary
         vw-100
       "
     >
@@ -146,12 +146,14 @@ export default {
   height: 1px;
   background: #eee;
 }
+
 .h-custom {
   height: calc(90% - 73px);
   /* 
   background-image: url("../assets/images/gfcth_backgroud.jpg");
   background-size: 100%; */
 }
+
 @media (max-width: 450px) {
   .h-custom {
     height: 100%;

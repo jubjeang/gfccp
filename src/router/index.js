@@ -3,8 +3,8 @@ import Home from '../views/Home.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: '/home',
+    name: '/Home',
     component: Home
   },
   {
@@ -18,7 +18,7 @@ const routes = [
     component: () => import('../views/About.vue')
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: () => import('../components/Login.vue')
   },
@@ -35,7 +35,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
+  // history: createWebHistory(process.env.BASE_URL),  
   routes
 })
 

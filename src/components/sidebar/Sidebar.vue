@@ -14,19 +14,21 @@ export default {
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
     <div>&nbsp;</div>
-    <h1>
+    
       <span v-if="collapsed">
-        <div>G</div>
-        <div>F</div>
+        <h3>
+          <div>G</div>
+          <div>F</div>
+        </h3>
       </span>
-      <span v-else>Guardforce</span>
-    </h1>
+      <span v-else><h1>Guardforce</h1></span>
+    
 
     <SidebarLink to="/main" icon="fas fa-wallet" href="#submenu1" data-bs-toggle="collapse"
       class="nav-link align-middle">งานศูนย์เงินสด</SidebarLink>
      <ul class="collapse nav flex-column ms-1" id="submenu1">
       <li class="w-100">
-        <SidebarLink to="/" icon="fa fa-minus" class="nav-link px-4" data-bs-parent="#submenu1">รายการคำสั่ง</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการคำสั่ง</SidebarLink>
         <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
@@ -35,7 +37,7 @@ export default {
         </a> -->
       </li>
       <li>
-        <SidebarLink to="/" icon="fa fa-minus" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ</SidebarLink>
       </li>
     </ul>
     <SidebarLink to="/dashboard" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
@@ -43,7 +45,7 @@ export default {
       class="nav-link align-middle" href="#submenu2">สถานะคงคลัง</SidebarLink>
     <ul class="collapse nav flex-column ms-1" id="submenu2">
       <li class="w-100">
-        <SidebarLink to="/" icon="fa fa-minus" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน</SidebarLink>
         <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
@@ -52,7 +54,7 @@ export default {
         </a> -->
       </li>
       <li>
-        <SidebarLink to="/" icon="fa fa-minus" class="nav-link px-4" data-bs-parent="#submenu2">ประวัติคงคลัง</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">ประวัติคงคลัง</SidebarLink>
       </li>
     </ul>
     <span
