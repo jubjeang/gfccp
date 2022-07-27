@@ -1,12 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
 const routes = [
-  {
-    path: '/home',
-    name: '/Home',
-    component: Home
-  },
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -28,9 +22,9 @@ const routes = [
     component: () => import('../components/Main.vue')
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('../components/Dashboard.vue')
+    path: '/listorder',
+    name: 'ListOrder',
+    component: () => import('../components/ListOrder.vue')
   }
 ]
 

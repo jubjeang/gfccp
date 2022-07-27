@@ -14,21 +14,22 @@ export default {
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
     <div>&nbsp;</div>
-    
-      <span v-if="collapsed">
-        <h3>
-          <div>G</div>
-          <div>F</div>
-        </h3>
-      </span>
-      <span v-else><h1>Guardforce</h1></span>
-    
 
+    <span v-if="collapsed">
+      <h3>
+        <div>G</div>
+        <div>F</div>
+      </h3>
+    </span>
+    <span v-else>
+      <h1>Guardforce</h1>
+    </span>
     <SidebarLink to="/main" icon="fas fa-wallet" href="#submenu1" data-bs-toggle="collapse"
       class="nav-link align-middle">งานศูนย์เงินสด</SidebarLink>
-     <ul class="collapse nav flex-column ms-1" id="submenu1">
+    <ul class="collapse nav flex-column ms-1" id="submenu1">
       <li class="w-100">
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการคำสั่ง</SidebarLink>
+        <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">
+          รายการคำสั่ง</SidebarLink>
         <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
@@ -37,15 +38,17 @@ export default {
         </a> -->
       </li>
       <li>
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
+        </SidebarLink>
       </li>
     </ul>
     <SidebarLink to="/dashboard" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
-    <SidebarLink to="/#" icon="fas fa-coins" data-bs-toggle="collapse"
-      class="nav-link align-middle" href="#submenu2">สถานะคงคลัง</SidebarLink>
+    <SidebarLink to="/#" icon="fas fa-coins" data-bs-toggle="collapse" class="nav-link align-middle" href="#submenu2">
+      สถานะคงคลัง</SidebarLink>
     <ul class="collapse nav flex-column ms-1" id="submenu2">
       <li class="w-100">
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน
+        </SidebarLink>
         <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
@@ -54,14 +57,11 @@ export default {
         </a> -->
       </li>
       <li>
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">ประวัติคงคลัง</SidebarLink>
+        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">ประวัติคงคลัง
+        </SidebarLink>
       </li>
     </ul>
-    <span
-      class="collapse-icon"
-      :class="{ 'rotate-180': collapsed }"
-      @click="toggleSidebar"
-    >
+    <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" />
     </span>
   </div>
@@ -102,7 +102,4 @@ export default {
   transform: rotate(180deg);
   transition: 0.2s linear;
 }
-
-
-
 </style>

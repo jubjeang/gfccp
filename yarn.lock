@@ -252,10 +252,10 @@
     "chalk" "^2.0.0"
     "js-tokens" "^4.0.0"
 
-"@babel/parser@^7.12.0", "@babel/parser@^7.12.13", "@babel/parser@^7.13.9", "@babel/parser@^7.14.2", "@babel/parser@^7.14.3", "@babel/parser@^7.7.0":
-  "integrity" "sha512-7MpZDIfI7sUC5zWo2+foJ50CSI5lcqDehZ0lVgIhSi4bFEk94fLAKlF3Q0nzSQQ+ca0lm+O6G9ztKVBeu8PMRQ=="
-  "resolved" "https://registry.npmjs.org/@babel/parser/-/parser-7.14.3.tgz"
-  "version" "7.14.3"
+"@babel/parser@^7.12.0", "@babel/parser@^7.12.13", "@babel/parser@^7.13.9", "@babel/parser@^7.14.2", "@babel/parser@^7.14.3", "@babel/parser@^7.18.4", "@babel/parser@^7.7.0":
+  "integrity" "sha512-9uJveS9eY9DJ0t64YbIBZICtJy8a5QrDEVdiLCG97fVLpDTpGX7t8mMSb6OWw6Lrnjqj4O8zwjELX3dhoMgiBg=="
+  "resolved" "https://registry.npmjs.org/@babel/parser/-/parser-7.18.9.tgz"
+  "version" "7.18.9"
 
 "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining@^7.13.12":
   "integrity" "sha512-d0u3zWKcoZf379fOeJdr1a5WPDny4aOFZ6hlfKivgK0LY7ZxNfoaHL2fWwdGtHyVvra38FC+HVYkO+byfSA8AQ=="
@@ -982,6 +982,128 @@
   "resolved" "https://registry.npmjs.org/@soda/get-current-script/-/get-current-script-1.0.2.tgz"
   "version" "1.0.2"
 
+"@syncfusion/ej2-base@~20.2.38":
+  "integrity" "sha512-LyTR6X5BrwJ2+ES52Tmqmesk43ld18sNoyvSso6+YFVmybRHD+ZGL/GzZvTXJ3YxxdAGRwa7+DIUAvSkNRGCmg=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-base/-/ej2-base-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-icons" "~20.2.38"
+
+"@syncfusion/ej2-buttons@~20.2.38":
+  "integrity" "sha512-KXtFwnymf8/nXxd4MQpmvIXTTjJuoruD703T+ub8acOHG+ONUi+E9DVImKp46pfMvd0ywArGyClxiWzcpTtoFw=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-buttons/-/ej2-buttons-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+
+"@syncfusion/ej2-calendars@20.2.38":
+  "integrity" "sha512-SXso4WpGvpgN+3hYxTbNOqWBdBpV4/5sJlq5ql9iI8iwFkFvPqRXLyzxr/6wsWllVMXLywHUAd8FxKt0YdCCGw=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-calendars/-/ej2-calendars-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-buttons" "~20.2.38"
+    "@syncfusion/ej2-inputs" "~20.2.38"
+    "@syncfusion/ej2-lists" "~20.2.38"
+    "@syncfusion/ej2-popups" "~20.2.38"
+
+"@syncfusion/ej2-data@^20.2.38", "@syncfusion/ej2-data@~20.2.38":
+  "integrity" "sha512-TzIr50hiEOvT/j79QkhaO0+a+jYffVhfFc3Fwy3xAYaiPf4z0RUemGdkyjWSYb7rposFCThUlgEW+gagVbgA4w=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-data/-/ej2-data-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+
+"@syncfusion/ej2-dropdowns@20.2.39":
+  "integrity" "sha512-ARUWXIrVLNNeH1oALK9Eb7VnNFzLI0n+ROnr09uONXWTBX6610kw0ns6xBNh233bSYr073II6PD0+FjIsyRAsA=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-dropdowns/-/ej2-dropdowns-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-data" "~20.2.38"
+    "@syncfusion/ej2-inputs" "~20.2.38"
+    "@syncfusion/ej2-lists" "~20.2.39"
+    "@syncfusion/ej2-navigations" "~20.2.39"
+    "@syncfusion/ej2-popups" "~20.2.39"
+
+"@syncfusion/ej2-icons@~20.2.38":
+  "integrity" "sha512-QmyUTO8N9oGazIC379IOOj8PUK/KnGhoXyhKmMl+FvIv46Lpj1/P+jkg3Fwm3ntjjJtKn2N4o7Bw4m5AunvIkw=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-icons/-/ej2-icons-20.2.38.tgz"
+  "version" "20.2.38"
+
+"@syncfusion/ej2-inputs@~20.2.38":
+  "integrity" "sha512-Zfxr/UFGpNMi97kZIbw8GdsCN1SVrcb+oyXB+fA8McwfaKSTcfUaluQTK5BgI/QsgPVRstrAxqhwYanYuzIkRA=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-inputs/-/ej2-inputs-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-buttons" "~20.2.38"
+    "@syncfusion/ej2-popups" "~20.2.38"
+    "@syncfusion/ej2-splitbuttons" "~20.2.38"
+
+"@syncfusion/ej2-lists@~20.2.38", "@syncfusion/ej2-lists@~20.2.39":
+  "integrity" "sha512-QXPlk1j7ysMY89vlxbw6EDhIwu/gbKC5e1xJpK6NIX54qmj2hEhLFlquJSXC2gvquh7Dicoi7aZ74xHhky8Opw=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-lists/-/ej2-lists-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-buttons" "~20.2.38"
+    "@syncfusion/ej2-data" "~20.2.38"
+
+"@syncfusion/ej2-navigations@~20.2.39":
+  "integrity" "sha512-FM8y3VB57+Yu/Ig+mfbrfXLOYTKxC9qQZ9wh5NL8I0KyjQSkh3CFPZMEX1/UuyW/T9KBXEWXn+4DBt19RxbceA=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-navigations/-/ej2-navigations-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-buttons" "~20.2.38"
+    "@syncfusion/ej2-data" "~20.2.38"
+    "@syncfusion/ej2-inputs" "~20.2.38"
+    "@syncfusion/ej2-lists" "~20.2.39"
+    "@syncfusion/ej2-popups" "~20.2.39"
+
+"@syncfusion/ej2-popups@~20.2.38", "@syncfusion/ej2-popups@~20.2.39":
+  "integrity" "sha512-o6+auSwEz929pXkzrcgL9wbPBkoj5cpVCIjKpNrYqojp4ldNJgHbqMD+S76bdNZiyNmukRii4d0HyU83Z+P/1g=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-popups/-/ej2-popups-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-buttons" "~20.2.38"
+
+"@syncfusion/ej2-splitbuttons@~20.2.38":
+  "integrity" "sha512-vjH97v185gKplAzlm8D/3dHncHL+ZSPsC1fXK4k9qMisnaiU1RvSlsCTj129u2zaYjQv5WqCTpNXaKDkrOEmQw=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-splitbuttons/-/ej2-splitbuttons-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-popups" "~20.2.38"
+
+"@syncfusion/ej2-vue-base@~20.2.38":
+  "integrity" "sha512-IryANB1MjbMU9Dx+Ar3PZTbnTPObJbjnIFqeDFd+KqoyVDzSlcuYkwBaTlUrmu0qz/pyQQaeuhTgyXqoS0Qv3g=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-base/-/ej2-vue-base-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "glob" "^7.0.5"
+
+"@syncfusion/ej2-vue-calendars@^20.2.38":
+  "integrity" "sha512-y3XaGkbXjS9Cf9TI/NFgKGKNQUquIjW6SQZ2tqyJyW8H/ct8VQHCGBa1Nx68ix69FV5pucOEgVMGvwkuhnBDmA=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-calendars/-/ej2-vue-calendars-20.2.38.tgz"
+  "version" "20.2.38"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-calendars" "20.2.38"
+    "@syncfusion/ej2-vue-base" "~20.2.38"
+
+"@syncfusion/ej2-vue-dropdowns@^20.2.39":
+  "integrity" "sha512-+94gp0IqKoFEHbA+z1InJgnxe5H6wy6Eg4krC6vs0n9+d4pOHG+6wwBl+8P3EKjZlpN7trTADm7HUPA0DVWGbA=="
+  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-dropdowns/-/ej2-vue-dropdowns-20.2.39.tgz"
+  "version" "20.2.39"
+  dependencies:
+    "@syncfusion/ej2-base" "~20.2.38"
+    "@syncfusion/ej2-dropdowns" "20.2.39"
+    "@syncfusion/ej2-vue-base" "~20.2.38"
+
 "@types/body-parser@*":
   "integrity" "sha512-W98JrE0j2K78swW4ukqMleo8R7h/pFETjM2DQ90MF6XK2i4LO4W3gQ71Lt4w3bfm2EvVSyWHplECvB5sK22yFQ=="
   "resolved" "https://registry.npmjs.org/@types/body-parser/-/body-parser-1.19.0.tgz"
@@ -1413,6 +1535,15 @@
     "postcss" "^8.1.10"
     "postcss-modules" "^4.0.0"
     "postcss-selector-parser" "^6.0.4"
+    "source-map" "^0.6.1"
+
+"@vue/compiler-sfc@2.7.8":
+  "integrity" "sha512-2DK4YWKfgLnW9VDR9gnju1gcYRk3flKj8UNsms7fsRmFcg35slVTZEkqwBtX+wJBXaamFfn6NxSsZh3h12Ix/Q=="
+  "resolved" "https://registry.npmjs.org/@vue/compiler-sfc/-/compiler-sfc-2.7.8.tgz"
+  "version" "2.7.8"
+  dependencies:
+    "@babel/parser" "^7.18.4"
+    "postcss" "^8.4.14"
     "source-map" "^0.6.1"
 
 "@vue/compiler-ssr@3.0.11":
@@ -3061,6 +3192,11 @@
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-2.6.17.tgz"
   "version" "2.6.17"
 
+"csstype@^3.1.0":
+  "integrity" "sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA=="
+  "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.1.0.tgz"
+  "version" "3.1.0"
+
 "cyclist@^1.0.1":
   "integrity" "sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk= sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A=="
   "resolved" "https://registry.npmjs.org/cyclist/-/cyclist-1.0.1.tgz"
@@ -3072,6 +3208,11 @@
   "version" "1.14.1"
   dependencies:
     "assert-plus" "^1.0.0"
+
+"date-fns@^2.22.1":
+  "integrity" "sha512-dlLD5rKaKxpFdnjrs+5azHDFOPEu4ANy/LTh04A1DTzMM7qoajmKCBc8pkKRFT41CNzw+4gQh79X5C+Jq27HAw=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.29.1.tgz"
+  "version" "2.29.1"
 
 "debug@^2.2.0":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
@@ -4162,7 +4303,7 @@
   "resolved" "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz"
   "version" "0.3.0"
 
-"glob@^7.0.3", "glob@^7.1.2", "glob@^7.1.3", "glob@^7.1.4":
+"glob@^7.0.3", "glob@^7.0.5", "glob@^7.1.2", "glob@^7.1.3", "glob@^7.1.4":
   "integrity" "sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ=="
   "resolved" "https://registry.npmjs.org/glob/-/glob-7.1.7.tgz"
   "version" "7.1.7"
@@ -5574,6 +5715,11 @@
   dependencies:
     "minimist" "^1.2.5"
 
+"moment@^2.29.4":
+  "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
+  "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
+  "version" "2.29.4"
+
 "move-concurrently@^1.0.1":
   "integrity" "sha1-viwAX9oy4LKa8fBdfEszIUxwH5I= sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ=="
   "resolved" "https://registry.npmjs.org/move-concurrently/-/move-concurrently-1.0.1.tgz"
@@ -5628,10 +5774,10 @@
     "object-assign" "^4.0.1"
     "thenify-all" "^1.0.0"
 
-"nanoid@^3.1.23":
-  "integrity" "sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw=="
-  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz"
-  "version" "3.1.23"
+"nanoid@^3.1.23", "nanoid@^3.3.4":
+  "integrity" "sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw=="
+  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz"
+  "version" "3.3.4"
 
 "nanomatch@^1.2.9":
   "integrity" "sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA=="
@@ -6175,6 +6321,11 @@
   "resolved" "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz"
   "version" "2.1.0"
 
+"picocolors@^1.0.0":
+  "integrity" "sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ=="
+  "resolved" "https://registry.npmjs.org/picocolors/-/picocolors-1.0.0.tgz"
+  "version" "1.0.0"
+
 "picomatch@^2.0.4", "picomatch@^2.2.1", "picomatch@^2.2.3":
   "integrity" "sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw=="
   "resolved" "https://registry.npmjs.org/picomatch/-/picomatch-2.3.0.tgz"
@@ -6625,6 +6776,15 @@
     "colorette" "^1.2.2"
     "nanoid" "^3.1.23"
     "source-map-js" "^0.6.2"
+
+"postcss@^8.4.14":
+  "integrity" "sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig=="
+  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.14.tgz"
+  "version" "8.4.14"
+  dependencies:
+    "nanoid" "^3.3.4"
+    "picocolors" "^1.0.0"
+    "source-map-js" "^1.0.2"
 
 "prelude-ls@~1.1.2":
   "integrity" "sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ= sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w=="
@@ -7183,6 +7343,11 @@
     "ajv" "^6.12.4"
     "ajv-keywords" "^3.5.2"
 
+"search-dropdown-vue@^1.0.2":
+  "integrity" "sha512-Mn+KDw3XeOT6IBpNLNTdN95tC0PykWXjQX+Tc6K48yM4J/PiHjAIPE3DMNEhpNu6HCzF1/fQyp8JdLUdsg3nvg=="
+  "resolved" "https://registry.npmjs.org/search-dropdown-vue/-/search-dropdown-vue-1.0.2.tgz"
+  "version" "1.0.2"
+
 "select-hose@^2.0.0":
   "integrity" "sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo= sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg=="
   "resolved" "https://registry.npmjs.org/select-hose/-/select-hose-2.0.0.tgz"
@@ -7441,6 +7606,11 @@
   "integrity" "sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug=="
   "resolved" "https://registry.npmjs.org/source-map-js/-/source-map-js-0.6.2.tgz"
   "version" "0.6.2"
+
+"source-map-js@^1.0.2":
+  "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="
+  "resolved" "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
+  "version" "1.0.2"
 
 "source-map-resolve@^0.5.0":
   "integrity" "sha512-Htz+RnsXWk5+P2slx5Jh3Q66vhQj1Cllm0zvnaY98+NFx+Dv2CF/f5O/t8x+KaNdrdIAsruNzoh/KpialbqAnw=="
@@ -8276,6 +8446,13 @@
   "resolved" "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
   "version" "1.1.2"
 
+"vue-date-pick@^1.4.1":
+  "integrity" "sha512-x4PnXwfMWAWZQF4yctAhENSnQyZUt3+vV7mVravXgvijtwzQx7zoOicgzMPg/LNdzBQWxnOjAa7GvSAY98Hp8A=="
+  "resolved" "https://registry.npmjs.org/vue-date-pick/-/vue-date-pick-1.4.1.tgz"
+  "version" "1.4.1"
+  dependencies:
+    "vue" "^2.6.0"
+
 "vue-eslint-parser@^7.6.0":
   "integrity" "sha512-QXxqH8ZevBrtiZMZK0LpwaMfevQi9UL7lY6Kcp+ogWHC88AuwUPwwCIzkOUc1LR4XsYAt/F9yHXAB/QoD17QXA=="
   "resolved" "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-7.6.0.tgz"
@@ -8320,6 +8497,11 @@
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.10"
 
+"vue-simple-search-dropdown@^1.0.1":
+  "integrity" "sha512-r3LuGFB3WqMDRILx+Z/Y2S9UTLqMh3Y0nv1Oly+tt8oEzvg77r0tfYLHVqQlhsmVPy0GmSuxMMbetMkDRLOEqg=="
+  "resolved" "https://registry.npmjs.org/vue-simple-search-dropdown/-/vue-simple-search-dropdown-1.0.1.tgz"
+  "version" "1.0.1"
+
 "vue-style-loader@^4.1.0", "vue-style-loader@^4.1.2":
   "integrity" "sha512-sFuh0xfbtpRlKfm39ss/ikqs9AbKCoXZBpHeVZ8Tx650o0k0q/YCM7FRvigtxpACezfq6af+a7JeqVTWvncqDg=="
   "resolved" "https://registry.npmjs.org/vue-style-loader/-/vue-style-loader-4.1.3.tgz"
@@ -8341,6 +8523,21 @@
     "@vue/compiler-dom" "3.0.11"
     "@vue/runtime-dom" "3.0.11"
     "@vue/shared" "3.0.11"
+
+"vue@^2.6.0":
+  "integrity" "sha512-ncwlZx5qOcn754bCu5/tS/IWPhXHopfit79cx+uIlLMyt3vCMGcXai5yCG5y+I6cDmEj4ukRYyZail9FTQh7lQ=="
+  "resolved" "https://registry.npmjs.org/vue/-/vue-2.7.8.tgz"
+  "version" "2.7.8"
+  dependencies:
+    "@vue/compiler-sfc" "2.7.8"
+    "csstype" "^3.1.0"
+
+"vue3-datepicker@^0.3.4":
+  "integrity" "sha512-pD4Lixnqdr6KeIO/ZK/xdmhYDQUvMPHgTeWkNYeAx5sKY4eaNItOqbLuevwI51d3ubozhNS1y+Z8Enxi33pXiQ=="
+  "resolved" "https://registry.npmjs.org/vue3-datepicker/-/vue3-datepicker-0.3.4.tgz"
+  "version" "0.3.4"
+  dependencies:
+    "date-fns" "^2.22.1"
 
 "watchpack-chokidar2@^2.0.1":
   "integrity" "sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww=="

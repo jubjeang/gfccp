@@ -4,28 +4,27 @@
       class="
         d-flex
         flex-column flex-md-row
-        text-center text-md-end
-        justify-content-between
+        justify-content-start
         py-4
         px-4 px-xl-5
-        bg-primary
+        bg-secondary
         vw-100
       "
     >
       <div>
-        <img src="@/assets/images/sl_logo.png" width="180px" height="140px" />
+        <img src="@/assets/images/sl_logo.png" />
       </div>
     </div>
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-5">
+        <div class="col-md-9 col-lg-6 col-xl-6">
           <img
             src="@/assets/images/gfcth_content.jpg"
             class="img-fluid"
-            alt="Sample image"
+            alt="Sample image" style="width:100rem; height:23rem"
           />
         </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <div class="col-md-8 col-lg-4 col-xl-4 offset-xl-1">
           <form>
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Login</p>
@@ -82,15 +81,14 @@
       class="
         d-flex
         flex-column flex-md-row
-        text-center text-md-start
-        justify-content-between
         py-4
         px-4 px-xl-5
-        bg-secondary
+        bg-secondary 
+        justify-content-end
       "
     >
       <!-- Copyright -->
-      <div class="text-white mb-3 mb-md-0">
+      <div class="text-white mb-3 mb-md-0 justify-content-end">
         Copyright by Guardforch Cash © 2022. All rights reserved.
       </div>
       <!-- Copyright -->
