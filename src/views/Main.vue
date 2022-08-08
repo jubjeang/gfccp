@@ -6,7 +6,7 @@
 </template>
 <script>
 import Sidebar from './sidebar/Sidebar'
-import { sidebarWidth } from './sidebar/state'
+import { sidebarWidth } from '../components/sidebar/state'
 export default {
   name: 'Main',
   components: { Sidebar },
