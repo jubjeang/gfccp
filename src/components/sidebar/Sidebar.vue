@@ -42,7 +42,7 @@ export default {
         </SidebarLink>
       </li>
     </ul>
-    <SidebarLink to="/dashboard" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
+    <SidebarLink to="/ordertracking" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
     <SidebarLink to="/#" icon="fas fa-coins" data-bs-toggle="collapse" class="nav-link align-middle" href="#submenu2">
       สถานะคงคลัง</SidebarLink>
     <ul class="collapse nav flex-column ms-1" id="submenu2">

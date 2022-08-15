@@ -2,30 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue')
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue')
-  },
-  {
     path: '/',
     name: 'Login',
-    component: () => import('../components/Login.vue')
+    component: () => import('../views/Login.vue')
   },
   {
     path: '/main',
     name: 'Main',
-    component: () => import('../components/Main.vue')
+    component: () => import('../views/Main.vue')
   },
   {
     path: '/listorder',
     name: 'ListOrder',
-    component: () => import('../components/ListOrder.vue')
-  }
+    component: () => import('../views/ListOrder.vue')
+  },
+  {
+    path: '/ordertracking',
+    name: 'OrderTracking',
+    component: () => import('../views/OrderTracking.vue')
+  }, 
 ]
 
 const router = createRouter({

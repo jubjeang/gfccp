@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import Sidebar from './sidebar/Sidebar'
+import Sidebar from '../components/sidebar/Sidebar'
 import { sidebarWidth } from '../components/sidebar/state'
 export default {
   name: 'Main',

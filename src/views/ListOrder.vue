@@ -151,10 +151,9 @@
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
                         v-model="OrderType">
-                        <option>Please Select One Type</option>
-                        <option value="1">Withdraw</option>
-                        <option value="2">Deposit</option>
-                        <option value="3">Exchange</option>
+                        <option value="">Please Select One Type</option>
+                        <option value="Withdraw">Withdraw</option>
+                        <option value="Deposit">Deposit</option>
                       </select>
                     </div>
                   </div>
@@ -217,9 +216,9 @@
 </template>
 
 <script>
-import Sidebar from './sidebar/Sidebar'
+import Sidebar from '../components/sidebar/Sidebar'
 import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
-import Header from './Header'
+import Header from '../components/Header'
 import axios from 'axios'
 // import moment from 'moment'
 export default {
