@@ -1594,7 +1594,7 @@
   dependencies:
     "@vue/shared" "3.0.11"
 
-"@vue/runtime-core@3.0.11":
+"@vue/runtime-core@3.0.11", "@vue/runtime-core@latest":
   "integrity" "sha512-87XPNwHfz9JkmOlayBeCCfMh9PT2NBnv795DSbi//C/RaAnc/bGZgECjmkD7oXJ526BZbgk9QZBPdFT8KMxkAg=="
   "resolved" "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.0.11.tgz"
   "version" "3.0.11"
@@ -1602,7 +1602,7 @@
     "@vue/reactivity" "3.0.11"
     "@vue/shared" "3.0.11"
 
-"@vue/runtime-dom@3.0.11":
+"@vue/runtime-dom@3.0.11", "@vue/runtime-dom@latest":
   "integrity" "sha512-jm3FVQESY3y2hKZ2wlkcmFDDyqaPyU3p1IdAX92zTNeCH7I8zZ37PtlE1b9NlCtzV53WjB4TZAYh9yDCMIEumA=="
   "resolved" "https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.0.11.tgz"
   "version" "3.0.11"
@@ -2573,6 +2573,11 @@
   "resolved" "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   "version" "0.7.0"
 
+"chart.js@^3.7.0", "chart.js@^3.9.1", "chart.js@=> ^3.1.0":
+  "integrity" "sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w=="
+  "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-3.9.1.tgz"
+  "version" "3.9.1"
+
 "check-types@^8.0.3":
   "integrity" "sha512-YpeKZngUmG65rLudJ4taU7VLkOCTMhNl/u4ctNC56LQS/zJTyNH0Lrtwm1tfTsbLlwvlfsA2d1c8vCf/Kh2KwQ=="
   "resolved" "https://registry.npmjs.org/check-types/-/check-types-8.0.3.tgz"
@@ -3195,7 +3200,7 @@
   dependencies:
     "css-tree" "^1.1.2"
 
-"csstype@^2.6.8":
+"csstype@^2.6.8", "csstype@latest":
   "integrity" "sha512-u1wmTI1jJGzCJzWndZo8mk4wnPTZd1eOIYTYvuEyOQGfmDl3TrabCCfKnOC86FZwW/9djqTl933UF/cS425i9A=="
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-2.6.17.tgz"
   "version" "2.6.17"
@@ -5410,6 +5415,11 @@
   dependencies:
     "p-locate" "^4.1.0"
 
+"lodash-es@latest":
+  "integrity" "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
+  "resolved" "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
+  "version" "4.17.21"
+
 "lodash.camelcase@^4.3.0":
   "integrity" "sha1-soqmKIorn8ZRA1x3EfZathkDMaY= sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA=="
   "resolved" "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz"
@@ -5732,7 +5742,7 @@
   dependencies:
     "minimist" "^1.2.5"
 
-"moment@^2.29.4":
+"moment@^2.19.2", "moment@^2.29.4":
   "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
   "version" "2.29.4"
@@ -8463,6 +8473,21 @@
   "resolved" "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
   "version" "1.1.2"
 
+"vue-chart-3@^3.1.8":
+  "integrity" "sha512-zX5ajjQi/PocEqLETlej3vp92q/tnI/Fvu2RVb++Kap8qOrXu6PXCpodi73BFrWzEGZIAnqoUxC3OIkRWD657g=="
+  "resolved" "https://registry.npmjs.org/vue-chart-3/-/vue-chart-3-3.1.8.tgz"
+  "version" "3.1.8"
+  dependencies:
+    "@vue/runtime-core" "latest"
+    "@vue/runtime-dom" "latest"
+    "csstype" "latest"
+    "lodash-es" "latest"
+
+"vue-chartjs@^4.1.1":
+  "integrity" "sha512-rKIQ3jPrjhwxjKdNJppnYxRuBSrx4QeM3nNHsfIxEqjX6QS4Jq6e6vnZBxh2MDpURDC2uvuI2N0eIt1cWXbBVA=="
+  "resolved" "https://registry.npmjs.org/vue-chartjs/-/vue-chartjs-4.1.1.tgz"
+  "version" "4.1.1"
+
 "vue-date-pick@^1.4.1":
   "integrity" "sha512-x4PnXwfMWAWZQF4yctAhENSnQyZUt3+vV7mVravXgvijtwzQx7zoOicgzMPg/LNdzBQWxnOjAa7GvSAY98Hp8A=="
   "resolved" "https://registry.npmjs.org/vue-date-pick/-/vue-date-pick-1.4.1.tgz"
@@ -8507,6 +8532,13 @@
     "vue-hot-reload-api" "^2.3.0"
     "vue-style-loader" "^4.1.0"
 
+"vue-moment@^4.1.0":
+  "integrity" "sha512-Gzisqpg82ItlrUyiD9d0Kfru+JorW2o4mQOH06lEDZNgxci0tv/fua1Hl0bo4DozDV2JK1r52Atn/8QVCu8qQw=="
+  "resolved" "https://registry.npmjs.org/vue-moment/-/vue-moment-4.1.0.tgz"
+  "version" "4.1.0"
+  dependencies:
+    "moment" "^2.19.2"
+
 "vue-router@^4.0.0-0":
   "integrity" "sha512-42mWSQaH7CCBQDspQTHv63f34VEnZC20g9QNK4WJ/zW8SdIUeT6TQ2i/78fjF/pVBUPLBWrGhvB7uDnaz7O/pA=="
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-4.0.8.tgz"
@@ -8532,7 +8564,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@3.0.11":
+"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@>= 3", "vue@>=1.x.x", "vue@3.0.11":
   "integrity" "sha512-3/eUi4InQz8MPzruHYSTQPxtM3LdZ1/S/BvaU021zBnZi0laRUyH6pfuE4wtUeLvI8wmUNwj5wrZFvbHUXL9dw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.0.11.tgz"
   "version" "3.0.11"
@@ -8555,6 +8587,13 @@
   "version" "0.3.4"
   dependencies:
     "date-fns" "^2.22.1"
+
+"vue3-table-lite@^1.2.4":
+  "integrity" "sha512-Dnz1eLd4SRtO0Jm89sZpluP7r6qyIneqPkUpJ/QIP6mKaJvuDcOA3/etROtQ4Tbglo17NMujnnCChv+BPdF6sw=="
+  "resolved" "https://registry.npmjs.org/vue3-table-lite/-/vue3-table-lite-1.2.4.tgz"
+  "version" "1.2.4"
+  dependencies:
+    "vue" "^3.0.0"
 
 "watchpack-chokidar2@^2.0.1":
   "integrity" "sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww=="

@@ -20,7 +20,12 @@ const routes = [
     path: '/ordertracking',
     name: 'OrderTracking',
     component: () => import('../views/OrderTracking.vue')
-  }, 
+  },
+  {
+    path: '/inventorystatus',
+    name: 'InventoryStatus',
+    component: () => import('../views/InventoryStatus.vue')
+  },
 ]
 
 const router = createRouter({

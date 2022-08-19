@@ -7,4 +7,5 @@ import '@fortawesome/fontawesome-free/js/all'
 
 createApp(App).use(router).mount('#app')
 
+
 // import 'bootstrap/dist/js/bootstrap.js'

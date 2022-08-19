@@ -23,8 +23,8 @@
       <div class="row p-1">
         <div class="col">
           <div class="card  p-0" style="width: 100%">
-            <div class="card-header">
-              &nbsp;
+            <div class="card-header text-right">
+              <label>SearchBy:</label><input v-model="searchTerm" />
             </div>
             <table class="table table-striped table-hover">
               <thead>
@@ -40,60 +40,25 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td scope="col">1</td>
-                  <td scope="col">เชียงของ</td>
+                <tr v-for="data in Data_" :key="data.AutoID">
+                  <td scope="col">{{ data.AutoID }}</td>
+                  <td scope="col">{{ data.branch_name }}</td>
                   <td scope="col">-</td>
-                  <td scope="col">9,940,000.00</td>
-                  <td scope="col">30/06/2564</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                </tr>
-                <tr>
-                  <td scope="col">2</td>
-                  <td scope="col">แม่สรวย</td>
-                  <td scope="col">-</td>
-                  <td scope="col">9,960,000.00</td>
-                  <td scope="col">30/06/2564</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                </tr>
-                <tr>
-                  <td scope="col">3</td>
-                  <td scope="col">ป่าแดด</td>
-                  <td scope="col">-</td>
-                  <td scope="col">5,740,000.00</td>
-                  <td scope="col">30/06/2564</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                </tr>
-                <tr>
-                  <td scope="col">4</td>
-                  <td scope="col">ม่วงคำ</td>
-                  <td scope="col">-</td>
-                  <td scope="col">4,100,000.00
-                  </td>
-                  <td scope="col">30/06/2564</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                </tr>
-                <tr>
-                  <td scope="col">5</td>
-                  <td scope="col">เจดีย์หลวง</td>
-                  <td scope="col">-</td>
-                  <td scope="col">3,000,000.00
-                  </td>
-                  <td scope="col">30/06/2564</td>
+                  <td scope="col">{{ data.total_by_branch }}</td>
+                  <td scope="col">{{ dateTime(data.order_date) }}</td>
                   <td scope="col">-</td>
                   <td scope="col">-</td>
                   <td scope="col">-</td>
                 </tr>
               </tbody>
             </table>
+            <div style="text-align: left">
+
+            </div>
+            <div>
+              <table-lite class="table table-striped table-hover" :is-static-mode="true" :columns="table.columns" :rows="table.rows"
+                :total="table.totalRecordCount" :sortable="table.sortable"></table-lite>
+            </div>
           </div>
         </div>
       </div>
@@ -220,13 +185,14 @@ import Sidebar from '../components/sidebar/Sidebar'
 import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
 import Header from '../components/Header'
 import axios from 'axios'
-// import moment from 'moment'
-export default {
+import moment from 'moment'
+import { defineComponent, reactive, ref, computed } from "vue";
+import TableLite from "../components/TableLite.vue";
+
+
+export default  {
   name: 'ListOrder',
-  components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
-  setup() {
-    return { collapsed, toggleSidebar, sidebarWidth }
-  },
+  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
   data() {
     return {
       file: "",
@@ -236,11 +202,84 @@ export default {
       OrderType: "",
       BankType: "",
       JobDate: null,
+      // Data_: [],
     }
   },
-  // data: () => ({
-  //       date: '2019-01-01'
-  //   })
+  setup() {
+    const searchTerm = ref(""); // Search text
+    //  console.log(this.Data_.length())
+    // Fake data
+    const data = reactive([]);
+    for (let i = 0; i < 126; i++) {
+      data.push({
+        id: i,
+        name: "TEST" + i,
+        email: "test" + i + "@example.com",
+      });
+    }
+    //const Data_ = []
+    const Data2_= reactive 
+    try {
+      axios.get('/orderlist')
+        .then((res) => {
+          // success callback
+          //this.Data_ = res.data
+          // console.log(this.Data_)
+          //Data2_.push(res.data)
+          console.log(res.data[0].branch_name)
+          return res.data
+        }, (res) => {
+          // error callback
+          console.log(res.data)
+        });
+    }     
+    catch (err) {
+      console.log(err)
+      this.message = "Something went wrong"
+      this.error = true
+    }
+    // console.log(Data2_.length)
+
+    // Table config
+    const table = reactive({
+      columns: [
+        {
+          label: "ID",
+          field: "id",
+          width: "3%",
+          sortable: true,
+          isKey: true,
+        },
+        {
+          label: "Name",
+          field: "name",
+          width: "10%",
+          sortable: true,
+        },
+        {
+          label: "Email",
+          field: "email",
+          width: "15%",
+          sortable: true,
+        },
+      ],
+      rows: computed(() => {
+        return data.filter(
+          (x) =>
+            x.email.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+            x.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+        );
+      }),
+      totalRecordCount: computed(() => {
+        return table.rows.length;
+      }),
+      sortable: {
+        order: "id",
+        sort: "asc",
+      },
+    });
+    return { searchTerm, table, collapsed, toggleSidebar, sidebarWidth,Data2_ }
+  },
   methods: {
     selectFile() {
       this.file = this.$refs.file.files[0]
@@ -248,7 +287,6 @@ export default {
       this.message = ""
     },
     async sendFile() {
-
       const formData = new FormData()
       formData.append('file', this.file)
       formData.append('OrderCategory', this.OrderCategory)
@@ -260,10 +298,10 @@ export default {
         await axios.post('/upload', formData)
           .then((res) => {
             // success callback
-            console.log( res.data.message )
+            console.log(res.data.message)
           }, (res) => {
             // error callback
-            console.log( res.data.message )
+            console.log(res.data.message)
           });
         console.log(formData)
         console.log(this.OrderCategory)
@@ -276,12 +314,32 @@ export default {
         this.message = "Something went wrong"
         this.error = true
       }
+    },
+    dateTime(value) {
+      return moment(value).format("DD-MM-YYYY");
     }
-    // format(value, event) {
-    //   return moment(value).format('DD/MM/YYYY')
-    // }
   },
+  created() {
+    // try {
+    //   axios.get('/orderlist')
+    //     .then((res) => {
+    //       // success callback
+    //       this.Data_ = res.data
+    //       console.log(this.Data_)
+    //     }, (res) => {
+    //       // error callback
+    //       console.log(res.data)
+    //     });
+    // }
+    // catch (err) {
+    //   console.log(err)
+    //   this.message = "Something went wrong"
+    //   this.error = true
+    // }
+  }
+
 }
+
 
 </script>
 

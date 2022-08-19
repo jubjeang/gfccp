@@ -47,7 +47,7 @@ export default {
       สถานะคงคลัง</SidebarLink>
     <ul class="collapse nav flex-column ms-1" id="submenu2">
       <li class="w-100">
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน
+        <SidebarLink to="/inventorystatus" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน
         </SidebarLink>
         <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
