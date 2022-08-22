@@ -42,112 +42,112 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td scope="col">1000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">60,000,000</td>
+                                    <td scope="col" class="text-right">1,000</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">60,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">500</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">20,000,000</td>
+                                    <td scope="col" class="text-right">500</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">500</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">20,000,000</td>
+                                    <td scope="col" class="text-right">500</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000</td>
+                                    <td scope="col" class="text-right">5,000,000</td>
+                                    <td scope="col" class="text-right">5,000,000</td>
+                                    <td scope="col" class="text-right">20,000,000</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">100</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">40,000,000</td>
+                                    <td scope="col" class="text-right">100</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">40,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">50</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">20,000,000</td>
+                                    <td scope="col" class="text-right">50</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">20</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">40,000,000</td>
+                                    <td scope="col" class="text-right">20</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">40,000,000.00</td>
                                 </tr>
 
 
 
 
                                 <tr>
-                                    <td scope="col">10</td>
-                                    <td scope="col">50,000,000</td>
-                                    <td scope="col">50,000,000</td>
-                                    <td scope="col">50,000,000</td>
-                                    <td scope="col">50,000,000</td>
-                                    <td scope="col">200,000,000</td>
+                                    <td scope="col" class="text-right">10</td>
+                                    <td scope="col" class="text-right">50,000,000.00</td>
+                                    <td scope="col" class="text-right">50,000,000.00</td>
+                                    <td scope="col" class="text-right">50,000,000.00</td>
+                                    <td scope="col" class="text-right">50,000,000.00</td>
+                                    <td scope="col" class="text-right">200,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">5</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">80,000,000</td>
+                                    <td scope="col" class="text-right">5</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">80,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">2</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">5,000,000</td>
-                                    <td scope="col">80,000,000</td>
+                                    <td scope="col" class="text-right">2</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">5,000,000.00</td>
+                                    <td scope="col" class="text-right">80,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">1</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">20,000,000</td>
-                                    <td scope="col">80,000,000</td>
+                                    <td scope="col" class="text-right">1</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right">80,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">0.50</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">8,000,000</td>
+                                    <td scope="col" class="text-right">0.50</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">8,000,000.00</td>
                                 </tr>
                                 <tr>
-                                    <td scope="col">0.25</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">2,000,000</td>
-                                    <td scope="col">8,000,000</td>
+                                    <td scope="col" class="text-right">0.25</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">2,000,000.00</td>
+                                    <td scope="col" class="text-right">8,000,000.00</td>
                                 </tr>
 <tr>
-                                    <td scope="col">รวม</td>
-                                    <td scope="col">180,000,000</td>
-                                    <td scope="col">120,000,000</td>
-                                    <td scope="col">150,000,000</td>
-                                    <td scope="col">10,000,000</td>
-                                    <td scope="col">10,000,000</td>
+                                    <td scope="col" class="text-right">รวม</td>
+                                    <td scope="col" class="text-right">180,000,000.00</td>
+                                    <td scope="col" class="text-right">120,000,000.00</td>
+                                    <td scope="col" class="text-right">150,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right">10,000,000.00</td>
                                 </tr>                                
                             </tbody>
                         </table>

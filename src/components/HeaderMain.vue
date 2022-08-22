@@ -3,28 +3,30 @@
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="mynavbar">
       <div class="navbar-nav me-auto">
+         &nbsp;
       </div>
-      <form class="d-flex">
-        <!-- <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-primary" type="button">Search</button>  -->
-        <span class="text-white h6">{{ user_name }}</span> <span class="text-white h6">&nbsp;|&nbsp; </span>  <router-link to="/" class="link h6 text-white text-decoration-none" >ออกจากระบบ</router-link>
-      </form>
+      <div class="d-flex">
+        <div>
+         <span class="text-white h6">{{ user_name }}</span> <span class="text-white h6">|</span>  <router-link to="/" class="link h6 text-white text-decoration-none" >ออกจากระบบ</router-link>
+      </div>
+      </div>
     </div>
   </div>
 </nav>
 
 </template>
 <script>
+import { useRoute } from 'vue-router'
 export default {
-  name: 'Header',
-   data() {
+  name: 'HeaderMain',
+  data() {
     return {
       user_id: "",
       user_name: "",
       message: "",
     }
   },
-      created() {
+    created() {
     try {
       this.user_name= localStorage.getItem('user_name')
       this.user_id= localStorage.getItem('user_id')

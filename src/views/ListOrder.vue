@@ -13,18 +13,17 @@
       </div>
 
       <div class="row p-1" style="width: 100%">
-        <div class="col text-right">
-          <h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">
-            <i class="fas fa-file-upload"></i>
-            upload
-          </h4>
+        <div class="col d-flex justify-content-end">          
+            <i class="fas fa-file-upload" data-bs-toggle="modal" style="cursor: pointer; width: 1.5rem; height: 1.5rem;" ></i>
+            &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>
+          
         </div>
       </div>
       <div class="row p-1">
         <div class="col">
           <div class="card  p-0" style="width: 100%">
             <div class="card-header text-right">
-              <label>SearchBy:</label><input v-model="searchTerm" />
+              <!-- <label>SearchBy:</label><input v-model="searchTerm" /> -->
             </div>
             <table class="table table-striped table-hover">
               <thead>
@@ -42,10 +41,12 @@
               <tbody>
                 <tr v-for="data in Data_" :key="data.AutoID">
                   <td scope="col">{{ data.AutoID }}</td>
-                  <td scope="col">{{ data.branch_name }}</td>
-                  <td scope="col">-</td>
-                  <td scope="col">{{ data.total_by_branch }}</td>
-                  <td scope="col">{{ dateTime(data.order_date) }}</td>
+                  <td scope="col" v-if="data.servicetype === 'Deposit'" >{{data.branch_name}}</td>
+                  <td scope="col" v-else><span>{{data.cash_center}}</span></td>
+                  <td scope="col" v-if="data.servicetype === 'Deposit'" ><span>{{data.cash_center}}</span></td>
+                  <td scope="col" v-else>{{data.branch_name}}</td>
+                  <td scope="col">{{ formatPrice(data.total_by_branch) }}</td>
+                  <td scope="col" >{{ dateTime(data.order_date) }}</td>
                   <td scope="col">-</td>
                   <td scope="col">-</td>
                   <td scope="col">-</td>
@@ -56,8 +57,8 @@
 
             </div>
             <div>
-              <table-lite class="table table-striped table-hover" :is-static-mode="true" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :sortable="table.sortable"></table-lite>
+              <!-- <table-lite class="table table-striped table-hover" :is-static-mode="true" :columns="table.columns" :rows="table.rows"
+                :total="table.totalRecordCount" :sortable="table.sortable"></table-lite> -->
             </div>
           </div>
         </div>
@@ -99,19 +100,19 @@
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      Order Category
+                      ประเภทกิจกรรม
                     </div>
                     <div class="col">
                       <select class="form-select form-select-sm" name="OrderCategory" style="width:15rem;"
                         v-model="OrderCategory">
                         <option value="BankBranch">Bank Branch</option>
-                        <option value="ForexCounting">Forex Counting</option>
+                        <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      Order Type
+                      ประเภทบริการ
                     </div>
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
@@ -124,12 +125,12 @@
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      Select Bank
+                      เลือกธนาคาร
                     </div>
                     <div class="col">
                       <select id="BankType" class="form-select form-select-sm" style="width:15rem;" v-model="BankType">
                         <option selected="selected" value="">Please Select One Bank</option>
-                        <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
+                        <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
                         <option value="9e6f6cff-6e64-41f1-a7be-c07335764423">AIRA</option>
                         <option value="58194020-9eaf-4a6c-a5cc-b8fa6f628ba9">BAY</option>
                         <option value="045426c5-9fd9-4c26-b4f0-dc0015ee96b8">BOC</option>
@@ -140,17 +141,17 @@
                         <option value="c05896c4-72ec-4b4a-8a5d-5b8f9212ce24">KBANK</option>
                         <option value="fb790fb5-76e4-4d0e-8651-0259d73dc0b6">LHB</option>
                         <option value="64956e74-51fe-42d5-8445-90c90740c5db">TBANK</option>
-                        <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option>
+                        <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option> -->
                         <option value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
-                        <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
+                        <!-- <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
                         <option value="80cb96dd-ea99-401a-9615-bba6db501acd">ธนาคารเจพีมอร์แกนเชส</option>
-                        <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option>
+                        <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option> -->
                       </select>
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      Job Date
+                      วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
                       <input type="date" id="JobDate" class="form-control" style="width:15rem;" v-model="JobDate">
@@ -159,7 +160,7 @@
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      Attached File
+                      แนบไฟล์
                     </div>
                     <div class="col">
                       <input class="form-control form-control-sm form-control-file" @change="selectFile" ref="file"
@@ -169,8 +170,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary">บันทึก</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
               </div>
             </div>
           </div>
@@ -188,7 +189,8 @@ import axios from 'axios'
 import moment from 'moment'
 import { defineComponent, reactive, ref, computed } from "vue";
 import TableLite from "../components/TableLite.vue";
-
+    let var_ = localStorage.getItem('user_id')
+        console.log(var_)
 
 export default  {
   name: 'ListOrder',
@@ -202,7 +204,7 @@ export default  {
       OrderType: "",
       BankType: "",
       JobDate: null,
-      // Data_: [],
+      Data_: [],
     }
   },
   setup() {
@@ -217,8 +219,8 @@ export default  {
         email: "test" + i + "@example.com",
       });
     }
-    //const Data_ = []
-    const Data2_= reactive 
+    // const Data2_ = []
+    const Data_ = reactive([]);
     try {
       axios.get('/orderlist')
         .then((res) => {
@@ -278,7 +280,7 @@ export default  {
         sort: "asc",
       },
     });
-    return { searchTerm, table, collapsed, toggleSidebar, sidebarWidth,Data2_ }
+    return { searchTerm, table, collapsed, toggleSidebar, sidebarWidth }
   },
   methods: {
     selectFile() {
@@ -317,30 +319,31 @@ export default  {
     },
     dateTime(value) {
       return moment(value).format("DD-MM-YYYY");
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(2)
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
   },
   created() {
-    // try {
-    //   axios.get('/orderlist')
-    //     .then((res) => {
-    //       // success callback
-    //       this.Data_ = res.data
-    //       console.log(this.Data_)
-    //     }, (res) => {
-    //       // error callback
-    //       console.log(res.data)
-    //     });
-    // }
-    // catch (err) {
-    //   console.log(err)
-    //   this.message = "Something went wrong"
-    //   this.error = true
-    // }
+    try {
+      axios.get('/orderlist')
+        .then((res) => {
+          // success callback
+          this.Data_ = res.data
+          console.log(this.Data_)
+        }, (res) => {
+          // error callback
+          console.log(res.data)
+        });
+    }
+    catch (err) {
+      console.log(err)
+      this.message = "Something went wrong"
+      this.error = true
+    }
   }
-
 }
-
-
 </script>
 
 <style scoped lang="css">

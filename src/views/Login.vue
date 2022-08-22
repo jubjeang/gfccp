@@ -17,28 +17,29 @@
     </div>
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-6">
+        <div class="col-md-7 col-lg-7 col-xl-7">
           <img
             src="@/assets/images/gfcth_content.jpg"
             class="img-fluid"
             alt="Sample image" style="width:100rem; height:23rem"
           />
         </div>
-        <div class="col-md-8 col-lg-4 col-xl-4 offset-xl-1">
+        <div class="col-md-5 col-lg-3 col-xl-3 offset-xl-1">
           <form>
             <div class="divider d-flex align-items-center my-4">
-              <p class="text-center fw-bold mx-3 mb-0">Login</p>
+              <p class="text-center fw-bold mx-3 mb-0">เข้าสู่ระบบ</p>
             </div>
             <!-- Email input -->
-            <div class="form-outline mb-4">
+            <div class="form-outline mb-4 text-center">
               <input
                 type="text"
                 id="jobid"
                 v-model="jobid"
                 class="form-control form-control-lg"
-                placeholder="Enter Job ID"
+                placeholder="กรอกชื่อผู้ใช้" 
+                style="width: 30rem;"
               />
-              <label class="form-label" for="jobid">Job ID</label>
+              <!-- <label class="form-label" for="jobid">User Name</label> -->
             </div>
             <!-- Password input -->
             <div class="form-outline mb-3">
@@ -47,9 +48,10 @@
                 id="password"
                 v-model="password"
                 class="form-control form-control-lg"
-                placeholder="Enter password"
+                placeholder="กรอกรหัสผ่าน" 
+                style="width: 30rem;"
               />
-              <label class="form-label" for="password">Password</label>
+              <!-- <label class="form-label" for="password">Password</label> -->
             </div>
             <!-- <div class="d-flex justify-content-between align-items-center">
              Checkbox 
@@ -65,10 +67,9 @@
               <button
                 type="button"
                 class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem"
-                @click="login"
-              >
-                Login
+                style="padding-left: 2.5rem; padding-right: 2.5rem;  padding-top: 0.2rem;"
+                @click="login">
+                เข้าสู่ระบบ
               </button>
               <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                 class="link-danger">Register</a></p> -->
@@ -89,7 +90,7 @@
     >
       <!-- Copyright -->
       <div class="text-white mb-3 mb-md-0 justify-content-end">
-        Copyright by Guardforch Cash © 2022. All rights reserved.
+        Copyright by Guardforce Cash Solutions Security (Thailand) Co., Ltd. © 2022. All rights reserved.
       </div>
       <!-- Copyright -->
     </div>
@@ -112,13 +113,8 @@ export default {
     login(e) {
       e.preventDefault()
       if (this.jobid === this.jobid_ && this.password === this.password_) {
-        localStorage.setItem('jobid', this.jobid_)
-        let var_ = localStorage.getItem('jobid')
-        console.log(var_)
-        // location.href = "/about"
-        // router.push('/about')
-        // router.push({ name: "about" });
-        //router.push('/about');
+        localStorage.setItem('user_id', this.jobid_)
+        localStorage.setItem('user_name', 'UserDemo')
         this.$router.push('/main')
       } else {
         alert('Invalid Job Id or Password')
@@ -132,6 +128,17 @@ export default {
       'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js'
     )
     document.head.appendChild(externalScript)
+  },
+      created() {
+    try {
+              localStorage.setItem('user_id', null)
+        localStorage.setItem('user_name', null)
+    }
+    catch (err) {
+      console.log(err)
+      this.message = "Something went wrong"
+      this.error = true
+    }
   }
 }
 </script>

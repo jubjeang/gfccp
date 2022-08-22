@@ -7,6 +7,22 @@ export default {
   components: { SidebarLink },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth }
+  },data() {
+    return {
+      isVisible: false, 
+      isVisible2: false,   
+    }
+  },
+  methods: {
+    toggleVisible(){       
+      setTimeout(() => this.isVisible = !this.isVisible, 200);
+    },
+    toggleVisible2(){       
+      setTimeout(() => this.isVisible2 = !this.isVisible2, 200);
+    },
+    gotoMainPage(){       
+      this.$router.push('/main')
+    },
   }
 }
 </script>
@@ -17,16 +33,16 @@ export default {
 
     <span v-if="collapsed">
       <h3>
-        <div>G</div>
-        <div>F</div>
+        <div @click="gotoMainPage" style="cursor: pointer;">G</div>
+        <div @click="gotoMainPage" style="cursor: pointer;">F</div>
       </h3>
     </span>
     <span v-else>
-      <h1>Guardforce</h1>
+      <h1 @click="gotoMainPage" style="cursor: pointer;" >Guardforce</h1>
     </span>
-    <SidebarLink to="/main" icon="fas fa-wallet" href="#submenu1" data-bs-toggle="collapse"
+    <SidebarLink to="" icon="fas fa-wallet"  @click="toggleVisible" 
       class="nav-link align-middle">งานศูนย์เงินสด</SidebarLink>
-    <ul class="collapse nav flex-column ms-1" id="submenu1">
+    <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
       <li class="w-100">
         <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">
           รายการคำสั่ง</SidebarLink>
@@ -43,9 +59,9 @@ export default {
       </li>
     </ul>
     <SidebarLink to="/ordertracking" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
-    <SidebarLink to="/#" icon="fas fa-coins" data-bs-toggle="collapse" class="nav-link align-middle" href="#submenu2">
+    <SidebarLink to="" icon="fas fa-coins" class="nav-link align-middle" @click="toggleVisible2">
       สถานะคงคลัง</SidebarLink>
-    <ul class="collapse nav flex-column ms-1" id="submenu2">
+    <ul class=" nav flex-column ms-1" id="submenu2" v-show="isVisible2">
       <li class="w-100">
         <SidebarLink to="/inventorystatus" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน
         </SidebarLink>
@@ -62,7 +78,7 @@ export default {
       </li>
     </ul>
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
-      <i class="fas fa-angle-double-left" />
+      <i class="fas fa-angle-double-left" style="cursor: pointer;" />
     </span>
   </div>
 
