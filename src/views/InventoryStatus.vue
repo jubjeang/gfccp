@@ -37,7 +37,7 @@
                                     <th scope="col">ดี</th>
                                     <th scope="col">เสีย</th>
                                     <th scope="col">รอคัดนับ</th>
-                                    <th scope="col">รวม</th>
+                                    <th scope="col" class="fw-bold fst-italic">รวม</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,7 +47,7 @@
                                     <td scope="col" class="text-right">20,000,000.00</td>
                                     <td scope="col" class="text-right">10,000,000.00</td>
                                     <td scope="col" class="text-right">20,000,000.00</td>
-                                    <td scope="col" class="text-right">60,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">60,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">500</td>
@@ -55,7 +55,7 @@
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
-                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">20,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">500</td>
@@ -63,7 +63,7 @@
                                     <td scope="col" class="text-right">5,000,000</td>
                                     <td scope="col" class="text-right">5,000,000</td>
                                     <td scope="col" class="text-right">5,000,000</td>
-                                    <td scope="col" class="text-right">20,000,000</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">20,000,000</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">100</td>
@@ -71,7 +71,7 @@
                                     <td scope="col" class="text-right">10,000,000.00</td>
                                     <td scope="col" class="text-right">10,000,000.00</td>
                                     <td scope="col" class="text-right">10,000,000.00</td>
-                                    <td scope="col" class="text-right">40,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">40,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">50</td>
@@ -79,7 +79,7 @@
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
-                                    <td scope="col" class="text-right">20,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">20,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">20</td>
@@ -87,7 +87,7 @@
                                     <td scope="col" class="text-right">10,000,000.00</td>
                                     <td scope="col" class="text-right">10,000,000.00</td>
                                     <td scope="col" class="text-right">10,000,000.00</td>
-                                    <td scope="col" class="text-right">40,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">40,000,000.00</td>
                                 </tr>
 
 
@@ -99,7 +99,7 @@
                                     <td scope="col" class="text-right">50,000,000.00</td>
                                     <td scope="col" class="text-right">50,000,000.00</td>
                                     <td scope="col" class="text-right">50,000,000.00</td>
-                                    <td scope="col" class="text-right">200,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">200,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">5</td>
@@ -107,7 +107,7 @@
                                     <td scope="col" class="text-right">20,000,000.00</td>
                                     <td scope="col" class="text-right">20,000,000.00</td>
                                     <td scope="col" class="text-right">20,000,000.00</td>
-                                    <td scope="col" class="text-right">80,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">80,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">2</td>
@@ -115,7 +115,7 @@
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
                                     <td scope="col" class="text-right">5,000,000.00</td>
-                                    <td scope="col" class="text-right">80,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">80,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">1</td>
@@ -123,7 +123,7 @@
                                     <td scope="col" class="text-right">20,000,000.00</td>
                                     <td scope="col" class="text-right">20,000,000.00</td>
                                     <td scope="col" class="text-right">20,000,000.00</td>
-                                    <td scope="col" class="text-right">80,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">80,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">0.50</td>
@@ -131,7 +131,7 @@
                                     <td scope="col" class="text-right">2,000,000.00</td>
                                     <td scope="col" class="text-right">2,000,000.00</td>
                                     <td scope="col" class="text-right">2,000,000.00</td>
-                                    <td scope="col" class="text-right">8,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">8,000,000.00</td>
                                 </tr>
                                 <tr>
                                     <td scope="col" class="text-right">0.25</td>
@@ -139,15 +139,15 @@
                                     <td scope="col" class="text-right">2,000,000.00</td>
                                     <td scope="col" class="text-right">2,000,000.00</td>
                                     <td scope="col" class="text-right">2,000,000.00</td>
-                                    <td scope="col" class="text-right">8,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">8,000,000.00</td>
                                 </tr>
 <tr>
-                                    <td scope="col" class="text-right">รวม</td>
-                                    <td scope="col" class="text-right">180,000,000.00</td>
-                                    <td scope="col" class="text-right">120,000,000.00</td>
-                                    <td scope="col" class="text-right">150,000,000.00</td>
-                                    <td scope="col" class="text-right">10,000,000.00</td>
-                                    <td scope="col" class="text-right">10,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">รวม</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">180,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">120,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">150,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">10,000,000.00</td>
+                                    <td scope="col" class="text-right fw-bold fst-italic">10,000,000.00</td>
                                 </tr>                                
                             </tbody>
                         </table>

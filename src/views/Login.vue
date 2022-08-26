@@ -24,10 +24,10 @@
             alt="Sample image" style="width:100rem; height:23rem"
           />
         </div>
-        <div class="col-md-5 col-lg-3 col-xl-3 offset-xl-1">
+        <div class="col-md-3 col-lg-3 col-xl-3 offset-xl-1">
           <form>
             <div class="divider d-flex align-items-center my-4">
-              <p class="text-center fw-bold mx-3 mb-0">เข้าสู่ระบบ</p>
+              <p class="fw-bold mx-3 mb-0">เข้าสู่ระบบ</p>
             </div>
             <!-- Email input -->
             <div class="form-outline mb-4 text-center">
@@ -37,19 +37,19 @@
                 v-model="jobid"
                 class="form-control form-control-lg"
                 placeholder="กรอกชื่อผู้ใช้" 
-                style="width: 30rem;"
+                style="width: 20rem; display:inline;"
               />
               <!-- <label class="form-label" for="jobid">User Name</label> -->
             </div>
             <!-- Password input -->
-            <div class="form-outline mb-3">
+            <div class="form-outline mb-3  text-center">
               <input
                 type="password"
                 id="password"
                 v-model="password"
                 class="form-control form-control-lg"
                 placeholder="กรอกรหัสผ่าน" 
-                style="width: 30rem;"
+                style="width: 20rem; display:inline;"
               />
               <!-- <label class="form-label" for="password">Password</label> -->
             </div>
@@ -63,11 +63,11 @@
             </div>
             <a href="#!" class="text-body">Forgot password?</a>
           </div> -->
-            <div class="text-center text-lg-start mt-4 pt-2">
+            <div class="text-center mt-4 pt-2">
               <button
                 type="button"
                 class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;  padding-top: 0.2rem;"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;  padding-top: 0.2rem; display:inline;"
                 @click="login">
                 เข้าสู่ระบบ
               </button>

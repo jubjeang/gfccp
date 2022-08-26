@@ -962,7 +962,7 @@
   "resolved" "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz"
   "version" "1.1.3"
 
-"@popperjs/core@^2.10.2", "@popperjs/core@^2.11.5":
+"@popperjs/core@^2.11.5":
   "integrity" "sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw=="
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.5.tgz"
   "version" "2.11.5"
@@ -981,128 +981,6 @@
   "integrity" "sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w=="
   "resolved" "https://registry.npmjs.org/@soda/get-current-script/-/get-current-script-1.0.2.tgz"
   "version" "1.0.2"
-
-"@syncfusion/ej2-base@~20.2.38":
-  "integrity" "sha512-LyTR6X5BrwJ2+ES52Tmqmesk43ld18sNoyvSso6+YFVmybRHD+ZGL/GzZvTXJ3YxxdAGRwa7+DIUAvSkNRGCmg=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-base/-/ej2-base-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-icons" "~20.2.38"
-
-"@syncfusion/ej2-buttons@~20.2.38":
-  "integrity" "sha512-KXtFwnymf8/nXxd4MQpmvIXTTjJuoruD703T+ub8acOHG+ONUi+E9DVImKp46pfMvd0ywArGyClxiWzcpTtoFw=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-buttons/-/ej2-buttons-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-
-"@syncfusion/ej2-calendars@20.2.38":
-  "integrity" "sha512-SXso4WpGvpgN+3hYxTbNOqWBdBpV4/5sJlq5ql9iI8iwFkFvPqRXLyzxr/6wsWllVMXLywHUAd8FxKt0YdCCGw=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-calendars/-/ej2-calendars-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-buttons" "~20.2.38"
-    "@syncfusion/ej2-inputs" "~20.2.38"
-    "@syncfusion/ej2-lists" "~20.2.38"
-    "@syncfusion/ej2-popups" "~20.2.38"
-
-"@syncfusion/ej2-data@^20.2.38", "@syncfusion/ej2-data@~20.2.38":
-  "integrity" "sha512-TzIr50hiEOvT/j79QkhaO0+a+jYffVhfFc3Fwy3xAYaiPf4z0RUemGdkyjWSYb7rposFCThUlgEW+gagVbgA4w=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-data/-/ej2-data-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-
-"@syncfusion/ej2-dropdowns@20.2.39":
-  "integrity" "sha512-ARUWXIrVLNNeH1oALK9Eb7VnNFzLI0n+ROnr09uONXWTBX6610kw0ns6xBNh233bSYr073II6PD0+FjIsyRAsA=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-dropdowns/-/ej2-dropdowns-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-data" "~20.2.38"
-    "@syncfusion/ej2-inputs" "~20.2.38"
-    "@syncfusion/ej2-lists" "~20.2.39"
-    "@syncfusion/ej2-navigations" "~20.2.39"
-    "@syncfusion/ej2-popups" "~20.2.39"
-
-"@syncfusion/ej2-icons@~20.2.38":
-  "integrity" "sha512-QmyUTO8N9oGazIC379IOOj8PUK/KnGhoXyhKmMl+FvIv46Lpj1/P+jkg3Fwm3ntjjJtKn2N4o7Bw4m5AunvIkw=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-icons/-/ej2-icons-20.2.38.tgz"
-  "version" "20.2.38"
-
-"@syncfusion/ej2-inputs@~20.2.38":
-  "integrity" "sha512-Zfxr/UFGpNMi97kZIbw8GdsCN1SVrcb+oyXB+fA8McwfaKSTcfUaluQTK5BgI/QsgPVRstrAxqhwYanYuzIkRA=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-inputs/-/ej2-inputs-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-buttons" "~20.2.38"
-    "@syncfusion/ej2-popups" "~20.2.38"
-    "@syncfusion/ej2-splitbuttons" "~20.2.38"
-
-"@syncfusion/ej2-lists@~20.2.38", "@syncfusion/ej2-lists@~20.2.39":
-  "integrity" "sha512-QXPlk1j7ysMY89vlxbw6EDhIwu/gbKC5e1xJpK6NIX54qmj2hEhLFlquJSXC2gvquh7Dicoi7aZ74xHhky8Opw=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-lists/-/ej2-lists-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-buttons" "~20.2.38"
-    "@syncfusion/ej2-data" "~20.2.38"
-
-"@syncfusion/ej2-navigations@~20.2.39":
-  "integrity" "sha512-FM8y3VB57+Yu/Ig+mfbrfXLOYTKxC9qQZ9wh5NL8I0KyjQSkh3CFPZMEX1/UuyW/T9KBXEWXn+4DBt19RxbceA=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-navigations/-/ej2-navigations-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-buttons" "~20.2.38"
-    "@syncfusion/ej2-data" "~20.2.38"
-    "@syncfusion/ej2-inputs" "~20.2.38"
-    "@syncfusion/ej2-lists" "~20.2.39"
-    "@syncfusion/ej2-popups" "~20.2.39"
-
-"@syncfusion/ej2-popups@~20.2.38", "@syncfusion/ej2-popups@~20.2.39":
-  "integrity" "sha512-o6+auSwEz929pXkzrcgL9wbPBkoj5cpVCIjKpNrYqojp4ldNJgHbqMD+S76bdNZiyNmukRii4d0HyU83Z+P/1g=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-popups/-/ej2-popups-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-buttons" "~20.2.38"
-
-"@syncfusion/ej2-splitbuttons@~20.2.38":
-  "integrity" "sha512-vjH97v185gKplAzlm8D/3dHncHL+ZSPsC1fXK4k9qMisnaiU1RvSlsCTj129u2zaYjQv5WqCTpNXaKDkrOEmQw=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-splitbuttons/-/ej2-splitbuttons-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-popups" "~20.2.38"
-
-"@syncfusion/ej2-vue-base@~20.2.38":
-  "integrity" "sha512-IryANB1MjbMU9Dx+Ar3PZTbnTPObJbjnIFqeDFd+KqoyVDzSlcuYkwBaTlUrmu0qz/pyQQaeuhTgyXqoS0Qv3g=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-base/-/ej2-vue-base-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "glob" "^7.0.5"
-
-"@syncfusion/ej2-vue-calendars@^20.2.38":
-  "integrity" "sha512-y3XaGkbXjS9Cf9TI/NFgKGKNQUquIjW6SQZ2tqyJyW8H/ct8VQHCGBa1Nx68ix69FV5pucOEgVMGvwkuhnBDmA=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-calendars/-/ej2-vue-calendars-20.2.38.tgz"
-  "version" "20.2.38"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-calendars" "20.2.38"
-    "@syncfusion/ej2-vue-base" "~20.2.38"
-
-"@syncfusion/ej2-vue-dropdowns@^20.2.39":
-  "integrity" "sha512-+94gp0IqKoFEHbA+z1InJgnxe5H6wy6Eg4krC6vs0n9+d4pOHG+6wwBl+8P3EKjZlpN7trTADm7HUPA0DVWGbA=="
-  "resolved" "https://registry.npmjs.org/@syncfusion/ej2-vue-dropdowns/-/ej2-vue-dropdowns-20.2.39.tgz"
-  "version" "20.2.39"
-  dependencies:
-    "@syncfusion/ej2-base" "~20.2.38"
-    "@syncfusion/ej2-dropdowns" "20.2.39"
-    "@syncfusion/ej2-vue-base" "~20.2.38"
 
 "@types/body-parser@*":
   "integrity" "sha512-W98JrE0j2K78swW4ukqMleo8R7h/pFETjM2DQ90MF6XK2i4LO4W3gQ71Lt4w3bfm2EvVSyWHplECvB5sK22yFQ=="
@@ -1594,7 +1472,7 @@
   dependencies:
     "@vue/shared" "3.0.11"
 
-"@vue/runtime-core@3.0.11", "@vue/runtime-core@latest":
+"@vue/runtime-core@3.0.11":
   "integrity" "sha512-87XPNwHfz9JkmOlayBeCCfMh9PT2NBnv795DSbi//C/RaAnc/bGZgECjmkD7oXJ526BZbgk9QZBPdFT8KMxkAg=="
   "resolved" "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.0.11.tgz"
   "version" "3.0.11"
@@ -1602,7 +1480,7 @@
     "@vue/reactivity" "3.0.11"
     "@vue/shared" "3.0.11"
 
-"@vue/runtime-dom@3.0.11", "@vue/runtime-dom@latest":
+"@vue/runtime-dom@3.0.11":
   "integrity" "sha512-jm3FVQESY3y2hKZ2wlkcmFDDyqaPyU3p1IdAX92zTNeCH7I8zZ37PtlE1b9NlCtzV53WjB4TZAYh9yDCMIEumA=="
   "resolved" "https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.0.11.tgz"
   "version" "3.0.11"
@@ -2246,10 +2124,10 @@
   "resolved" "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz"
   "version" "1.0.0"
 
-"bootstrap@^5.1.3":
-  "integrity" "sha512-fcQztozJ8jToQWXxVuEyXWW+dSo8AiXWKwiSSrKWsRB/Qt+Ewwza+JWoLKiTuQLaEPhdNAJ7+Dosc9DOIqNy7Q=="
-  "resolved" "https://registry.npmjs.org/bootstrap/-/bootstrap-5.1.3.tgz"
-  "version" "5.1.3"
+"bootstrap@^5.2.0":
+  "integrity" "sha512-qlnS9GL6YZE6Wnef46GxGv1UpGGzAwO0aPL1yOjzDIJpeApeMvqV24iL+pjr2kU4dduoBA9fINKWKgMToobx9A=="
+  "resolved" "https://registry.npmjs.org/bootstrap/-/bootstrap-5.2.0.tgz"
+  "version" "5.2.0"
 
 "brace-expansion@^1.1.7":
   "integrity" "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA=="
@@ -2573,7 +2451,7 @@
   "resolved" "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   "version" "0.7.0"
 
-"chart.js@^3.7.0", "chart.js@^3.9.1", "chart.js@=> ^3.1.0":
+"chart.js@^3.9.1":
   "integrity" "sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w=="
   "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-3.9.1.tgz"
   "version" "3.9.1"
@@ -3200,7 +3078,7 @@
   dependencies:
     "css-tree" "^1.1.2"
 
-"csstype@^2.6.8", "csstype@latest":
+"csstype@^2.6.8":
   "integrity" "sha512-u1wmTI1jJGzCJzWndZo8mk4wnPTZd1eOIYTYvuEyOQGfmDl3TrabCCfKnOC86FZwW/9djqTl933UF/cS425i9A=="
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-2.6.17.tgz"
   "version" "2.6.17"
@@ -4325,7 +4203,7 @@
   "resolved" "https://registry.npmjs.org/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz"
   "version" "0.3.0"
 
-"glob@^7.0.3", "glob@^7.0.5", "glob@^7.1.2", "glob@^7.1.3", "glob@^7.1.4":
+"glob@^7.0.3", "glob@^7.1.2", "glob@^7.1.3", "glob@^7.1.4":
   "integrity" "sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ=="
   "resolved" "https://registry.npmjs.org/glob/-/glob-7.1.7.tgz"
   "version" "7.1.7"
@@ -5192,6 +5070,11 @@
   "resolved" "https://registry.npmjs.org/javascript-stringify/-/javascript-stringify-2.1.0.tgz"
   "version" "2.1.0"
 
+"jquery@^3.6.0":
+  "integrity" "sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw=="
+  "resolved" "https://registry.npmjs.org/jquery/-/jquery-3.6.0.tgz"
+  "version" "3.6.0"
+
 "js-message@1.0.7":
   "integrity" "sha512-efJLHhLjIyKRewNS9EGZ4UpI8NguuL6fKkhRxVuMmrGV2xN/0APGdQYwLFky5w9naebSZ0OwAGp0G6/2Cg90rA=="
   "resolved" "https://registry.npmjs.org/js-message/-/js-message-1.0.7.tgz"
@@ -5414,11 +5297,6 @@
   "version" "5.0.0"
   dependencies:
     "p-locate" "^4.1.0"
-
-"lodash-es@latest":
-  "integrity" "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
-  "resolved" "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
-  "version" "4.17.21"
 
 "lodash.camelcase@^4.3.0":
   "integrity" "sha1-soqmKIorn8ZRA1x3EfZathkDMaY= sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA=="
@@ -6405,6 +6283,11 @@
   "version" "1.6.4"
   dependencies:
     "ts-pnp" "^1.1.6"
+
+"popper.js@^1.16.1":
+  "integrity" "sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ=="
+  "resolved" "https://registry.npmjs.org/popper.js/-/popper.js-1.16.1.tgz"
+  "version" "1.16.1"
 
 "portfinder@^1.0.26":
   "integrity" "sha512-Se+2isanIcEqf2XMHjyUKskczxbPH7dQnlMjXX6+dybayyHvAf/TCgyMRlzf/B6QDhAEFOGes0pzRo3by4AbMA=="
@@ -8473,21 +8356,6 @@
   "resolved" "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
   "version" "1.1.2"
 
-"vue-chart-3@^3.1.8":
-  "integrity" "sha512-zX5ajjQi/PocEqLETlej3vp92q/tnI/Fvu2RVb++Kap8qOrXu6PXCpodi73BFrWzEGZIAnqoUxC3OIkRWD657g=="
-  "resolved" "https://registry.npmjs.org/vue-chart-3/-/vue-chart-3-3.1.8.tgz"
-  "version" "3.1.8"
-  dependencies:
-    "@vue/runtime-core" "latest"
-    "@vue/runtime-dom" "latest"
-    "csstype" "latest"
-    "lodash-es" "latest"
-
-"vue-chartjs@^4.1.1":
-  "integrity" "sha512-rKIQ3jPrjhwxjKdNJppnYxRuBSrx4QeM3nNHsfIxEqjX6QS4Jq6e6vnZBxh2MDpURDC2uvuI2N0eIt1cWXbBVA=="
-  "resolved" "https://registry.npmjs.org/vue-chartjs/-/vue-chartjs-4.1.1.tgz"
-  "version" "4.1.1"
-
 "vue-date-pick@^1.4.1":
   "integrity" "sha512-x4PnXwfMWAWZQF4yctAhENSnQyZUt3+vV7mVravXgvijtwzQx7zoOicgzMPg/LNdzBQWxnOjAa7GvSAY98Hp8A=="
   "resolved" "https://registry.npmjs.org/vue-date-pick/-/vue-date-pick-1.4.1.tgz"
@@ -8546,11 +8414,6 @@
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.10"
 
-"vue-simple-search-dropdown@^1.0.1":
-  "integrity" "sha512-r3LuGFB3WqMDRILx+Z/Y2S9UTLqMh3Y0nv1Oly+tt8oEzvg77r0tfYLHVqQlhsmVPy0GmSuxMMbetMkDRLOEqg=="
-  "resolved" "https://registry.npmjs.org/vue-simple-search-dropdown/-/vue-simple-search-dropdown-1.0.1.tgz"
-  "version" "1.0.1"
-
 "vue-style-loader@^4.1.0", "vue-style-loader@^4.1.2":
   "integrity" "sha512-sFuh0xfbtpRlKfm39ss/ikqs9AbKCoXZBpHeVZ8Tx650o0k0q/YCM7FRvigtxpACezfq6af+a7JeqVTWvncqDg=="
   "resolved" "https://registry.npmjs.org/vue-style-loader/-/vue-style-loader-4.1.3.tgz"
@@ -8564,7 +8427,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@>= 3", "vue@>=1.x.x", "vue@3.0.11":
+"vue@^2 || ^3.0.0-0", "vue@^3.0.0", "vue@>=1.x.x", "vue@3.0.11":
   "integrity" "sha512-3/eUi4InQz8MPzruHYSTQPxtM3LdZ1/S/BvaU021zBnZi0laRUyH6pfuE4wtUeLvI8wmUNwj5wrZFvbHUXL9dw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.0.11.tgz"
   "version" "3.0.11"
