@@ -13,31 +13,72 @@
             </div>
 
             <div class="row p-1" style="width: 100%">
-                <div class="col text-left">
-                    <input type="radio" id="Retail_Customer" value="RetailCustomer" v-model="picked" />&nbsp;
-                    <label for="one">Retail Customer</label>&nbsp;
-                    <input type="radio" id="Bank_Customer" value="BankCustomer" v-model="picked" />&nbsp;
-                    <label for="two">Bank Customer</label>&nbsp;
-                    <input type="radio" id="ATM_Replenishment" value="ATMReplenishment" v-model="picked" />&nbsp;
-                    <label for="two">ATM Replenishment</label>
+                <div class="col text-left d-flex">
+                    <div for="one" class="mr-1 mt-1"
+                        style="background-color: #66CDAA; width: 1rem; height: 1rem;  border-radius: 50%;"></div>
+                    <div class="mr-1">Retail Customer</div>
+                    <div for="one" class="mr-1 mt-1 bg-success" style="width: 1rem; height: 1rem;  border-radius: 50%;">
+                    </div>
+                    <div for="two" class="mr-1">Bank Customer</div>
+                    <div for="one" class="mr-1 mt-1 bg-primary" style="width: 1rem; height: 1rem;  border-radius: 50%;">
+                    </div>
+                    <div for="two">ATM Replenishment</div>
                 </div>
             </div>
             <div class="row p-1">
                 <div class="col" style="padding-bottom: 1rem;">
                     <div style="border-radius: 5px; border:1px solid black;">
                         <div class="d-flex justify-content-start px-3">Bangkok-CIT-012</div>
-                        <div>
-                            <div class="d-flex justify-content-start px-3" style="border-style: dashed;">CL : XXXXX (CIT name)</div>
+                        <div class="d-flex justify-content-start px-3" style="border-style: dashed;">
+                            <div class="mr-3">CL : {{ datatrackinglist.CL_name }}</div>
+                            <div>CD : {{ datatrackinglist.CD_name }}</div>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row p-1" style="width: 100%" v-for="row_ in datatrackinglist.rows" :key="Data_[row_].AutoID">
+                <div class="col text-center d-flex">
+                    <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
+                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">{{
+                                Data_[row_ - 1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ - 1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ - 1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
+                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
+                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
+                    <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
                 </div>
             </div>
         </div>
     </div>
-
 </template>
-
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
 import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
@@ -52,63 +93,69 @@ export default {
     },
     data() {
         return {
-            file: "",
-            error: false,
-            message: "",
-            OrderCategory: "BankBranch",
-            OrderType: "",
-            BankType: "",
-            JobDate: null,
-            picked: "RetailCustomer"
+            Data_: [],
+            datatrackinglist: {
+                CL_name: '',
+                CD_name: '',
+                rows: 0,
+                branch_name: ''
+            }
         }
     },
     // data: () => ({
     //       date: '2019-01-01'
     //   })
     methods: {
-        selectFile() {
-            this.file = this.$refs.file.files[0]
-            this.error = false
-            this.message = ""
-        },
-        async sendFile() {
 
-            const formData = new FormData()
-            formData.append('file', this.file)
-            formData.append('OrderCategory', this.OrderCategory)
-            formData.append('OrderType', this.OrderType)
-            formData.append('BankType', this.BankType)
-            formData.append('JobDate', this.JobDate)
-            formData.forEach(element => console.log(element))
-            try {
-                await axios.post('/upload', formData)
-                    .then((res) => {
-                        // success callback
-                        console.log(res.data.message)
-                    }, (res) => {
-                        // error callback
-                        console.log(res.data.message)
-                    });
-                console.log(formData)
-                console.log(this.OrderCategory)
-                this.message = "File has been upload"
-                this.file = ""
-                this.error = false
-            }
-            catch (err) {
-                console.log(err)
-                this.message = "Something went wrong"
-                this.error = true
-            }
-        }
-        // format(value, event) {
-        //   return moment(value).format('DD/MM/YYYY')
-        // }
     },
+    created() {
+        try {
+            axios.get('/ordertrackinglist')
+                .then((res) => {
+                    // success callback
+                    this.Data_ = res.data
+                    if (this.Data_.length > 0) {
+                        let iloop = 1
+                        this.Data_.forEach((value, key) => {
+                            //console.log( this.Data_[key].CL_name )
+                            if (iloop === 1) {
+                                this.datatrackinglist.CL_name = this.Data_[key].CL_name
+                                this.datatrackinglist.CD_name = this.Data_[key].CD_name
+                                this.datatrackinglist.branch_name = this.Data_[key].branch_name
+                                iloop++
+                            }
+                        })
+                        let allrow = 0
+                        if (this.Data_.length >= 3) {
+                            allrow = this.Data_.length
+                            //console.log( allrow )
+                            this.datatrackinglist.rows = allrow / 3
+
+                        }
+                        else {
+                            allrow = this.Data_.length
+                            console.log(allrow)
+                            this.datatrackinglist.rows = 1
+                        }
+                    }
+                    else {
+                        //...
+                    }
+                    console.log(this.datatrackinglist.rows)
+
+                }, (res) => {
+                    // error callback
+                    console.log(res.data)
+                });
+        }
+        catch (err) {
+            console.log(err)
+            this.message = "Something went wrong"
+            this.error = true
+        }
+    }
 }
-
 </script>
-
 <style scoped lang="css">
 @import '../assets/css/style.css';
 /* #formFile::before {

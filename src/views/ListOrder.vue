@@ -13,8 +13,8 @@
       </div>
       <div class="row p-1" style="width: 100%">
         <div class="col d-flex justify-content-end">
-          <h4 @click.prevent="downloadItem(item)" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
-            ตัวอย่างไฟล์อัพโหลด</h4>&nbsp;<h4>|</h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload"
+          <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+            ตัวอย่างไฟล์อัพโหลด</a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload"
             data-bs-toggle="modal" style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
           &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
           </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
@@ -45,9 +45,11 @@
                 <tr v-for="data in Data_" :key="data.AutoID">
                   <td scope="col">{{ data.AutoID }}</td>
                   <td scope="col" class="text-left">{{ data.servicetype }}</td>
-                  <td scope="col" class="text-left" v-if="data.servicetype === 'Deposit'"><span>{{ data.branch_name }}</span></td>
+                  <td scope="col" class="text-left" v-if="data.servicetype === 'Deposit'"><span>{{ data.branch_name
+                  }}</span></td>
                   <td scope="col" class="text-left" v-else><span>{{ data.cash_center }}</span></td>
-                  <td scope="col" class="text-left" v-if="data.servicetype === 'Withdraw'"><span>{{ data.branch_name }}</span></td>
+                  <td scope="col" class="text-left" v-if="data.servicetype === 'Withdraw'"><span>{{ data.branch_name
+                  }}</span></td>
                   <td scope="col" class="text-left" v-else><span>{{ data.cash_center }}</span></td>
                   <td scope="col" class="text-right">{{ formatPrice(data.total_by_branch) }}</td>
                   <td scope="col">{{ dateTime(data.order_date) }}</td>
@@ -129,7 +131,7 @@
                     </div>
                     <div class="col">
                       <select id="BankType" class="form-select form-select-sm" style="width:15rem;" v-model="BankType">
-                        <option selected="selected" value="">Please Select One Bank</option>
+                        <option selected="selected" value="">ธนาคาร</option>
                         <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
                         <option value="9e6f6cff-6e64-41f1-a7be-c07335764423">AIRA</option>
                         <option value="58194020-9eaf-4a6c-a5cc-b8fa6f628ba9">BAY</option>
@@ -208,8 +210,8 @@
                     <div class="col ps-4 d-flex">
                       &nbsp; <select id="BankTypeNew" class="form-select form-select-sm" style="width:15rem;"
                         v-model="NewOrder.BankTypeNew">
-                        <option selected="selected" value="">Please Select One Bank</option>
-                        <option value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
+                        <!-- <option selected="selected" value="">ธนาคาร</option> -->
+                        <option selected="selected" value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
                       </select>
                     </div>
                   </div>
@@ -244,7 +246,7 @@
                       <input type="text" id="RefNo" class="form-control" style="width:15rem;" v-model="NewOrder.RefNo">
                     </div>
                     <div class="col">
-                      วันที่ปฎิบัติการ
+                      วันที่ปฎิบัติการา
                     </div>
                     <div class="col">
                       <input type="date" id="JobDateNew" class="form-control" style="width:15rem;"
@@ -301,8 +303,8 @@
                               class="text-decoration-none text-gray fs-7" style="cursor: pointer">เพิ่มรายการ</span>
                           </th>
                           <th scope="col">ชนิดราคา</th>
-                          <th scope="col">คุณภาพชนิดราคา</th>
-                          <th scope="col">บรรจุภัณฑ์</th>
+                          <th scope="col">คุณภาพ</th>
+                          <th scope="col">หน่วย</th>
                           <th scope="col">จำนวน</th>
                           <th scope="col">ยอดรวม</th>
                         </tr>
@@ -344,8 +346,8 @@ import axios from 'axios'
 import moment from 'moment'
 import { defineComponent, reactive, ref, computed } from "vue";
 import TableLite from "../components/TableLite.vue";
-let var_ = localStorage.getItem('user_id')
-console.log(var_)
+// var user_id = localStorage.getItem('user_id')
+// console.log(user_id)
 export default {
   name: 'ListOrder',
   components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
@@ -375,7 +377,8 @@ export default {
         BranchDest: "",
       },
       NewOrderDet: [],
-      Id: 0
+      Id: 0,
+      user_id: localStorage.getItem('user_id')
     }
   },
   setup() {
@@ -465,7 +468,7 @@ export default {
       formData.append('OrderType', this.OrderType)
       formData.append('BankType', this.BankType)
       formData.append('JobDate', this.JobDate)
-      formData.forEach(element => console.log(element))
+      // formData.forEach(element => console.log(element))
       try {
         await axios.post('/upload', formData)
           .then((res) => {
@@ -493,21 +496,22 @@ export default {
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     },
     downloadItem() {
-      let url = "./templete_file.zip"
-      axios
-        .post(url)
-        .then((response) => {
-          console.log(response.data)
-          const url = window.URL.createObjectURL(new Blob([response]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', 'templete_file.zip');
-          document.body.appendChild(link);
-          link.click()
-        }
-        ).catch(e => {
-          console.error(e);
-        });
+      // let url = "./templete_file.zip"
+      //https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing
+      axios({
+        url: 'http://localhost:4000/templete_file.zip',
+        method: 'GET',
+        responseType: 'blob',
+      }).then((response) => {
+        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        var fURL = document.createElement('a');
+
+        fURL.href = fileURL;
+        fURL.setAttribute('download', 'templete_file.zip');
+        document.body.appendChild(fURL);
+
+        fURL.click();
+      });
     },
     getBranchAndCash() {
       this.NewOrder.DataBranchToOrigin = []
@@ -558,13 +562,13 @@ export default {
       let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyType" + value).value
       let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyType" + value).value
       if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmount" + value).value = ddlMoneyType * tbQuantity * 1000 : document.getElementById("tbAmount" + value).value = ''
+        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmount" + value).value = ''
       }
       else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmount" + value).value = ddlMoneyType * tbQuantity * 5000 : document.getElementById("tbAmount" + value).value = ''
+        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmount" + value).value = ''
       }
       else {
-        document.getElementById("tbAmount" + value).value = ddlMoneyType * tbQuantity
+        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
       }
       console.log(ddlMoneyType * tbQuantity * 5000)
       let my_object = {
@@ -580,8 +584,8 @@ export default {
     addItem() {
       this.Id++
       let ddlMoneyType = ""
-      ddlMoneyType = "<select class='form-select form-select-sm' id='ddlMoneyType" + this.Id + "'>"
-      ddlMoneyType += "<option value='1000'>1000</option>"
+      ddlMoneyType = "<select class='form-select form-select-sm text-right' id='ddlMoneyType" + this.Id + "'>"
+      ddlMoneyType += "<option value='1000'>1,000</option>"
       ddlMoneyType += "<option value='500'>500</option>"
       ddlMoneyType += "<option value='100'>100</option>"
       ddlMoneyType += "<option value='20'>20</option>"
@@ -606,9 +610,9 @@ export default {
       ddlPackageMoneyType += "<option value='Pack'>แพ็ค</option>"
       ddlPackageMoneyType += "</select>"
       let tbQuantity = ""
-      tbQuantity = "<input type='text' id='tbQuantity" + this.Id + "' class='form-control' style='width:10rem;'>"
+      tbQuantity = "<input type='text' id='tbQuantity" + this.Id + "' class='form-control text-right' style='width:10rem;'>"
       let tbAmount = ""
-      tbAmount = "<input type='text' id='tbAmount" + this.Id + "' class='form-control' style='width:10rem;' readonly='readonly'>"
+      tbAmount = "<input type='text' id='tbAmount" + this.Id + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
       let my_object = {
         Id: this.Id,
         ddlMoneyType_: ddlMoneyType,
@@ -631,6 +635,7 @@ export default {
       formData.append('BranchOrigin', this.NewOrder.BranchOrigin)
       formData.append('BranchDest', this.NewOrder.BranchDest)
       formData.append('AllRowsDet', this.Id)
+      formData.append('user_id', this.user_id)
       for (var index = 0; index < this.Id; index++) {
         formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
         formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
@@ -638,10 +643,12 @@ export default {
         formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
         formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
       }
-      formData.forEach((element, index) => console.log(index, element))
+      //formData.forEach((element, index) => console.log(index, element))
       var object = {}
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
+      console.log( json )
+
       try {
         await axios.post('/manual_add_order', json)
           .then((res) => {
@@ -660,7 +667,6 @@ export default {
         this.message = "Something went wrong"
         this.error = true
       }
-
     }
   },
   created() {

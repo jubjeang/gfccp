@@ -2,6 +2,7 @@
     <Header />
     <Sidebar />
     <div :style="{ 'margin-left': sidebarWidth }">
+        
         <div class="container p-0" style="width: 100%">
             <div class="row p-1" style="width: 100%">
                 <div class="col text-left">&nbsp;</div>
@@ -12,7 +13,7 @@
                 </div>
             </div>
             <div class="row p-1">
-                <div class="col">
+                <!-- <div class="col">
                     <div class="p-0" style="width: 100%; border-radius: 5px; border:1px solid black;">
                         <canvas id="myChart_doughnut" width="200" height="200"></canvas>
                     </div>
@@ -21,6 +22,9 @@
                     <div class="p-0" style="width: 100%; border-radius: 5px; border:1px solid black;">
                         <canvas id="myChart_bar" width="200" height="200"></canvas>
                     </div>
+                </div> -->
+                <div class="col m-0 p-0">
+                    <iframe class="m-0 p-0" title="กราฟ GFCCP - Inventory Overview" width="1200" height="1000" src="https://app.powerbi.com/view?r=eyJrIjoiZDI0NTNmNjYtYTRjNi00OTcyLTgyZDEtZjc5ZjE4MmU2MTM2IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                 </div>
             </div>
             <div class="row p-1">
@@ -156,7 +160,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -169,8 +172,7 @@ import Chart from 'chart.js/auto';
 export default {
     name: 'InventoryStatus',
     components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
-    setup() {
-
+    setup() { 
         return { collapsed, toggleSidebar, sidebarWidth, }
     },
     data() {
