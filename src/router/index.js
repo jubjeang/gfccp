@@ -26,6 +26,16 @@ const routes = [
     name: 'InventoryStatus',
     component: () => import('../views/InventoryStatus.vue')
   },
+  {
+    path: '/ordertrackingdet',
+    name: 'OrderTrackingDet',
+    component: () => import('../views/OrderTrackingDet.vue')
+  },    
+  {
+    path: '/invhistorical',
+    name: 'InvHistorical',
+    component: () => import('../views/InvHistorical.vue')
+  },   
 ]
 
 const router = createRouter({

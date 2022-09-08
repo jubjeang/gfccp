@@ -45,12 +45,8 @@
                 <tr v-for="data in Data_" :key="data.AutoID">
                   <td scope="col">{{ data.AutoID }}</td>
                   <td scope="col" class="text-left">{{ data.servicetype }}</td>
-                  <td scope="col" class="text-left" v-if="data.servicetype === 'Deposit'"><span>{{ data.branch_name
-                  }}</span></td>
-                  <td scope="col" class="text-left" v-else><span>{{ data.cash_center }}</span></td>
-                  <td scope="col" class="text-left" v-if="data.servicetype === 'Withdraw'"><span>{{ data.branch_name
-                  }}</span></td>
-                  <td scope="col" class="text-left" v-else><span>{{ data.cash_center }}</span></td>
+                  <td scope="col" class="text-left" ><span>{{ data.branchorigin_name }}</span></td>
+                  <td scope="col" class="text-left" ><span>{{ data.branchdest_name }}</span></td>
                   <td scope="col" class="text-right">{{ formatPrice(data.total_by_branch) }}</td>
                   <td scope="col">{{ dateTime(data.order_date) }}</td>
                   <!-- <td scope="col">24-08-2022</td> -->
@@ -263,7 +259,7 @@
                         v-model="NewOrder.BranchOrigin">
                         <!-- <tr v-for="data in Data_" :key="data.AutoID"></tr> -->
                         <!-- <option value="BankBranch">Bank Branch</option> -->
-                        <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id">{{ data.branch_name }}
+                        <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id" v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{ data.branch_name }}
                         </option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
@@ -274,7 +270,7 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="BranchDest" style="width:15rem;"
                         v-model="NewOrder.BranchDest">
-                        <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id">{{ data.branch_name }}
+                        <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id" v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{ data.branch_name }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
@@ -299,8 +295,8 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th scope="col">ลบ&nbsp;|&nbsp;<span @click.prevent="addItem()"
-                              class="text-decoration-none text-gray fs-7" style="cursor: pointer">เพิ่มรายการ</span>
+                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
+                            </span>
                           </th>
                           <th scope="col">ชนิดราคา</th>
                           <th scope="col">คุณภาพ</th>
@@ -310,8 +306,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data in rowData" :key="data.Id">
-                          <td scope="col">ลบ</td>
+                        <tr v-for="data, index in rowData" :key="data.Id"  >
+                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
                           <td scope="col" v-html="data.ddlMoneyType_" @click="calamount(data.Id)"
                             @keyup="calamount(data.Id)"></td>
                           <td scope="col" v-html="data.ddlQualityMoneyType_"></td>
@@ -378,7 +374,11 @@ export default {
       },
       NewOrderDet: [],
       Id: 0,
-      user_id: localStorage.getItem('user_id')
+      user_id: localStorage.getItem('user_id'),
+      department_id: localStorage.getItem('department_id'),
+      position_id: localStorage.getItem('position_id'),
+      CustomerID: localStorage.getItem('CustomerID'),
+      gfc_cct: localStorage.getItem('gfc_cct')
     }
   },
   setup() {
@@ -386,6 +386,7 @@ export default {
     //  console.log(this.Data_.length())
     // Fake data
     const data = reactive([]);
+    
     for (let i = 0; i < 126; i++) {
       data.push({
         id: i,
@@ -455,7 +456,11 @@ export default {
     });
     return { searchTerm, table, collapsed, toggleSidebar, sidebarWidth }
   },
-  methods: {
+  methods: { 
+    deleteData (index){ 
+      console.log(index)
+      this.rowData.splice(index, 1)
+    },
     selectFile() {
       this.file = this.$refs.file.files[0]
       this.error = false
@@ -468,6 +473,8 @@ export default {
       formData.append('OrderType', this.OrderType)
       formData.append('BankType', this.BankType)
       formData.append('JobDate', this.JobDate)
+      formData.append('gfc_cct', this.gfc_cct)
+      formData.append('user_id', this.user_id)
       // formData.forEach(element => console.log(element))
       try {
         await axios.post('/upload', formData)
@@ -493,6 +500,10 @@ export default {
     },
     formatPrice(value) {
       let val = (value / 1).toFixed(2)
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    },
+    formatPrice_noFixed(value) {
+      let val = (value / 1)
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     },
     downloadItem() {
@@ -558,7 +569,7 @@ export default {
       console.log(document.getElementById("tbQuantity" + value).value)
       console.log(document.getElementById("tbAmount" + value).value)
       let ddlMoneyType = parseFloat(document.getElementById("ddlMoneyType" + value).value, 10)
-      let tbQuantity = parseFloat(document.getElementById("tbQuantity" + value).value, 10)
+      let tbQuantity = parseFloat( ( document.getElementById("tbQuantity" + value).value ).replaceAll(',','') , 10)
       let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyType" + value).value
       let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyType" + value).value
       if (ddlPackageMoneyType === 'Bundle') {
@@ -571,6 +582,7 @@ export default {
         !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
       }
       console.log(ddlMoneyType * tbQuantity * 5000)
+      
       let my_object = {
         Id: value,
         ddlMoneyType_: ddlMoneyType,
@@ -622,6 +634,9 @@ export default {
         tbQuantity_: tbQuantity,
         tbAmount_: tbAmount,
       };
+      if(this.rowData.length > 1){
+        document.getElementById("tbQuantity" + (this.Id-1)).value = this.formatPrice_noFixed( parseFloat( document.getElementById("tbQuantity" + (this.Id-1)).value ) )
+      }
       this.rowData.push(my_object)
     },
     async addManualOrder() {
@@ -632,23 +647,30 @@ export default {
       formData.append('JobDateNew', this.NewOrder.JobDateNew)
       formData.append('RefNo', this.NewOrder.RefNo)
       formData.append('RemarkNew', this.NewOrder.RemarkNew)
-      formData.append('BranchOrigin', this.NewOrder.BranchOrigin)
-      formData.append('BranchDest', this.NewOrder.BranchDest)
+      formData.append('BranchOrigin', this.NewOrder.BranchOrigin.branch_name)
+      formData.append('BranchDest', this.NewOrder.BranchDest.branch_name)
+      formData.append('BranchOrigin_code', this.NewOrder.BranchOrigin.branch_id)
+      formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
       formData.append('AllRowsDet', this.Id)
       formData.append('user_id', this.user_id)
-      for (var index = 0; index < this.Id; index++) {
+      let Id_ = 0 
+      for (var index = 0; index < this.Id; index++) { 
+        if( document.getElementById("ddlMoneyType" + (index + 1)) ){
         formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
         formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
         formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
         formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
         formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+        Id_++
+        }
       }
+      // console.log( Id_ )
+      // formData.append('AllRowsDet', Id_)
       //formData.forEach((element, index) => console.log(index, element))
       var object = {}
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
       console.log( json )
-
       try {
         await axios.post('/manual_add_order', json)
           .then((res) => {

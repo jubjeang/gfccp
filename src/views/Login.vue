@@ -78,6 +78,7 @@
 <script>
 // import * as site from '../assets/js/site.js';
 // import * as bundle from '../assets/js/bootstrap.bundle.min.js';
+import { ref } from "vue";
 import axios from 'axios'
 export default {
   name: 'Login',
@@ -125,6 +126,13 @@ export default {
               console.log(userdata[0].name)
               localStorage.setItem('user_id', userdata[0].username)
               localStorage.setItem('user_name', userdata[0].name)
+              localStorage.setItem('department_id', userdata[0].department_id)
+              localStorage.setItem('position_id', userdata[0].position_id)
+              localStorage.setItem('CustomerID', userdata[0].CustomerID)
+              localStorage.setItem('RoleId', userdata[0].RoleId)
+              localStorage.setItem('branchbaseid', userdata[0].branchbaseid)
+              localStorage.setItem('gfc_cct', userdata[0].gfc_cct)
+              localStorage.setItem('ApproveID', userdata[0].ApproveID)
               this.$router.push('/main')
             }, (res) => {
               // error callback

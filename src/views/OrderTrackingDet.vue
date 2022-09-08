@@ -8,10 +8,9 @@
             </div>
             <div class="row p-1" style="width: 100%">
                 <div class="col text-left">
-                    <h3>ติดตามคำสั่ง</h3>
+                    <h3>สถานะคำสั่ง</h3>
                 </div>
             </div>
-
             <div class="row p-1" style="width: 100%">
                 <div class="col text-left d-flex">
                     <div for="one" class="mr-1 mt-1"
@@ -40,39 +39,40 @@
                 <div class="col text-center d-flex">
                     <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
                         style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ - 1].branch_name }}</router-link>
+                        <router-link to="/" class="link h6 text-white text-decoration-none" >{{ Data_[row_ - 1].branch_name }}</router-link>
                         </div>
                     <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ - 1].branch_name }}</router-link>
-                       </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ - 1].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ - 1].branch_name }}</router-link>
-                        </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ - 1].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
-                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{  Data_[row_ +  1].branch_name }}</router-link></div>
+                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 1].branch_name }}</router-link>
-                        </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 1].branch_name }}</router-link>
-                        </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  1].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-success" v-if="Data_[row_ - 1].CIT_Type === 'CCT'"
-                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 2].branch_name }}</router-link>
-                        </div>
+                        style="background-color: #66CDAA; border-radius: 2rem; border:1px solid black; color: aliceblue;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-success" v-else-if="Data_[row_ - 1].CIT_Type === 'Retail'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 2].branch_name }}</router-link>
-                    </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
                     <div class="mr-4 p-4 w-50 bg-primary" v-else-if="Data_[row_ - 1].CIT_Type === 'ATM'"
-                        style="border-radius: 2rem; border:1px solid black;">
-                        <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 2].branch_name }}</router-link>
-                       </div>
+                        style="border-radius: 2rem; border:1px solid black;">{{
+                                Data_[row_ +  2].branch_name
+                        }}</div>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@ import Header from '../components/Header'
 import axios from 'axios'
 // import moment from 'moment'
 export default {
-    name: 'OrderTracking',
+    name: 'OrderTrackingDet',
     components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
     setup() {
         return { collapsed, toggleSidebar, sidebarWidth }

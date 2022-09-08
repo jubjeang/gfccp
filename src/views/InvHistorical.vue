@@ -9,7 +9,7 @@
             </div>
             <div class="row p-1" style="width: 100%">
                 <div class="col text-left">
-                    <h3>สถานะคลังปัจจุบัน</h3>
+                    <h3>ประวัติคงคลัง</h3>
                 </div>
             </div>
             <div class="row p-1">
@@ -24,9 +24,7 @@
                     </div>
                 </div> -->
                 <div class="col m-0 p-0">
-                    <iframe class="m-0 p-0" title="กราฟ GFCCP - Inventory Overview" width="1300" height="1000"
-                        src="https://app.powerbi.com/view?r=eyJrIjoiZDI0NTNmNjYtYTRjNi00OTcyLTgyZDEtZjc5ZjE4MmU2MTM2IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D"
-                        frameborder="0" allowFullScreen="true"></iframe>
+                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiZDgxN2I4OTQtYzhiMC00ZTYxLWJjNDMtZTY5OGI5NWQxYWJkIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                 </div>
             </div>
         </div>
@@ -41,7 +39,7 @@ import axios from 'axios'
 
 
 export default {
-name: 'InventoryStatus',
+name: 'InvHistorical',
 components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
 setup() {
 return { collapsed, toggleSidebar, sidebarWidth, }

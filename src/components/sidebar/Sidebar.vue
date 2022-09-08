@@ -7,20 +7,20 @@ export default {
   components: { SidebarLink },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth }
-  },data() {
+  }, data() {
     return {
-      isVisible: false, 
-      isVisible2: false,   
+      isVisible: false,
+      isVisible2: false,
     }
   },
   methods: {
-    toggleVisible(){       
+    toggleVisible() {
       setTimeout(() => this.isVisible = !this.isVisible, 200);
     },
-    toggleVisible2(){       
+    toggleVisible2() {
       setTimeout(() => this.isVisible2 = !this.isVisible2, 200);
     },
-    gotoMainPage(){       
+    gotoMainPage() {
       this.$router.push('/main')
     },
   }
@@ -38,45 +38,52 @@ export default {
       </h3>
     </span>
     <span v-else>
-      <h1 @click="gotoMainPage" style="cursor: pointer;" >Guardforce</h1>
+      <h1 @click="gotoMainPage" style="cursor: pointer;">Guardforce</h1>
     </span>
-    <SidebarLink to="" icon="fas fa-wallet"  @click="toggleVisible" 
-      class="nav-link align-middle">งานศูนย์เงินสด</SidebarLink>
-    <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
-      <li class="w-100">
-        <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">
-          รายการคำสั่ง</SidebarLink>
-        <!-- 
+    <SidebarLink to="" icon="fas fa-wallet" @click="toggleVisible" class="nav-link align-middle">งานศูนย์เงินสด
+    </SidebarLink>
+    <transition name="fade">
+      <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
+        <li class="w-100">
+          <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">
+            รายการคำสั่ง</SidebarLink>
+          <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
           <span class="d-none d-sm-inline">Item</span>
           1
         </a> -->
-      </li>
-      <li>
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
-        </SidebarLink>
-      </li>
-    </ul>
+        </li>
+        <li>
+          <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
+          </SidebarLink>
+        </li>
+      </ul>
+    </transition>
+
     <SidebarLink to="/ordertracking" icon="fa fa-tags">ติดตามคำสั่ง</SidebarLink>
     <SidebarLink to="" icon="fas fa-coins" class="nav-link align-middle" @click="toggleVisible2">
       สถานะคงคลัง</SidebarLink>
-    <ul class=" nav flex-column ms-1" id="submenu2" v-show="isVisible2">
-      <li class="w-100">
-        <SidebarLink to="/inventorystatus" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">สถานะคลังปัจจุบัน
-        </SidebarLink>
-        <!-- 
+    <transition name="fade">
+      <ul class=" nav flex-column ms-1" id="submenu2" v-show="isVisible2">
+        <li class="w-100">
+          <SidebarLink to="/inventorystatus" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
+            สถานะคลังปัจจุบัน
+          </SidebarLink>
+          <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">
           <span class="d-none d-sm-inline">Item</span>
           1
         </a> -->
-      </li>
-      <li>
-        <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">ประวัติคงคลัง
-        </SidebarLink>
-      </li>
-    </ul>
+        </li>
+        <li>
+          <SidebarLink to="/invhistorical" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
+            ประวัติคงคลัง
+          </SidebarLink>
+        </li>
+      </ul>
+    </transition>
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />
     </span>
@@ -85,6 +92,30 @@ export default {
 </template>
 
 <style scoped>
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter-active {
+  transition: all 1s ease;
+}
+
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transition: all 0.4s ease;
+}
+
 .sidebar {
   color: white;
   background-color: var(--sidebar-bg-color);
