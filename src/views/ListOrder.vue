@@ -1,33 +1,46 @@
 <template>
   <Header />
   <Sidebar />
-  <div :style="{ 'margin-left': sidebarWidth }">
-    <div class="container p-0" style="width: 100%">
-      <div class="row p-1" style="width: 100%">
-        <div class="col text-left">&nbsp;</div>
+  <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
+    <!-- <div class="container p-0" style="width: 200rem"> -->
+    <div class="row p-1" style="width: 100%">
+      <div class="col text-left">&nbsp;</div>
+    </div>
+    <div class="row p-1" style="width: 100%">
+      <div class="col text-left">
+        <h3>รายการคำสั่ง</h3>
       </div>
-      <div class="row p-1" style="width: 100%">
-        <div class="col text-left">
-          <h3>รายการคำสั่ง</h3>
-        </div>
-      </div>
-      <div class="row p-1" style="width: 100%">
-        <div class="col d-flex justify-content-end">
-          <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
-            ตัวอย่างไฟล์อัพโหลด</a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload"
-            data-bs-toggle="modal" style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
+    </div>
+    <div class="row p-1" style="width: 100%">
+      <div class="col d-flex justify-content-end">
+        <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank"
+          class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+          <h4>ตัวอย่างไฟล์อัพโหลด</h4></a>&nbsp;<h4>|
+        </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
+          style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
           &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
-          </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-            style="cursor: pointer">รายการใหม่</h4>
-        </div>
+        </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+          style="cursor: pointer">รายการใหม่</h4>
       </div>
-      <div class="row p-1">
-        <div class="col">
-          <div class="card  p-0" style="width: 100%">
-            <div class="card-header text-right">
-              <!-- <label>SearchBy:</label><input v-model="searchTerm" /> -->
-            </div>
-            <table class="table table-striped table-hover">
+    </div>
+    <div class="row p-0" style="width: 100%">
+      <div class="col-12">
+        <div style="text-align: right">
+          <label>SearchBy:</label><input v-model="searchTerm" />
+        </div>
+        <table-lite 
+        :is-static-mode="true"
+        :has-checkbox="true" 
+        :is-loading="table.isLoading" 
+        :columns="table.columns" 
+        :rows="table.rows" 
+        :total="table.totalRecordCount" 
+        :sortable="table.sortable" 
+        @is-finished="tableLoadingFinish" 
+        @return-checked-rows="updateCheckedRows"  
+        class="table table-striped table-hover">
+        </table-lite>
+        <!-- <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th scope="col">เลขที่คำสั่ง</th>
@@ -48,22 +61,16 @@
                   <td scope="col" class="text-left" ><span>{{ data.branchorigin_name }}</span></td>
                   <td scope="col" class="text-left" ><span>{{ data.branchdest_name }}</span></td>
                   <td scope="col" class="text-right">{{ formatPrice(data.total_by_branch) }}</td>
-                  <td scope="col">{{ dateTime(data.order_date) }}</td>
-                  <!-- <td scope="col">24-08-2022</td> -->
+                  <td scope="col">{{ dateTime(data.order_date) }}</td>                 
                   <td scope="col">-</td>
                   <td scope="col">-</td>
                   <td scope="col">-</td>
                 </tr>
               </tbody>
-            </table>
-            <div>
-              <!-- <table-lite class="table table-striped table-hover" :is-static-mode="true" :columns="table.columns" :rows="table.rows"
-                :total="table.totalRecordCount" :sortable="table.sortable"></table-lite> -->
-            </div>
-          </div>
-        </div>
+            </table> -->
       </div>
     </div>
+    <!-- </div> -->
   </div>
   <div class="container py-2">
     <div class="py-2">
@@ -259,7 +266,9 @@
                         v-model="NewOrder.BranchOrigin">
                         <!-- <tr v-for="data in Data_" :key="data.AutoID"></tr> -->
                         <!-- <option value="BankBranch">Bank Branch</option> -->
-                        <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id" v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{ data.branch_name }}
+                        <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          data.branch_name }}
                         </option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
@@ -270,7 +279,9 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="BranchDest" style="width:15rem;"
                         v-model="NewOrder.BranchDest">
-                        <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id" v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{ data.branch_name }}
+                        <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          data.branch_name }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
@@ -295,7 +306,8 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
+                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
                             </span>
                           </th>
                           <th scope="col">ชนิดราคา</th>
@@ -306,8 +318,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data, index in rowData" :key="data.Id"  >
-                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
+                        <tr v-for="data, index in rowData" :key="data.Id">
+                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
+                                class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
+                              @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
                           <td scope="col" v-html="data.ddlMoneyType_" @click="calamount(data.Id)"
                             @keyup="calamount(data.Id)"></td>
                           <td scope="col" v-html="data.ddlQualityMoneyType_"></td>
@@ -340,11 +355,11 @@ import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/st
 import Header from '../components/Header'
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
-export default {
+export default defineComponent({
   name: 'ListOrder',
   components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
   data() {
@@ -358,7 +373,7 @@ export default {
       OrderType: "",
       BankType: "",
       JobDate: null,
-      Data_: [],
+      //Data_: [],
       rowData: [],
       NewOrder: {
         OrderCategoryNew: "BankBranch",
@@ -382,82 +397,218 @@ export default {
     }
   },
   setup() {
+    console.log("setup")
     const searchTerm = ref(""); // Search text
-    //  console.log(this.Data_.length())
+
     // Fake data
-    const data = reactive([]);
-    
-    for (let i = 0; i < 126; i++) {
-      data.push({
-        id: i,
-        name: "TEST" + i,
-        email: "test" + i + "@example.com",
-      });
-    }
-    // const Data2_ = []
-    // const Data_ = reactive([]);
-    // try {
-    //   axios.get('/orderlist')
+    const data = reactive({
+      rows: [],
+    });
+    let Data_ = reactive([]);//[]
+    // const myRequest_ = async (Data__) => {
+    //   console.log("myRequest_")
+    //   return await axios.get('/orderlist')
     //     .then((res) => {
-    //       // success callback
-    //       //this.Data_ = res.data
-    //       // console.log(this.Data_)
-    //       //Data2_.push(res.data)
-    //       console.log(res.data[0].branch_name)
-    //       return res.data
+    //       Data__.value = JSON.parse(JSON.stringify(res.data))
+    //       console.log(Data__)
+    //       //Data_
+    //       // console.log(fakeData)
     //     }, (res) => {
     //       // error callback
     //       console.log(res.data)
     //     });
     // }
-    // catch (err) {
-    //   console.log(err)
-    //   this.message = "Something went wrong"
-    //   this.error = true
-    // }
-    // console.log(Data2_.length)
+    //myRequest_()
+
+    // myRequest_(Data_)
+    onMounted(async () => {
+      const res = await axios.get('/orderlist')
+        .then((res) => {
+          Data_.value = JSON.parse(JSON.stringify(res.data))
+          console.log(Data_)
+          //Data_
+          // console.log(fakeData)
+        }, (res) => {
+          // error callback
+          console.log(res.data)
+        });
+    })
+    console.log(Data_)
+    /**
+     * Get server data request
+     */
+    const myRequest = async (keyword) => {
+      const fakeData = [];
+      return await new Promise((resolve, reject) => {
+        try {
+          table.isLoading = true;
+          // Remove setTimeout() and change to your Axios request or AJAX request on here.
+          setTimeout(() => {
+            table.isLoading = false;
+            let newData = Data_.value.filter(
+              (x) =>
+                x.AutoID.toString().toLowerCase().includes(keyword.toLowerCase()) ||
+                x.servicetype.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.branchorigin_name.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.branchdest_name.toLowerCase().includes(keyword.toLowerCase()) ||
+                formatPrice(x.total_by_branch).toString().toLowerCase().includes(keyword.toLowerCase()) ||
+                x.order_date.toLowerCase().includes(keyword.toLowerCase())
+            );
+            resolve(newData);
+          }, 200);
+        } catch (error) {
+          console.log("Fetch error", error);
+          reject();
+        }
+      });
+    };
+    const formatPrice = (value) => {
+      let val = (value / 1).toFixed(2)
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
+    const dateTime = (value) => {
+      return moment(value).format("DD-MM-YYYY");
+    }
     // Table config
     const table = reactive({
+      isLoading: false,
       columns: [
         {
-          label: "ID",
-          field: "id",
-          width: "3%",
+          label: "เลขที่คำสั่ง",
+          field: "AutoID",
+          width: "10%",
           sortable: true,
           isKey: true,
         },
         {
-          label: "Name",
-          field: "name",
+          label: "ประเภทบริการ",
+          field: "servicetype",
+          width: "5%",
+          sortable: true,
+        },
+        {
+          label: "ต้นทาง",
+          field: "branchorigin_name",
+          width: "15%",
+          sortable: true,
+        },
+        {
+          label: "ปลายทาง",
+          field: "branchdest_name",
+          width: "15%",
+          sortable: true,
+        },
+        {
+          label: "ยอดเงิน",
+          field: "total_by_branch",
+          width: "15%",
+          sortable: true,
+          display: function (row) {
+            return (
+              formatPrice(row.total_by_branch)
+            );
+          },
+        },
+        {
+          label: "วันปฎิบัติงาน",
+          field: "order_date",
+          width: "10%",
+          sortable: true,
+          display: function (row) {
+            return (
+              dateTime(row.order_date)
+            );
+          },
+
+        },
+        {
+          label: "อนุมัติโดย",
+          //field: "order_date",
           width: "10%",
           sortable: true,
         },
         {
-          label: "Email",
-          field: "email",
-          width: "15%",
+          label: "สถานะคำสั่ง",
+          //field: "order_date",
+          width: "10%",
           sortable: true,
+        },
+        {
+          label: "หมายเหตุ",
+          //field: "order_date",
+          width: "10%",
+          sortable: true,
+        },
+        {
+          label: "",
+          //field: "quick",
+          width: "10%",
+          display: function (row) {
+            return (
+              '<button type="button" data-id="' +
+              row.AutoID +
+              '" class="is-rows-el quick-btn">Reject</button>&nbsp;'
+              +
+              '<button type="button" data-id="' +
+              row.AutoID +
+              '" class="is-rows-el quick-btn">Cancel</button>&nbsp;'
+              +
+              '<button type="button" data-id="' +
+              row.AutoID +
+              '" class="is-rows-el quick-btn">Edit</button>&nbsp;'
+            );
+          },
         },
       ],
       rows: computed(() => {
-        return data.filter(
-          (x) =>
-            x.email.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-            x.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-        );
+        return data.rows;
       }),
       totalRecordCount: computed(() => {
         return table.rows.length;
       }),
       sortable: {
-        order: "id",
+        order: "AutoID",
         sort: "asc",
       },
     });
-    return { searchTerm, table, collapsed, toggleSidebar, sidebarWidth }
+    /**
+     * Use vue.js watch to watch your state's change
+     */
+    watch(
+      () => searchTerm.value,
+      (val) => {
+        myRequest(val).then((newData) => {
+          data.rows = newData;
+        });
+      }
+    );
+    const tableLoadingFinish = (elements) => {
+      table.isLoading = false;
+      Array.prototype.forEach.call(elements, function (element) {
+        if (element.classList.contains("name-btn")) {
+          element.addEventListener("click", function () {
+            console.log(this.dataset.id + " name-btn click!!");
+          });
+        }
+        if (element.classList.contains("quick-btn")) {
+          element.addEventListener("click", function () {
+            console.log(this.dataset.id + " quick-btn click!!");
+          });
+        }
+      });
+    };
+    // Get data on first rendering
+    myRequest("").then((newData) => {
+      data.rows = newData;
+    });
+    const updateCheckedRows = (rowsKey) => {
+      console.log(rowsKey);
+    };    
+    return { searchTerm, table, sidebarWidth, Data_,updateCheckedRows,tableLoadingFinish,};
   },
-  methods: { 
-    deleteData (index){ 
+  
+  methods: {
+    deleteData(index) {
       console.log(index)
       this.rowData.splice(index, 1)
     },
@@ -569,7 +720,7 @@ export default {
       console.log(document.getElementById("tbQuantity" + value).value)
       console.log(document.getElementById("tbAmount" + value).value)
       let ddlMoneyType = parseFloat(document.getElementById("ddlMoneyType" + value).value, 10)
-      let tbQuantity = parseFloat( ( document.getElementById("tbQuantity" + value).value ).replaceAll(',','') , 10)
+      let tbQuantity = parseFloat((document.getElementById("tbQuantity" + value).value).replaceAll(',', ''), 10)
       let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyType" + value).value
       let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyType" + value).value
       if (ddlPackageMoneyType === 'Bundle') {
@@ -582,7 +733,7 @@ export default {
         !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
       }
       console.log(ddlMoneyType * tbQuantity * 5000)
-      
+
       let my_object = {
         Id: value,
         ddlMoneyType_: ddlMoneyType,
@@ -634,8 +785,8 @@ export default {
         tbQuantity_: tbQuantity,
         tbAmount_: tbAmount,
       };
-      if(this.rowData.length > 1){
-        document.getElementById("tbQuantity" + (this.Id-1)).value = this.formatPrice_noFixed( parseFloat( document.getElementById("tbQuantity" + (this.Id-1)).value ) )
+      if (this.rowData.length > 1) {
+        document.getElementById("tbQuantity" + (this.Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantity" + (this.Id - 1)).value))
       }
       this.rowData.push(my_object)
     },
@@ -653,15 +804,15 @@ export default {
       formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
       formData.append('AllRowsDet', this.Id)
       formData.append('user_id', this.user_id)
-      let Id_ = 0 
-      for (var index = 0; index < this.Id; index++) { 
-        if( document.getElementById("ddlMoneyType" + (index + 1)) ){
-        formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
-        formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
-        formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
-        formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
-        formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
-        Id_++
+      let Id_ = 0
+      for (var index = 0; index < this.Id; index++) {
+        if (document.getElementById("ddlMoneyType" + (index + 1))) {
+          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
+          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
+          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
+          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
+          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+          Id_++
         }
       }
       // console.log( Id_ )
@@ -670,7 +821,7 @@ export default {
       var object = {}
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
-      console.log( json )
+      console.log(json)
       try {
         await axios.post('/manual_add_order', json)
           .then((res) => {
@@ -691,29 +842,35 @@ export default {
       }
     }
   },
-  created() {
-    try {
-      axios.get('/orderlist')
-        .then((res) => {
-          // success callback
-          this.Data_ = res.data
-          console.log(this.Data_)
-        }, (res) => {
-          // error callback
-          console.log(res.data)
-        });
-    }
-    catch (err) {
-      console.log(err)
-      this.message = "Something went wrong"
-      this.error = true
-    }
-  }
-}
+  // created() {
+  //   try {
+  //     axios.get('/orderlist')
+  //       .then((res) => {
+  //         // success callback
+  //         this.Data_ = res.data
+  //         console.log(this.Data_)
+  //       }, (res) => {
+  //         // error callback
+  //         console.log(res.data)
+  //       });
+  //   }
+  //   catch (err) {
+  //     console.log(err)
+  //     this.message = "Something went wrong"
+  //     this.error = true
+  //   }
+  // }
+})
 </script>
 
 <style scoped lang="css">
 @import '../assets/css/style.css';
+
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+  background-color: #5D6D7E;
+  border-color: #EAEDED;
+}
+
 /* #formFile::before {
   content: "Pick file";
   position: absolute;
