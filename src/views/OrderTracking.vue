@@ -1,9 +1,23 @@
 <template>
     <Header />
     <Sidebar />
-    <div :style="{ 'margin-left': sidebarWidth }">
-        <div class="container p-0" style="width: 100%;">
-            <div class="row p-1" style="width: 100%">
+    <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
+        <div class="row p-1" style="width: 100%">
+            <div class="col text-left">&nbsp;</div>
+        </div>
+        <div class="row p-1" style="width: 100%">
+            <div class="col text-left">
+                <h3>ติดตามคำสั่ง</h3>
+            </div>
+        </div>
+        <div class="row p-1" style="width: 100%">
+            <div class="col text-center">
+                <iframe title="Order tracking detail" width="1300" height="800"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiODUxMTNjYmYtZGNhMi00YWQyLWJmMGEtMWViNjdiMjUyOGNmIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D&pageName=ReportSection"
+                    frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+        </div>
+        <!-- <div class="row p-1" style="width: 100%">
                 <div class="col text-left">&nbsp;</div>
             </div>
             <div class="row p-1" style="width: 100%">
@@ -74,8 +88,8 @@
                         <router-link to="/ordertrackingdet" class="link h4 text-white text-decoration-none" >{{ Data_[row_ + 2].branch_name }}</router-link>
                        </div>
                 </div>
-            </div>
-        </div>
+            </div> -->
+
     </div>
 </template>
 <script>

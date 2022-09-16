@@ -55,7 +55,7 @@ export default {
         </a> -->
         </li>
         <li>
-          <SidebarLink to="/" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
+          <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
           </SidebarLink>
         </li>
       </ul>

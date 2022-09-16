@@ -15,10 +15,11 @@
       <div class="col d-flex justify-content-end">
         <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank"
           class="text-decoration-none text-gray fs-5" style="cursor: pointer">
-          <h4>ตัวอย่างไฟล์อัพโหลด</h4></a>&nbsp;<h4>|
+          <h4>ตัวอย่างไฟล์อัพโหลด</h4>
+        </a>&nbsp;<h4>|
         </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
           style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
-          &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
+        &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
         </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
           style="cursor: pointer">รายการใหม่</h4>
       </div>
@@ -28,46 +29,11 @@
         <div style="text-align: right">
           <label>SearchBy:</label><input v-model="searchTerm" />
         </div>
-        <table-lite 
-        :is-static-mode="true"
-        :has-checkbox="true" 
-        :is-loading="table.isLoading" 
-        :columns="table.columns" 
-        :rows="table.rows" 
-        :total="table.totalRecordCount" 
-        :sortable="table.sortable" 
-        @is-finished="tableLoadingFinish" 
-        @return-checked-rows="updateCheckedRows"  
-        class="table table-striped table-hover">
+        <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
+          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+          @is-finished="tableLoadingFinish" @return-checked-rows="updateCheckedRows"
+          class="table table-striped table-hover">
         </table-lite>
-        <!-- <table class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">เลขที่คำสั่ง</th>
-                  <th scope="col">ประเภทบริการ</th>
-                  <th scope="col">ต้นทาง</th>
-                  <th scope="col">ปลายทาง</th>
-                  <th scope="col">ยอดเงิน</th>
-                  <th scope="col">วันปฎิบัติงาน</th>
-                  <th scope="col">อนุมัติโดย</th>
-                  <th scope="col">สถานะคำสั่ง</th>
-                  <th scope="col">หมายเหตุ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="data in Data_" :key="data.AutoID">
-                  <td scope="col">{{ data.AutoID }}</td>
-                  <td scope="col" class="text-left">{{ data.servicetype }}</td>
-                  <td scope="col" class="text-left" ><span>{{ data.branchorigin_name }}</span></td>
-                  <td scope="col" class="text-left" ><span>{{ data.branchdest_name }}</span></td>
-                  <td scope="col" class="text-right">{{ formatPrice(data.total_by_branch) }}</td>
-                  <td scope="col">{{ dateTime(data.order_date) }}</td>                 
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                  <td scope="col">-</td>
-                </tr>
-              </tbody>
-            </table> -->
       </div>
     </div>
     <!-- </div> -->
@@ -86,20 +52,6 @@
                 <div class="container">
                   <div class="row p-2" v-if="message">
                     <div class="col">
-                      <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-                          <path
-                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                        </symbol>
-                        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
-                          <path
-                            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-                        </symbol>
-                        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                          <path
-                            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                        </symbol>
-                      </svg> -->
                       <div :class="`alert ${error ? 'alert-danger' : 'alert-success'}`">{{ message }}</div>
                     </div>
                   </div>
@@ -147,7 +99,7 @@
                         <option value="fb790fb5-76e4-4d0e-8651-0259d73dc0b6">LHB</option>
                         <option value="64956e74-51fe-42d5-8445-90c90740c5db">TBANK</option>
                         <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option> -->
-                        <option value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
+                        <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
                         <!-- <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
                         <option value="80cb96dd-ea99-401a-9615-bba6db501acd">ธนาคารเจพีมอร์แกนเชส</option>
                         <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option> -->
@@ -176,7 +128,8 @@
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary">บันทึก</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal"
+                  ref="ClosemyModal">ยกเลิก</button>
               </div>
             </div>
           </div>
@@ -187,7 +140,7 @@
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
-        <div class="modal fade  " id="myModalNew">
+        <div class="modal fade" id="myModalNew">
           <div class="modal-dialog  modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -264,13 +217,12 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="BranchOrigin" style="width:15rem;"
                         v-model="NewOrder.BranchOrigin">
-                        <!-- <tr v-for="data in Data_" :key="data.AutoID"></tr> -->
-                        <!-- <option value="BankBranch">Bank Branch</option> -->
+
                         <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
                           data.branch_name }}
                         </option>
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
+
                       </select>
                     </div>
                     <div class="col">
@@ -337,9 +289,176 @@
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button class="btn btn-primary">บันทึก</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
+                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalNew"
+                    style="width:4rem; height:2rem;">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="container py-2">
+    <div class="py-2">
+      <form enctype="multipart/form-data" id="form2">
+        <div class="modal fade" id="ModalEditOrder">
+          <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไขรายการคำสั่ง</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">รายการใหม่</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2" v-if="messageEdit">
+                    <div class="col">
+                      <div :class="`alert ${errorEdit ? 'alert-danger' : 'alert-success'}`">{{ messageEdit }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">
+                      เลือกธนาคาร
+                    </div>
+                    <div class="col ps-4 d-flex">
+                      &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
+                        v-model="OrderDataExisting.BankType">
+                        <!-- <option selected="selected" value="">ธนาคาร</option> -->
+                        <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      ประเภทกิจกรรม
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" name="OrderCategoryEdit" style="width:15rem;"
+                        v-model="OrderDataExisting.OrderCategory">
+                        <option value="BankBranch">Bank Branch</option>
+                        <!-- <option value="ForexCounting">Forex Counting</option> -->
+                      </select>
+                    </div>
+                    <div class="col">
+                      ประเภทบริการ
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" id="OrderTypeEdit" style="width:15rem;"
+                        v-model="OrderDataExisting.OrderType" @click="getBranchAndCashEdit()">
+                        <option value="">Please Select One Type</option>
+                        <option value="Withdraw">Withdraw</option>
+                        <option value="Deposit">Deposit</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      เลขที่อ้างอิง
+                    </div>
+                    <div class="col">
+                      <input type="text" id="RefNoEdit" class="form-control" style="width:15rem;" v-model="OrderDataExisting.RefNo">
+                    </div>
+                    <div class="col">
+                      วันที่ปฎิบัติการา
+                    </div>
+                    <div class="col">
+                      <input type="date" id="JobDateEdit" class="form-control" style="width:15rem;"
+                        v-model="OrderDataExisting.JobDate">
+                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col">
+                      ต้นทาง
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
+                        v-model="OrderDataExisting.BranchOriginId">
+                        <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          data.branch_name }}
+                        </option>
+
+                      </select>
+                    </div>
+                    <div class="col">
+                      ปลายทาง
+                    </div>
+                    <div class="col">
+                      <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
+                        v-model="OrderDataExisting.BranchDestId">
+                        <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          data.branch_name }}
+                        </option>
+                        <!-- <option value="BankBranch">Bank Branch</option> -->
+                        <!-- <option value="ForexCounting">Forex Counting</option> -->
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">
+                      หมายเหตุ
+                    </div>
+                    <div class="col ps-4 d-flex">
+                      &nbsp;<input type="text" id="RemarkNew" class="form-control" style="width:15rem;"
+                        v-model="OrderDataExisting.Remark">
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">รายละเอียดคำสั่ง</h5>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
+                            </span>
+                          </th>
+                          <th scope="col">ชนิดราคา</th>
+                          <th scope="col">คุณภาพ</th>
+                          <th scope="col">หน่วย</th>
+                          <th scope="col">จำนวน</th>
+                          <th scope="col">ยอดรวม</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="data, index in rowData" :key="data.Id">
+                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
+                                class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
+                              @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
+                          <td scope="col" v-html="data.ddlMoneyType_" @click="calamount(data.Id)"
+                            @keyup="calamount(data.Id)"></td>
+                          <td scope="col" v-html="data.ddlQualityMoneyType_"></td>
+                          <td scope="col" v-html="data.ddlPackageMoneyType_" @click="calamount(data.Id)"
+                            @keyup="calamount(data.Id)"></td>
+                          <td scope="col" v-html="data.tbQuantity_" @change="calamount(data.Id)"
+                            @keyup="calamount(data.Id)"></td>
+                          <td scope="col" v-html="data.tbAmount_"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
+                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
+                    style="width:4rem; height:2rem;">ยกเลิก</button>
+                </div>
               </div>
             </div>
           </div>
@@ -357,6 +476,7 @@ import axios from 'axios'
 import moment from 'moment'
 import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
+
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
@@ -369,6 +489,7 @@ export default defineComponent({
       error2: false,
       message: "",
       messageNew: "",
+      messageEdit:"",
       OrderCategory: "BankBranch",
       OrderType: "",
       BankType: "",
@@ -393,34 +514,17 @@ export default defineComponent({
       department_id: localStorage.getItem('department_id'),
       position_id: localStorage.getItem('position_id'),
       CustomerID: localStorage.getItem('CustomerID'),
-      gfc_cct: localStorage.getItem('gfc_cct')
+      gfc_cct: localStorage.getItem('gfc_cct')      
     }
   },
   setup() {
     console.log("setup")
     const searchTerm = ref(""); // Search text
-
     // Fake data
     const data = reactive({
       rows: [],
     });
-    let Data_ = reactive([]);//[]
-    // const myRequest_ = async (Data__) => {
-    //   console.log("myRequest_")
-    //   return await axios.get('/orderlist')
-    //     .then((res) => {
-    //       Data__.value = JSON.parse(JSON.stringify(res.data))
-    //       console.log(Data__)
-    //       //Data_
-    //       // console.log(fakeData)
-    //     }, (res) => {
-    //       // error callback
-    //       console.log(res.data)
-    //     });
-    // }
-    //myRequest_()
-
-    // myRequest_(Data_)
+    let Data_ =  ref([]);//[]
     onMounted(async () => {
       const res = await axios.get('/orderlist')
         .then((res) => {
@@ -432,6 +536,7 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         });
+        // table.ajax.reload()
     })
     console.log(Data_)
     /**
@@ -468,6 +573,93 @@ export default defineComponent({
     }
     const dateTime = (value) => {
       return moment(value).format("DD-MM-YYYY");
+    }
+    const getBranchAndCashEdit =()=> {
+      OrderDataExisting.DataBranchToOrigin = []
+      OrderDataExisting.DataBranchToDest = []
+      if (OrderDataExisting.OrderType === "Withdraw") {
+        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
+        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
+      }
+      if (OrderDataExisting.OrderType === "Deposit") {
+        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
+        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
+      }
+    }
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) =>{
+
+      if (servicetype === 'branchtocash') {
+        await axios.get('/getbranchdata')
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            console.log(OrderDataExisting.DataBranchToOrigin)
+            console.log(OrderDataExisting.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+      //--------------------------------------------
+      if (servicetype === 'cashtobranch') {
+        await axios.get('/getcashcenterdata')
+          .then((res) => {
+            // success callback
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            console.log(OrderDataExisting.DataBranchToOrigin)
+            console.log(OrderDataExisting.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }    
+    }
+    const Id = ref(0)
+    const addEditItem =()=> {
+      Id++
+      let ddlMoneyType = ""
+      ddlMoneyType = "<select class='form-select form-select-sm text-right' id='ddlMoneyType" + Id + "'>"
+      ddlMoneyType += "<option value='1000'>1,000</option>"
+      ddlMoneyType += "<option value='500'>500</option>"
+      ddlMoneyType += "<option value='100'>100</option>"
+      ddlMoneyType += "<option value='20'>20</option>"
+      ddlMoneyType += "<option value='10'>10</option>"
+      ddlMoneyType += "<option value='5'>5</option>"
+      ddlMoneyType += "<option value='2'>2</option>"
+      ddlMoneyType += "<option value='1'>1</option>"
+      ddlMoneyType += "<option value='0.5'>0.50</option>"
+      ddlMoneyType += "</select>"
+      let ddlQualityMoneyType = ""
+      ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + Id + "'>"
+      ddlQualityMoneyType += "<option value='New'>ใหม่</option>"
+      ddlQualityMoneyType += "<option value='Good'>ดี</option>"
+      ddlQualityMoneyType += "<option value='Unfit'>เสีย</option>"
+      ddlQualityMoneyType += "<option value='Unsort'>รอคัดนับ</option>"
+      ddlQualityMoneyType += "</select>"
+      let ddlPackageMoneyType = ""
+      ddlPackageMoneyType = "<select class='form-select form-select-sm' id='ddlPackageMoneyType" + Id + "'>"
+      ddlPackageMoneyType += "<option value='Bundle'>มัด</option>"
+      ddlPackageMoneyType += "<option value='Piece'>ฉบับ</option>"
+      ddlPackageMoneyType += "<option value='Coin'>เหรียญ</option>"
+      ddlPackageMoneyType += "<option value='Pack'>แพ็ค</option>"
+      ddlPackageMoneyType += "</select>"
+      let tbQuantity = ""
+      tbQuantity = "<input type='text' id='tbQuantity" + Id + "' class='form-control text-right' style='width:10rem;'>"
+      let tbAmount = ""
+      tbAmount = "<input type='text' id='tbAmount" + Id + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
+      let my_object = {
+        Id: Id,
+        ddlMoneyType_: ddlMoneyType,
+        ddlQualityMoneyType_: ddlQualityMoneyType,
+        ddlQualityMoneyType_: ddlQualityMoneyType,
+        ddlPackageMoneyType_: ddlPackageMoneyType,
+        tbQuantity_: tbQuantity,
+        tbAmount_: tbAmount,
+      };
+      if (this.rowData.length > 1) {
+        document.getElementById("tbQuantity" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantity" + (Id - 1)).value))
+      }
+      this.rowData.push(my_object)
     }
     // Table config
     const table = reactive({
@@ -547,15 +739,15 @@ export default defineComponent({
             return (
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="is-rows-el quick-btn">Reject</button>&nbsp;'
+              '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="is-rows-el quick-btn">Cancel</button>&nbsp;'
+              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">Cancel</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="is-rows-el quick-btn">Edit</button>&nbsp;'
+              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">Edit</button>'
             );
           },
         },
@@ -574,7 +766,21 @@ export default defineComponent({
     /**
      * Use vue.js watch to watch your state's change
      */
-    watch(
+     const OrderDataExisting = reactive({
+        BankType: "",
+        OrderCategory: "BankBranch",
+        OrderType: "",
+        RefNo: "",        
+        JobDate: null,
+        BranchOriginText: "",
+        BranchOriginId: "",
+        BranchDestText: "",
+        BranchDestId: "",
+        DataBranchToOrigin: [],
+        DataBranchToDest: [],        
+        Remark: "",
+      });
+     watch(
       () => searchTerm.value,
       (val) => {
         myRequest(val).then((newData) => {
@@ -590,11 +796,62 @@ export default defineComponent({
             console.log(this.dataset.id + " name-btn click!!");
           });
         }
-        if (element.classList.contains("quick-btn")) {
+        if (element.classList.contains("rejectorder")) {
           element.addEventListener("click", function () {
-            console.log(this.dataset.id + " quick-btn click!!");
+            console.log(this.dataset.id + " rejectorder!!");
           });
         }
+        if (element.classList.contains("cancelorder")) {
+          element.addEventListener("click", function () {
+            console.log(this.dataset.id + " cancelorder!!");
+          });
+        }
+        if (element.classList.contains("editorder")) {
+          element.addEventListener("click", async function () {
+            const params = {
+              Id: this.dataset.id
+            };
+            console.log( params )
+            try {
+              await axios.get('/getcashorder', {params})
+                .then((res) => {
+                  // success callback
+                  let obj = JSON.parse(JSON.stringify(res.data))
+                  //console.log(obj[0].customerID)                  
+                  OrderDataExisting.BankType = obj[0].customerID
+                  OrderDataExisting.OrderCategory = obj[0].order_category
+                  OrderDataExisting.OrderType = obj[0].servicetype
+                  OrderDataExisting.RefNo = obj[0].refno
+                  OrderDataExisting.JobDate = obj[0].order_date
+                  OrderDataExisting.BranchOriginText = obj[0].branchorigin_name
+                  OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
+                  OrderDataExisting.BranchDestText = obj[0].branchdest_name
+                  OrderDataExisting.BranchDestId = obj[0].branchdest_code
+                  OrderDataExisting.Remark = obj[0].remark
+                  console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
+                  console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
+                  console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
+                  console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
+                  // addEditItem
+                }, (res) => {
+                  // error callback
+                  console.log(res.data)
+                }).finally(() => {
+                  //
+                });
+                onMounted(getBranchAndCashEdit)
+            }
+            catch (err) {
+              console.log(err)
+            }
+          });
+        }
+        // if (element.classList.contains("quick-btn")) {
+        //   element.addEventListener("click", function (event) {
+        //     event.stopPropagation(); // prevents further propagation of the current event in the capturing and bubbling phases.
+        //     console.log(this.dataset.id + " quick-btn click!!");
+        //   });
+        // }
       });
     };
     // Get data on first rendering
@@ -603,10 +860,9 @@ export default defineComponent({
     });
     const updateCheckedRows = (rowsKey) => {
       console.log(rowsKey);
-    };    
-    return { searchTerm, table, sidebarWidth, Data_,updateCheckedRows,tableLoadingFinish,};
+    };
+    return { searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish,OrderDataExisting,getBranchAndCashEdit };
   },
-  
   methods: {
     deleteData(index) {
       console.log(index)
@@ -631,7 +887,9 @@ export default defineComponent({
         await axios.post('/upload', formData)
           .then((res) => {
             // success callback
-            console.log(res.data.message)
+            console.log(res.data)
+            this.$refs.ClosemyModal.click();
+            this.$router.push('/listorder')
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -804,7 +1062,6 @@ export default defineComponent({
       formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
       formData.append('AllRowsDet', this.Id)
       formData.append('user_id', this.user_id)
-      let Id_ = 0
       for (var index = 0; index < this.Id; index++) {
         if (document.getElementById("ddlMoneyType" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
@@ -812,12 +1069,10 @@ export default defineComponent({
           formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
           formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
           formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
-          Id_++
+          // Id_++
         }
       }
-      // console.log( Id_ )
-      // formData.append('AllRowsDet', Id_)
-      //formData.forEach((element, index) => console.log(index, element))
+      this.showmyModalNew = true
       var object = {}
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
@@ -826,10 +1081,14 @@ export default defineComponent({
         await axios.post('/manual_add_order', json)
           .then((res) => {
             // success callback
-            console.log(res.data.message)
+            console.log(res.data)
+            this.$refs.ClosemyModalNew.click();
+
           }, (res) => {
             // error callback
             console.log(res.data.message)
+          }).finally(() => {
+            this.$router.push('/listorder')
           });
         this.message = "File has been upload"
         this.file = ""
@@ -842,6 +1101,9 @@ export default defineComponent({
       }
     }
   },
+  // mounted() {
+  //   this.oModalNew = new Modal(this.$refs.myModalNew)
+  // },
   // created() {
   //   try {
   //     axios.get('/orderlist')

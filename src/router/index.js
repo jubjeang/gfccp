@@ -35,7 +35,12 @@ const routes = [
     path: '/invhistorical',
     name: 'InvHistorical',
     component: () => import('../views/InvHistorical.vue')
-  },   
+  },
+  {
+    path: '/approvelist',
+    name: 'ApproveList',
+    component: () => import('../views/ApproveList.vue')
+  },    
 ]
 
 const router = createRouter({
