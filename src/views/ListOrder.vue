@@ -111,7 +111,14 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" id="JobDate" class="form-control" style="width:15rem;" v-model="JobDate">
+                      <input type="date" id="JobDate" class="form-control" style="width:15rem;" v-model="JobDate" min="01-01-1997" max="31-01-2030">
+                      
+                      <!-- <datepicker class="form-control"  v-model="date_" style="width:15rem;"
+                         :format="format" :inline="true" >
+                        <template v-slot:clear="{ onClear }">
+                          <button @click="onClear">x</button>
+                        </template>
+                      </datepicker> -->
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -202,7 +209,7 @@
                       <input type="text" id="RefNo" class="form-control" style="width:15rem;" v-model="NewOrder.RefNo">
                     </div>
                     <div class="col">
-                      วันที่ปฎิบัติการา
+                      วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
                       <input type="date" id="JobDateNew" class="form-control" style="width:15rem;"
@@ -304,7 +311,7 @@
   </div>
   <div class="container py-2">
     <div class="py-2">
-      <form enctype="multipart/form-data" id="form2">
+      <form enctype="multipart/form-data" id="form2" @submit.prevent="editOrder">
         <div class="modal fade" id="ModalEditOrder">
           <div class="modal-dialog  modal-lg">
             <div class="modal-content">
@@ -364,14 +371,16 @@
                       เลขที่อ้างอิง
                     </div>
                     <div class="col">
-                      <input type="text" id="RefNoEdit" class="form-control" style="width:15rem;" v-model="OrderDataExisting.RefNo">
+                      <input type="text" id="RefNoEdit" class="form-control" style="width:15rem;"
+                        v-model="OrderDataExisting.RefNo">
                     </div>
                     <div class="col">
-                      วันที่ปฎิบัติการา
+                      วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" id="JobDateEdit" class="form-control" style="width:15rem;"
-                        v-model="OrderDataExisting.JobDate">
+                      <input type="date" min="20-10-1900" max="31-01-2999" rules="required" id="JobDateEdit"
+                        class="form-control" style="width:15rem;" v-model="OrderDataExisting.JobDate"
+                        v-bind="{value:  OrderDataExisting.JobDate }">
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -422,8 +431,9 @@
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
-                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
+                          <th scope="col"><span @click.prevent="addEditItem()"
+                              class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
+                                class="fa fa-plus-circle align-middle" />
                             </span>
                           </th>
                           <th scope="col">ชนิดราคา</th>
@@ -434,19 +444,59 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data, index in rowData" :key="data.Id">
+                        <tr v-for="data, index in OrderDataExisting.OrderDataDet" :key="data.Id">
                           <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
                                 class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
                               @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
                               style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
-                          <td scope="col" v-html="data.ddlMoneyType_" @click="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.ddlQualityMoneyType_"></td>
-                          <td scope="col" v-html="data.ddlPackageMoneyType_" @click="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.tbQuantity_" @change="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.tbAmount_"></td>
+                          <td scope="col" @click="calamount(data.Id)" @keyup="calamount(data.Id)">
+                            <select class="form-select form-select-sm text-right"
+                              v-bind="{ id: 'ddlMoneyTypeEdit'+(index+1)}"
+                              v-model="OrderDataExisting.OrderDataDet[index].MoneyType">
+                              <option value='1000'>1,000</option>
+                              <option value='500'>500</option>
+                              <option value='100'>100</option>
+                              <option value='20'>20</option>
+                              <option value='10'>10</option>
+                              <option value='5'>5</option>
+                              <option value='2'>2</option>
+                              <option value='1'>1</option>
+                              <option value='0.5'>0.50</option>
+                            </select>
+                          </td>
+                          <td scope="col">
+                            <select class='form-select form-select-sm'
+                              v-bind="{ id: 'ddlQualityMoneyTypeEdit'+(index+1)}"
+                              v-model="OrderDataExisting.OrderDataDet[index].QualityMoneyType">
+                              <option value='New'>ใหม่</option>
+                              <option value='Fit'>ดี</option>
+                              <option value='Unfit'>เสีย</option>
+                              <option value='Uncount'>รอคัดนับ</option>
+                            </select>
+                          </td>
+                          <td scope="col">
+                            <select class='form-select form-select-sm'
+                              v-model="OrderDataExisting.OrderDataDet[index].PackageMoneyType"
+                              v-bind="{ id: 'ddlPackageMoneyTypeEdit'+(index+1)}" @click="calamount(data.Id)"
+                              @keyup="calamount(data.Id)">
+                              <option value='Bundle'>มัด</option>
+                              <option value='Piece'>ฉบับ</option>
+                              <option value='Coin'>เหรียญ</option>
+                              <option value='Pack'>แพ็ค</option>
+                            </select>
+                          </td>
+                          <td scope="col">
+                            <input type='text'
+                              v-bind="{ id: 'tbQuantityEdit'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Quantity)}"
+                              v-model="OrderDataExisting.OrderDataDet[index].Quantity" class='form-control text-right'
+                              style='width:10rem;' @change="calamount(data.Id)" @keyup="calamount(data.Id)">
+                          </td>
+                          <td scope="col">
+                            <input type='text'
+                              v-bind="{ id: 'tbAmount'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount)}"
+                              v-model="OrderDataExisting.OrderDataDet[index].Amount" class='form-control text-right'
+                              style='width:10rem;' readonly='readonly' />
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -477,6 +527,9 @@ import moment from 'moment'
 import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
 
+
+
+
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
@@ -489,7 +542,7 @@ export default defineComponent({
       error2: false,
       message: "",
       messageNew: "",
-      messageEdit:"",
+      messageEdit: "",
       OrderCategory: "BankBranch",
       OrderType: "",
       BankType: "",
@@ -514,7 +567,18 @@ export default defineComponent({
       department_id: localStorage.getItem('department_id'),
       position_id: localStorage.getItem('position_id'),
       CustomerID: localStorage.getItem('CustomerID'),
-      gfc_cct: localStorage.getItem('gfc_cct')      
+      gfc_cct: localStorage.getItem('gfc_cct'),
+      // time: null,
+      // full: null,
+      // selected: null,
+      // from: null,
+      // to: null,
+      // yearSelected: null,
+      // monthSelected: null,
+      // disabledTime: [
+      //   set(new Date(), { hours: 11, minutes: 12 }),
+      //   set(new Date(), { hours: 12, minutes: 30 })
+      // ],
     }
   },
   setup() {
@@ -524,7 +588,7 @@ export default defineComponent({
     const data = reactive({
       rows: [],
     });
-    let Data_ =  ref([]);//[]
+    let Data_ = ref([]);//[]
     onMounted(async () => {
       const res = await axios.get('/orderlist')
         .then((res) => {
@@ -536,9 +600,8 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         });
-        // table.ajax.reload()
+      // table.ajax.reload()
     })
-    console.log(Data_)
     /**
      * Get server data request
      */
@@ -574,7 +637,7 @@ export default defineComponent({
     const dateTime = (value) => {
       return moment(value).format("DD-MM-YYYY");
     }
-    const getBranchAndCashEdit =()=> {
+    const getBranchAndCashEdit = () => {
       OrderDataExisting.DataBranchToOrigin = []
       OrderDataExisting.DataBranchToDest = []
       if (OrderDataExisting.OrderType === "Withdraw") {
@@ -586,15 +649,15 @@ export default defineComponent({
         getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
       }
     }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) =>{
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
 
       if (servicetype === 'branchtocash') {
         await axios.get('/getbranchdata')
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            console.log(OrderDataExisting.DataBranchToOrigin)
-            console.log(OrderDataExisting.DataBranchToDest)
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -606,60 +669,62 @@ export default defineComponent({
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            console.log(OrderDataExisting.DataBranchToOrigin)
-            console.log(OrderDataExisting.DataBranchToDest)
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
           });
-      }    
+      }
     }
     const Id = ref(0)
-    const addEditItem =()=> {
-      Id++
-      let ddlMoneyType = ""
-      ddlMoneyType = "<select class='form-select form-select-sm text-right' id='ddlMoneyType" + Id + "'>"
-      ddlMoneyType += "<option value='1000'>1,000</option>"
-      ddlMoneyType += "<option value='500'>500</option>"
-      ddlMoneyType += "<option value='100'>100</option>"
-      ddlMoneyType += "<option value='20'>20</option>"
-      ddlMoneyType += "<option value='10'>10</option>"
-      ddlMoneyType += "<option value='5'>5</option>"
-      ddlMoneyType += "<option value='2'>2</option>"
-      ddlMoneyType += "<option value='1'>1</option>"
-      ddlMoneyType += "<option value='0.5'>0.50</option>"
-      ddlMoneyType += "</select>"
-      let ddlQualityMoneyType = ""
-      ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + Id + "'>"
-      ddlQualityMoneyType += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyType += "<option value='Good'>ดี</option>"
-      ddlQualityMoneyType += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyType += "<option value='Unsort'>รอคัดนับ</option>"
-      ddlQualityMoneyType += "</select>"
-      let ddlPackageMoneyType = ""
-      ddlPackageMoneyType = "<select class='form-select form-select-sm' id='ddlPackageMoneyType" + Id + "'>"
-      ddlPackageMoneyType += "<option value='Bundle'>มัด</option>"
-      ddlPackageMoneyType += "<option value='Piece'>ฉบับ</option>"
-      ddlPackageMoneyType += "<option value='Coin'>เหรียญ</option>"
-      ddlPackageMoneyType += "<option value='Pack'>แพ็ค</option>"
-      ddlPackageMoneyType += "</select>"
-      let tbQuantity = ""
-      tbQuantity = "<input type='text' id='tbQuantity" + Id + "' class='form-control text-right' style='width:10rem;'>"
+    const rowDataEdit = ref([])
+    const addEditItem = () => {
+      Id.value++
+      let ddlMoneyTypeEdit = ""
+      ddlMoneyTypeEdit = "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" + Id.value + "'>"
+      ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
+      ddlMoneyTypeEdit += "<option value='500'>500</option>"
+      ddlMoneyTypeEdit += "<option value='100'>100</option>"
+      ddlMoneyTypeEdit += "<option value='20'>20</option>"
+      ddlMoneyTypeEdit += "<option value='10'>10</option>"
+      ddlMoneyTypeEdit += "<option value='5'>5</option>"
+      ddlMoneyTypeEdit += "<option value='2'>2</option>"
+      ddlMoneyTypeEdit += "<option value='1'>1</option>"
+      ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
+      ddlMoneyTypeEdit += "</select>"
+      let ddlQualityMoneyTypeEdit = ""
+      ddlQualityMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" + Id.value + "'>"
+      ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
+      ddlQualityMoneyTypeEdit += "</select>"
+      let ddlPackageMoneyTypeEdit = ""
+      ddlPackageMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" + Id.value + "'>"
+      ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
+      ddlPackageMoneyTypeEdit += "</select>"
+      let tbQuantityEdit = ""
+      tbQuantityEdit = "<input type='text' id='tbQuantityEdit" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
       let tbAmount = ""
-      tbAmount = "<input type='text' id='tbAmount" + Id + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
+      tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
       let my_object = {
-        Id: Id,
-        ddlMoneyType_: ddlMoneyType,
-        ddlQualityMoneyType_: ddlQualityMoneyType,
-        ddlQualityMoneyType_: ddlQualityMoneyType,
-        ddlPackageMoneyType_: ddlPackageMoneyType,
-        tbQuantity_: tbQuantity,
+        Id: Id.value,
+        ddlMoneyType_: ddlMoneyTypeEdit,
+        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+        ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
+        tbQuantity_: tbQuantityEdit,
         tbAmount_: tbAmount,
       };
-      if (this.rowData.length > 1) {
-        document.getElementById("tbQuantity" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantity" + (Id - 1)).value))
+      if (rowDataEdit.value.length > 1) {
+        //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
       }
-      this.rowData.push(my_object)
+      rowDataEdit.value.push(my_object)
+      console.log(rowDataEdit)
     }
     // Table config
     const table = reactive({
@@ -724,10 +789,25 @@ export default defineComponent({
           //field: "order_date",
           width: "10%",
           sortable: true,
+          display: function (row) {
+            let sOutput = ''
+
+            if (row.cashstatus === '1') {
+              sOutput = 'สร้างคำสั่ง'
+            }
+            if (row.cashstatus === '2') {
+              sOutput = 'รออนุมัติ'
+            }
+            if (row.cashstatus === '3') {
+              sOutput = 'อนุมัติคำสั่ง'
+            }
+            sOutput = '<span>' + sOutput + '</span>'
+            return (sOutput);
+          },
         },
         {
           label: "หมายเหตุ",
-          //field: "order_date",
+          field: "remark",
           width: "10%",
           sortable: true,
         },
@@ -766,21 +846,22 @@ export default defineComponent({
     /**
      * Use vue.js watch to watch your state's change
      */
-     const OrderDataExisting = reactive({
-        BankType: "",
-        OrderCategory: "BankBranch",
-        OrderType: "",
-        RefNo: "",        
-        JobDate: null,
-        BranchOriginText: "",
-        BranchOriginId: "",
-        BranchDestText: "",
-        BranchDestId: "",
-        DataBranchToOrigin: [],
-        DataBranchToDest: [],        
-        Remark: "",
-      });
-     watch(
+    const OrderDataExisting = reactive({
+      BankType: "",
+      OrderCategory: "BankBranch",
+      OrderType: "",
+      RefNo: "",
+      JobDate: null,
+      BranchOriginText: "",
+      BranchOriginId: "",
+      BranchDestText: "",
+      BranchDestId: "",
+      DataBranchToOrigin: [],
+      DataBranchToDest: [],
+      Remark: "",
+      OrderDataDet: [],
+    });
+    watch(
       () => searchTerm.value,
       (val) => {
         myRequest(val).then((newData) => {
@@ -797,27 +878,80 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("rejectorder")) {
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " rejectorder!!");
+          element.addEventListener("click", async () => {
+            // console.log(this.dataset.id + " rejectorder!!");
+            if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
+              const params = {
+                Id: this.dataset.id,
+                Type_: 'reject'
+              };
+              try {
+                await axios.get('/rejectorder', { params })
+                  .then((res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log(obj[0])
+                    this.$router.push('/listorder')
+                    // addEditItem
+                  }, (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }).finally(() => {
+                    //
+                  });
+
+              }
+              catch (err) {
+                console.log(err)
+              }
+
+            }
           });
         }
         if (element.classList.contains("cancelorder")) {
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " cancelorder!!");
+          element.addEventListener("click", async () => {
+            // console.log(this.dataset.id + " rejectorder!!");
+            if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
+              const params = {
+                Id: this.dataset.id,
+                Type_: 'reject'
+              };
+              try {
+                await axios.get('/rejectorder', { params })
+                  .then((res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log(obj[0])
+                    this.$router.push('/listorder')
+                    // addEditItem
+                  }, (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }).finally(() => {
+                    //
+                  });
+
+              }
+              catch (err) {
+                console.log(err)
+              }
+
+            }
           });
+
         }
         if (element.classList.contains("editorder")) {
           element.addEventListener("click", async function () {
             const params = {
               Id: this.dataset.id
             };
-            console.log( params )
+            //console.log( params )
             try {
-              await axios.get('/getcashorder', {params})
+              await axios.get('/getcashorder', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
-                  //console.log(obj[0].customerID)                  
+                  console.log(obj[0])
                   OrderDataExisting.BankType = obj[0].customerID
                   OrderDataExisting.OrderCategory = obj[0].order_category
                   OrderDataExisting.OrderType = obj[0].servicetype
@@ -828,10 +962,447 @@ export default defineComponent({
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
                   OrderDataExisting.Remark = obj[0].remark
-                  console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
-                  console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
-                  console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
-                  console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
+                  // console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
+                  // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
+                  // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
+                  // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
+                  console.log(OrderDataExisting);//OrderDataDet
+                  getBranchAndCashEdit()
+                  OrderDataExisting.OrderDataDet = []
+                  if (obj[0].note_new_1000 > 0)//--note new
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1000",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_1000,
+                      Quantity: obj[0].pcs_note_new_1000,
+                      Amount: obj[0].note_new_1000
+                    })
+                  } if (obj[0].note_new_500 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "500",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_500,
+                      Quantity: obj[0].pcs_note_new_500,
+                      Amount: obj[0].note_new_500
+                    })
+                  } if (obj[0].note_new_100 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "100",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_100,
+                      Quantity: obj[0].pcs_note_new_100,
+                      Amount: obj[0].note_new_100
+                    })
+                  } if (obj[0].note_new_50 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "50",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_50,
+                      Quantity: obj[0].pcs_note_new_50,
+                      Amount: obj[0].note_new_50
+                    })
+                  } if (obj[0].note_new_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_20,
+                      Quantity: obj[0].pcs_note_new_20,
+                      Amount: obj[0].note_new_20
+                    })
+                  } if (obj[0].note_new_10 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_10,
+                      Quantity: obj[0].pcs_note_new_10,
+                      Amount: obj[0].note_new_10
+                    })
+                  } if (obj[0].note_fit_1000 > 0)//--note fit
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1000",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_1000,
+                      Quantity: obj[0].pcs_note_fit_1000,
+                      Amount: obj[0].note_fit_1000
+                    })
+                  } if (obj[0].note_fit_500 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "500",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_500,
+                      Quantity: obj[0].pcs_note_fit_500,
+                      Amount: obj[0].note_fit_500
+                    })
+                  } if (obj[0].note_fit_100 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "100",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_100,
+                      Quantity: obj[0].pcs_note_fit_100,
+                      Amount: obj[0].note_fit_100
+                    })
+                  } if (obj[0].note_fit_50 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "50",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_50,
+                      Quantity: obj[0].pcs_note_fit_50,
+                      Amount: obj[0].note_fit_50
+                    })
+                  } if (obj[0].note_fit_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_20,
+                      Quantity: obj[0].pcs_note_fit_20,
+                      Amount: obj[0].note_fit_20
+                    })
+                  } if (obj[0].note_fit_10 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_10,
+                      Quantity: obj[0].pcs_note_fit_10,
+                      Amount: obj[0].note_fit_10
+                    })
+                  } if (obj[0].note_unfit_1000 > 0)//--note unfit
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1000",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_1000,
+                      Quantity: obj[0].pcs_note_unfit_1000,
+                      Amount: obj[0].note_unfit_1000
+                    })
+                  } if (obj[0].note_unfit_500 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "500",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_500,
+                      Quantity: obj[0].pcs_note_unfit_500,
+                      Amount: obj[0].note_unfit_500
+                    })
+                  } if (obj[0].note_unfit_100 > 0) {
+                    console.log({
+                      MoneyType: "100",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_100,
+                      Quantity: obj[0].pcs_note_unfit_100,
+                      Amount: obj[0].note_unfit_100
+                    })
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "100",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_100,
+                      Quantity: obj[0].pcs_note_unfit_100,
+                      Amount: obj[0].note_unfit_100
+                    })
+                  } if (obj[0].note_unfit_50 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "50",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_50,
+                      Quantity: obj[0].pcs_note_unfit_50,
+                      Amount: obj[0].note_unfit_50
+                    })
+                  } if (obj[0].note_unfit_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_20,
+                      Quantity: obj[0].pcs_note_unfit_20,
+                      Amount: obj[0].note_unfit_20
+                    })
+                  } if (obj[0].note_unfit_10 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_10,
+                      Quantity: obj[0].pcs_note_unfit_10,
+                      Amount: obj[0].note_unfit_10
+                    })
+                  } if (obj[0].note_uncount_1000 > 0)//--note uncount
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1000",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_1000,
+                      Quantity: obj[0].pcs_note_uncount_1000,
+                      Amount: obj[0].note_uncount_1000
+                    })
+                  } if (obj[0].note_uncount_500 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "500",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_500,
+                      Quantity: obj[0].pcs_note_uncount_500,
+                      Amount: obj[0].note_uncount_500
+                    })
+                  } if (obj[0].note_uncount_100 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "100",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_100,
+                      Quantity: obj[0].pcs_note_uncount_100,
+                      Amount: obj[0].note_uncount_100
+                    })
+                  } if (obj[0].note_uncount_50 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "50",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_50,
+                      Quantity: obj[0].pcs_note_uncount_50,
+                      Amount: obj[0].note_uncount_50
+                    })
+                  } if (obj[0].note_uncount_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_20,
+                      Quantity: obj[0].pcs_note_uncount_20,
+                      Amount: obj[0].note_uncount_20
+                    })
+                  } if (obj[0].note_uncount_10 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_10,
+                      Quantity: obj[0].pcs_note_uncount_10,
+                      Amount: obj[0].note_uncount_10
+                    })
+                  } if (obj[0].coin_new_10 > 0)//--coin new
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_10,
+                      Quantity: obj[0].pcs_coin_new_10,
+                      Amount: obj[0].coin_new_10
+                    })
+                  } if (obj[0].coin_new_5 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "5",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_5,
+                      Quantity: obj[0].pcs_coin_new_5,
+                      Amount: obj[0].note_coin_new_5
+                    })
+                  } if (obj[0].coin_new_2 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "2",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_2,
+                      Quantity: obj[0].pcs_coin_new_2,
+                      Amount: obj[0].coin_new_2
+                    })
+                  } if (obj[0].coin_new_1 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_1,
+                      Quantity: obj[0].pcs_coin_new_1,
+                      Amount: obj[0].coin_new_1
+                    })
+                  } if (obj[0].note_new_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_note_new_20,
+                      Quantity: obj[0].pcs_note_new_20,
+                      Amount: obj[0].note_new_20
+                    })
+                  } if (obj[0].coin_new_05 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.5",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_05,
+                      Quantity: obj[0].pcs_coin_new_05,
+                      Amount: obj[0].coin_new_05
+                    })
+                  } if (obj[0].coin_new_025 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.25",
+                      QualityMoneyType: "New",
+                      PackageMoneyType: obj[0].unit_coin_new_025,
+                      Quantity: obj[0].pcs_coin_new_025,
+                      Amount: obj[0].coin_new_025
+                    })
+                  } if (obj[0].coin_fit_10 > 0)//--coin fit
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_10,
+                      Quantity: obj[0].pcs_coin_fit_10,
+                      Amount: obj[0].coin_fit_10
+                    })
+                  } if (obj[0].coin_fit_5 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "5",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_5,
+                      Quantity: obj[0].pcs_coin_fit_5,
+                      Amount: obj[0].note_coin_fit_5
+                    })
+                  } if (obj[0].coin_fit_2 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "2",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_2,
+                      Quantity: obj[0].pcs_coin_fit_2,
+                      Amount: obj[0].coin_fit_2
+                    })
+                  } if (obj[0].coin_fit_1 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_1,
+                      Quantity: obj[0].pcs_coin_fit_1,
+                      Amount: obj[0].coin_fit_1
+                    })
+                  } if (obj[0].note_fit_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_note_fit_20,
+                      Quantity: obj[0].pcs_note_fit_20,
+                      Amount: obj[0].note_fit_20
+                    })
+                  } if (obj[0].coin_fit_05 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.5",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_05,
+                      Quantity: obj[0].pcs_coin_fit_05,
+                      Amount: obj[0].coin_fit_05
+                    })
+                  } if (obj[0].coin_fit_025 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.25",
+                      QualityMoneyType: "Fit",
+                      PackageMoneyType: obj[0].unit_coin_fit_025,
+                      Quantity: obj[0].pcs_coin_fit_025,
+                      Amount: obj[0].coin_fit_025
+                    })
+                  } if (obj[0].coin_unfit_10 > 0)//--coin unfit
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_10,
+                      Quantity: obj[0].pcs_coin_unfit_10,
+                      Amount: obj[0].coin_unfit_10
+                    })
+                  } if (obj[0].coin_unfit_5 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "5",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_5,
+                      Quantity: obj[0].pcs_coin_unfit_5,
+                      Amount: obj[0].note_coin_unfit_5
+                    })
+                  } if (obj[0].coin_unfit_2 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "2",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_2,
+                      Quantity: obj[0].pcs_coin_unfit_2,
+                      Amount: obj[0].coin_unfit_2
+                    })
+                  } if (obj[0].coin_unfit_1 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_1,
+                      Quantity: obj[0].pcs_coin_unfit_1,
+                      Amount: obj[0].coin_unfit_1
+                    })
+                  } if (obj[0].note_unfit_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_note_unfit_20,
+                      Quantity: obj[0].pcs_note_unfit_20,
+                      Amount: obj[0].note_unfit_20
+                    })
+                  } if (obj[0].coin_unfit_05 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.5",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_05,
+                      Quantity: obj[0].pcs_coin_unfit_05,
+                      Amount: obj[0].coin_unfit_05
+                    })
+                  } if (obj[0].coin_unfit_025 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.25",
+                      QualityMoneyType: "Unfit",
+                      PackageMoneyType: obj[0].unit_coin_unfit_025,
+                      Quantity: obj[0].pcs_coin_unfit_025,
+                      Amount: obj[0].coin_unfit_025
+                    })
+                  } if (obj[0].coin_uncount_10 > 0)//--coin uncount
+                  {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "10",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_10,
+                      Quantity: obj[0].pcs_coin_uncount_10,
+                      Amount: obj[0].coin_uncount_10
+                    })
+                  } if (obj[0].coin_uncount_5 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "5",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_5,
+                      Quantity: obj[0].pcs_coin_uncount_5,
+                      Amount: obj[0].note_coin_uncount_5
+                    })
+                  } if (obj[0].coin_uncount_2 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "2",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_2,
+                      Quantity: obj[0].pcs_coin_uncount_2,
+                      Amount: obj[0].coin_uncount_2
+                    })
+                  } if (obj[0].coin_uncount_1 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "1",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_1,
+                      Quantity: obj[0].pcs_coin_uncount_1,
+                      Amount: obj[0].coin_uncount_1
+                    })
+                  } if (obj[0].note_uncount_20 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "20",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_note_uncount_20,
+                      Quantity: obj[0].pcs_note_uncount_20,
+                      Amount: obj[0].note_uncount_20
+                    })
+                  } if (obj[0].coin_uncount_05 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.5",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_05,
+                      Quantity: obj[0].pcs_coin_uncount_05,
+                      Amount: obj[0].coin_uncount_05
+                    })
+                  } if (obj[0].coin_uncount_025 > 0) {
+                    OrderDataExisting.OrderDataDet.push({
+                      MoneyType: "0.25",
+                      QualityMoneyType: "Uncount",
+                      PackageMoneyType: obj[0].unit_coin_uncount_025,
+                      Quantity: obj[0].pcs_coin_uncount_025,
+                      Amount: obj[0].coin_uncount_025
+                    })
+                  }
+                  console.log(OrderDataExisting.OrderDataDet[1].MoneyType)
+                  console.log(OrderDataExisting.OrderDataDet.length)
                   // addEditItem
                 }, (res) => {
                   // error callback
@@ -839,7 +1410,7 @@ export default defineComponent({
                 }).finally(() => {
                   //
                 });
-                onMounted(getBranchAndCashEdit)
+              // onMounted(getBranchAndCashEdit)
             }
             catch (err) {
               console.log(err)
@@ -861,8 +1432,71 @@ export default defineComponent({
     const updateCheckedRows = (rowsKey) => {
       console.log(rowsKey);
     };
-    return { searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish,OrderDataExisting,getBranchAndCashEdit };
+    const editOrder = async () => {
+      const formData = new FormData()
+      formData.append('OrderCategoryNew', this.NewOrder.OrderCategoryNew)
+      formData.append('OrderTypeNew', this.NewOrder.OrderTypeNew)
+      formData.append('BankTypeNew', this.NewOrder.BankTypeNew)
+      formData.append('JobDateNew', this.NewOrder.JobDateNew)
+      formData.append('RefNo', this.NewOrder.RefNo)
+      formData.append('RemarkNew', this.NewOrder.RemarkNew)
+      formData.append('BranchOrigin', this.NewOrder.BranchOrigin.branch_name)
+      formData.append('BranchDest', this.NewOrder.BranchDest.branch_name)
+      formData.append('BranchOrigin_code', this.NewOrder.BranchOrigin.branch_id)
+      formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
+      formData.append('AllRowsDet', this.Id)
+      formData.append('user_id', this.user_id)
+      for (var index = 0; index < this.Id; index++) {
+        if (document.getElementById("ddlMoneyType" + (index + 1))) {
+          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
+          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
+          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
+          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
+          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+          // Id_++
+        }
+      }
+      this.showmyModalNew = true
+      var object = {}
+      formData.forEach((value, key) => object[key] = value)
+      var json = JSON.stringify(object)
+      console.log('add data')
+      console.log(json)
+      // try {
+      //   await axios.post('/edit_order', json)
+      //     .then((res) => {
+      //       // success callback
+      //       console.log(res.data)
+      //       this.$refs.ClosemyModalNew.click();
+
+      //     }, (res) => {
+      //       // error callback
+      //       console.log(res.data.message)
+      //     }).finally(() => {
+      //       this.$router.push('/listorder')
+      //     });
+      //   this.message = "File has been upload"
+      //   this.file = ""
+      //   this.error = false
+      // }
+      // catch (err) {
+      //   console.log(err)
+      //   this.message = "Something went wrong"
+      //   this.error = true
+      // }
+    }
+    return {
+      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish,
+      OrderDataExisting, getBranchAndCashEdit, addEditItem, rowDataEdit
+      , editOrder, formatPrice
+    };
   },
+  // computed: {
+  //   locale: () => enUS,
+  // },
+  // watch: {
+  //   selected: (value) => console.log(value),
+  // },
   methods: {
     deleteData(index) {
       console.log(index)
@@ -1019,9 +1653,9 @@ export default defineComponent({
       let ddlQualityMoneyType = ""
       ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + this.Id + "'>"
       ddlQualityMoneyType += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyType += "<option value='Good'>ดี</option>"
+      ddlQualityMoneyType += "<option value='Fit'>ดี</option>"
       ddlQualityMoneyType += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyType += "<option value='Unsort'>รอคัดนับ</option>"
+      ddlQualityMoneyType += "<option value='Uncount'>รอคัดนับ</option>"
       ddlQualityMoneyType += "</select>"
       let ddlPackageMoneyType = ""
       ddlPackageMoneyType = "<select class='form-select form-select-sm' id='ddlPackageMoneyType" + this.Id + "'>"
@@ -1076,6 +1710,7 @@ export default defineComponent({
       var object = {}
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
+      console.log('add data')
       console.log(json)
       try {
         await axios.post('/manual_add_order', json)
@@ -1099,7 +1734,14 @@ export default defineComponent({
         this.message = "Something went wrong"
         this.error = true
       }
-    }
+    },
+    // isToday (date) {
+    // 	return isSameDay(date, new Date())
+    // },
+    // isMorning(date) {
+    //   const newDate = set(new Date(date.getTime()), { hours: 11, minutes: 0 })
+    //   return date < newDate;
+    // },
   },
   // mounted() {
   //   this.oModalNew = new Modal(this.$refs.myModalNew)
