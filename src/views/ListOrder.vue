@@ -418,7 +418,7 @@
                       หมายเหตุ
                     </div>
                     <div class="col ps-4 d-flex">
-                      &nbsp;<input type="text" id="RemarkNew" class="form-control" style="width:15rem;"
+                      &nbsp;<input type="text" id="RemarkEdit" class="form-control" style="width:15rem;"
                         v-model="OrderDataExisting.Remark">
                     </div>
                   </div>
@@ -526,10 +526,7 @@ import axios from 'axios'
 import moment from 'moment'
 import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
-
-
-
-
+import { useRouter } from 'vue-router'
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
@@ -582,6 +579,7 @@ export default defineComponent({
     }
   },
   setup() {
+    const router = useRouter()
     console.log("setup")
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -791,7 +789,6 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             let sOutput = ''
-
             if (row.cashstatus === '1') {
               sOutput = 'สร้างคำสั่ง'
             }
@@ -878,20 +875,20 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("rejectorder")) {
-          element.addEventListener("click", async () => {
-            // console.log(this.dataset.id + " rejectorder!!");
+          element.addEventListener("click", async function () {
+            //  console.log(this.dataset.id + " rejectorder!!");
             if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'
               };
               try {
-                await axios.get('/rejectorder', { params })
+                await axios.get('/update_cashstatus_order', { params })
                   .then((res) => {
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
                     console.log(obj[0])
-                    this.$router.push('/listorder')
+                    router.push('/listorder')
                     // addEditItem
                   }, (res) => {
                     // error callback
@@ -909,20 +906,20 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("cancelorder")) {
-          element.addEventListener("click", async () => {
+          element.addEventListener("click", async function () { 
             // console.log(this.dataset.id + " rejectorder!!");
             if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
-                Type_: 'reject'
+                Type_: 'cancel'
               };
               try {
-                await axios.get('/rejectorder', { params })
+                await axios.get('/update_cashstatus_order', { params })
                   .then((res) => {
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
                     console.log(obj[0])
-                    this.$router.push('/listorder')
+                    router.push('/listorder')
                     // addEditItem
                   }, (res) => {
                     // error callback
