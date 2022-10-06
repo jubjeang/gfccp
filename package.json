@@ -17,9 +17,10 @@
     "jquery": "^3.6.0",
     "moment": "^2.29.4",
     "popper.js": "^1.16.1",
-    "vue": "^3.0.0",
+    "vue": "^3.2.37",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.0.0-0",
+    "vue3-datepicker": "^0.3.4",
     "vue3-table-lite": "^1.2.4"
   },
   "devDependencies": {

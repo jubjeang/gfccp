@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <Sidebar />
+    <Sidebar :probs_isVisible=true :probs_isVisible2=false  />
     <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
         <!-- <div class="container p-0" style="width: 200rem"> -->
         <div class="row p-1" style="width: 100%">
@@ -137,7 +137,7 @@
                                                             <label class="form-check-label"
                                                                 for="inlineCheckbox3">4</label>
                                                         </div>
-                                                    </div>                                                    
+                                                    </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="ATM" role="tabpanel"
                                                     aria-labelledby="ATM-tab">...ATM</div>
@@ -280,7 +280,9 @@ export default defineComponent({
     name: 'ApproveList',
     components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
     setup() {
-        return { collapsed, toggleSidebar, sidebarWidth, }
+        const probs_isVisible = ref(true)
+        const probs_isVisible2 = ref(false)
+        return { collapsed, toggleSidebar, sidebarWidth, probs_isVisible, probs_isVisible2 }
     },
     data() {
         return {

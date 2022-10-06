@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <Sidebar />
+    <Sidebar :probs_isVisible=false :probs_isVisible2=true  />
     <div :style="{ 'margin-left': sidebarWidth }">
 
         <div class="container p-0" style="width: 100%">
@@ -24,7 +24,7 @@
                     </div>
                 </div> -->
                 <div class="col m-0 p-0">
-                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiZDgxN2I4OTQtYzhiMC00ZTYxLWJjNDMtZTY5OGI5NWQxYWJkIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiNjY4ZjVmZTItZWRjYS00NDJhLThmNmUtOTJhNGRhZjg3OTcxIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                 </div>
             </div>
         </div>
@@ -36,13 +36,15 @@ import Sidebar from '../components/sidebar/Sidebar'
 import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
 import Header from '../components/Header'
 import axios from 'axios'
-
+import { ref } from "vue";
 
 export default {
 name: 'InvHistorical',
 components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
-setup() {
-return { collapsed, toggleSidebar, sidebarWidth, }
+setup() { 
+    const probs_isVisible = ref(true)
+        const probs_isVisible2 = ref(false)
+return { collapsed, toggleSidebar, sidebarWidth, probs_isVisible, probs_isVisible2 }
 },
 data() {
 return {

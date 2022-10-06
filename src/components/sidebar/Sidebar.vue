@@ -1,29 +1,47 @@
 <script>
 import SidebarLink from './SidebarLink'
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
-
+import { ref } from "vue";
+import { useRouter } from 'vue-router'
 export default {
-  props: {},
-  components: { SidebarLink },
-  setup() {
-    return { collapsed, toggleSidebar, sidebarWidth }
-  }, data() {
-    return {
-      isVisible: false,
-      isVisible2: false,
-    }
+  props: { 
+    probs_isVisible: { type: Boolean, required: true, default: false },
+    probs_isVisible2: { type: Boolean, required: true, default: false }
   },
-  methods: {
-    toggleVisible() {
-      setTimeout(() => this.isVisible = !this.isVisible, 200);
-    },
-    toggleVisible2() {
-      setTimeout(() => this.isVisible2 = !this.isVisible2, 200);
-    },
-    gotoMainPage() {
-      this.$router.push('/main')
-    },
-  }
+  components: { SidebarLink },
+  setup(props) {  
+    const isVisible = ref(props.probs_isVisible)
+    const isVisible2 = ref(props.probs_isVisible2)
+    const router = useRouter() 
+    const toggleVisible =()=>{
+      setTimeout(() => isVisible.value = !isVisible.value, 200);
+    }
+    const toggleVisible2 =()=>{
+      setTimeout(() => isVisible2.value = !isVisible2.value, 200);
+    }
+    const gotoMainPage =()=>{
+      router.push('/main')
+    }
+    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,router,toggleVisible,toggleVisible2,gotoMainPage }
+   },// data() { 
+  //   return {
+  //     // isVisible: false,
+  //     // isVisible2: false,
+  //     isVisible: probs_isVisible,
+  //     isVisible2: probs_isVisible2,
+  //   }
+  // },
+  // methods: {
+  //   toggleVisible() {
+  //     setTimeout(() => this.isVisible = !this.isVisible, 200);
+  //   },
+  //   toggleVisible2() {
+  //     setTimeout(() => this.isVisible2 = !this.isVisible2, 200);
+  //   },
+  //   gotoMainPage() {
+  //     this.$router.push('/main')
+  //   },
+  // }
 }
 </script>
 
@@ -140,9 +158,7 @@ export default {
   position: absolute;
   bottom: 0;
   padding: 0.75em;
-
   color: rgba(255, 255, 255, 0.7);
-
   transition: 0.2s linear;
 }
 

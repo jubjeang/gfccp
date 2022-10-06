@@ -11,7 +11,7 @@
       </div>
       <div class="row p-1" style="width: 100%">
         <div class="col text-center">
-          <iframe title="Home" width="1200rem" height="550rem" src="https://app.powerbi.com/view?r=eyJrIjoiMGI1YTg0MjQtOTRhMy00MWM0LWJhZmEtY2ExZjUwNTM1MDE0IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D&pageName=ReportSection&filter=VHome%2FCustomerID%20eq%20%27ea0087c9-4172-4c03-92c5-4cc0cd9ac62d%27" frameborder="0" allowFullScreen="true"></iframe>
+          <iframe title="Home" width="1200rem" height="550rem" src="https://app.powerbi.com/view?r=eyJrIjoiNGQzNDMxNTktMzk0OC00ZWMyLWIxMzUtMGNhMTZkNmQ3ZmI5IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
         </div>
       </div>
     </div>

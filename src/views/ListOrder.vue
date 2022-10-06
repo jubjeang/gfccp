@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar />
+  <Sidebar :probs_isVisible=true :probs_isVisible2=false  />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
@@ -111,8 +111,9 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" id="JobDate" class="form-control" style="width:15rem;" v-model="JobDate" min="01-01-1997" max="31-01-2030">
-                      
+                      <!-- <input type="date" id="JobDate" class="form-control" style="width:15rem;" 
+                         @change="setFormat" v-model="JobDate" > -->
+                         <datepicker v-model="JobDate"  id="JobDate" class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
                       <!-- <datepicker class="form-control"  v-model="date_" style="width:15rem;"
                          :format="format" :inline="true" >
                         <template v-slot:clear="{ onClear }">
@@ -127,8 +128,7 @@
                       แนบไฟล์
                     </div>
                     <div class="col">
-                      <input class="form-control form-control-sm form-control-file" @change="selectFile" ref="file"
-                        style="width:15rem;" type="file" id="formFile" />
+                      <input class="form-control form-control-sm form-control-file" @change="selectFile" style="width:15rem;" type="file" id="formFile" />
                     </div>
                   </div>
                 </div>
@@ -136,7 +136,7 @@
               <div class="modal-footer">
                 <button class="btn btn-primary">บันทึก</button>
                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal"
-                  ref="ClosemyModal">ยกเลิก</button>
+                  ref="ClosemyModal" id="ClosemyModal">ยกเลิก</button>
               </div>
             </div>
           </div>
@@ -378,9 +378,24 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" min="20-10-1900" max="31-01-2999" rules="required" id="JobDateEdit"
-                        class="form-control" style="width:15rem;" v-model="OrderDataExisting.JobDate"
-                        v-bind="{value:  OrderDataExisting.JobDate }">
+                      <input type="date" rules="required" id="JobDateEdit" class="form-control " style="width:15rem;"
+                        v-model="OrderDataExisting.JobDate" v-bind="{value:  format_date(OrderDataExisting.JobDate) }">
+                      <!-- <Datepicker :format="format_date(OrderDataExisting.JobDate)" /> -->
+
+                      <!-- <Datepicker  rules="required" id="JobDateEdit" class="form-control " style="width:15rem;"
+                         :format="format_date" v-model="OrderDataExisting.JobDate" 
+                        v-bind="{value:  OrderDataExisting.JobDate }"></Datepicker> -->
+
+                      <!-- <input type="date" pattern="\d{2}/\m{2}/\d{4}" rules="required" id="JobDateEdit" class="form-control " style="width:15rem;" 
+                      v-model="OrderDataExisting.JobDate"
+                        v-bind="{value:  OrderDataExisting.JobDate }"  data-date-format="dd/mm/yyyy"> -->
+
+                      <!-- <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control">
+                        <div class="input-group-addon">
+                          <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                      </div> -->
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -447,7 +462,7 @@
                         <tr v-for="data, index in OrderDataExisting.OrderDataDet" :key="data.Id">
                           <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
                                 class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
-                              @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
+                              @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7"
                               style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
                           <td scope="col" @click="calamount(data.Id)" @keyup="calamount(data.Id)">
                             <select class="form-select form-select-sm text-right"
@@ -493,7 +508,7 @@
                           </td>
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbAmount'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount)}"
+                              v-bind="{ id: 'tbAmountEdit'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount)}"
                               v-model="OrderDataExisting.OrderDataDet[index].Amount" class='form-control text-right'
                               style='width:10rem;' readonly='readonly' />
                           </td>
@@ -527,23 +542,25 @@ import moment from 'moment'
 import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
+import Datepicker from 'vue3-datepicker'
+
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
   name: 'ListOrder',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
+  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth,Datepicker },
   data() {
     return {
-      file: "",
-      error: false,
-      error2: false,
-      message: "",
-      messageNew: "",
-      messageEdit: "",
-      OrderCategory: "BankBranch",
-      OrderType: "",
-      BankType: "",
-      JobDate: null,
+      // file: "",
+      // error: false,
+      // error2: false,
+      // message: "",
+      // messageNew: "",
+      // messageEdit: "",
+      // OrderCategory: "BankBranch",
+      // OrderType: "",
+      // BankType: "",
+      // JobDate: new Date(),
       //Data_: [],
       rowData: [],
       NewOrder: {
@@ -560,11 +577,11 @@ export default defineComponent({
       },
       NewOrderDet: [],
       Id: 0,
-      user_id: localStorage.getItem('user_id'),
-      department_id: localStorage.getItem('department_id'),
-      position_id: localStorage.getItem('position_id'),
-      CustomerID: localStorage.getItem('CustomerID'),
-      gfc_cct: localStorage.getItem('gfc_cct'),
+      // user_id: localStorage.getItem('user_id'),
+      // department_id: localStorage.getItem('department_id'),
+      // position_id: localStorage.getItem('position_id'),
+      // CustomerID: localStorage.getItem('CustomerID'),
+      // gfc_cct: localStorage.getItem('gfc_cct'),
       // time: null,
       // full: null,
       // selected: null,
@@ -579,8 +596,71 @@ export default defineComponent({
     }
   },
   setup() {
+    //upload data
+    const file = ref(File | null)//ref('')
+    const error = ref( false )
+    const error2 = ref( false )
+    const message = ref('')
+    const messageNew = ref('')
+    const messageEdit = ref('')
+    const OrderCategory = ref('BankBranch')
+    const OrderType = ref('')
+    const BankType = ref('')
+    const JobDate = ref(new Date())
+    const user_id = ref(localStorage.getItem('user_id'))
+    const department_id = ref(localStorage.getItem('department_id'))
+    const position_id = ref(localStorage.getItem('position_id'))
+    const CustomerID = ref(localStorage.getItem('CustomerID'))
+    const gfc_cct = ref(localStorage.getItem('gfc_cct'))
+
     const router = useRouter()
     console.log("setup")
+    
+    const sendFile = async (e) =>{  
+      const target = e.target
+            if (target && target.files) {
+                file.value = target.files[0];
+            }
+      let formData = new FormData()
+      formData.append('file', file.value)
+      formData.append('OrderCategory', OrderCategory.value)
+      formData.append('OrderType', OrderType.value)
+      formData.append('BankType', BankType.value)
+      formData.append('JobDate', JobDate.value)
+      formData.append('gfc_cct', gfc_cct.value)
+      formData.append('user_id', user_id.value)
+      //console.log(formData)
+       formData.forEach(element => console.log(element))
+      try {
+        await axios.post('/upload', formData)
+          .then((res) => {
+            // success callback
+            console.log(res.data)
+            document.getElementById('ClosemyModal').click();
+            //this.$refs.ClosemyModal.click();
+            router.push('/listorder')
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+        message.value = "File has been upload"
+        file.value = ""
+        error.value = false
+      }
+      catch (err) {
+        console.log(err)
+        message.value = "Something went wrong"
+        error.value = true
+      }
+
+    }
+    const selectFile =(e)=>  {
+      // file.value = this.$refs.file.files[0]
+      file.value = e.target.files[0]
+      //headline.value.textContent
+      error.value = false
+      message.value = ""
+    }
     const searchTerm = ref(""); // Search text
     // Fake data
     const data = reactive({
@@ -597,9 +677,41 @@ export default defineComponent({
         }, (res) => {
           // error callback
           console.log(res.data)
-        });
-      // table.ajax.reload()
-    })
+        })
+        //file.value =  ref_file.value.        
+    })    
+    const format_date = (date_) => {
+        console.log('date_: ' + date_)
+        let date__ = null
+        let day = null//date__.getDate();
+        let month = null//date__.getMonth() + 1;
+        let year = null//date__.getFullYear();
+        if (date_) {
+          date__ = moment(date_).format('DD-MM-YYYY')
+          console.log('date__: ' + date__)
+          console.log('moment: ' + moment(date_).format('DD-MM-YYYY'))
+          day = moment(date_).format('DD');//date__.getDate();
+          month = moment(date_).format('MM')//date__.getMonth() + 1;
+          year = moment(date_).format('YYYY')//date__.getFullYear();
+          console.log('day: ' + day)
+          console.log('month: ' + month)
+          console.log('year: ' + year)
+        }
+        else {
+          date__ = new Date(date_)
+          //const date__ = moment(date_).format('DD-MM-YYYY')
+          ///console.log('moment: ' + moment(date_).format('DD-MM-YYYY'))
+          day = date__.getDate();
+          month = date__.getMonth() + 1;
+          year = date__.getFullYear();
+          console.log('day: ' + day)
+          console.log('month: ' + month)
+          console.log('year: ' + year)
+
+        }
+        console.log(`${day}/${month}/${year}`)
+        return `${year}-${month}-${day}`;
+      }    
     /**
      * Get server data request
      */
@@ -906,7 +1018,7 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("cancelorder")) {
-          element.addEventListener("click", async function () { 
+          element.addEventListener("click", async function () {
             // console.log(this.dataset.id + " rejectorder!!");
             if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
               const params = {
@@ -953,7 +1065,7 @@ export default defineComponent({
                   OrderDataExisting.OrderCategory = obj[0].order_category
                   OrderDataExisting.OrderType = obj[0].servicetype
                   OrderDataExisting.RefNo = obj[0].refno
-                  OrderDataExisting.JobDate = obj[0].order_date
+                  OrderDataExisting.JobDate = format_date(obj[0].order_date)
                   OrderDataExisting.BranchOriginText = obj[0].branchorigin_name
                   OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
@@ -1431,25 +1543,25 @@ export default defineComponent({
     };
     const editOrder = async () => {
       const formData = new FormData()
-      formData.append('OrderCategoryNew', this.NewOrder.OrderCategoryNew)
-      formData.append('OrderTypeNew', this.NewOrder.OrderTypeNew)
-      formData.append('BankTypeNew', this.NewOrder.BankTypeNew)
-      formData.append('JobDateNew', this.NewOrder.JobDateNew)
-      formData.append('RefNo', this.NewOrder.RefNo)
-      formData.append('RemarkNew', this.NewOrder.RemarkNew)
-      formData.append('BranchOrigin', this.NewOrder.BranchOrigin.branch_name)
-      formData.append('BranchDest', this.NewOrder.BranchDest.branch_name)
-      formData.append('BranchOrigin_code', this.NewOrder.BranchOrigin.branch_id)
-      formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
+      formData.append('OrderCategory', this.OrderDataExisting.OrderCategory)
+      formData.append('OrderType', this.OrderDataExisting.OrderType)
+      formData.append('BankType', this.OrderDataExisting.BankType)
+      formData.append('JobDateNew', this.OrderDataExisting.JobDate)
+      formData.append('RefNo', this.OrderDataExisting.RefNo)
+      formData.append('RemarkNew', this.OrderDataExisting.Remark)
+      formData.append('BranchOrigin', this.OrderDataExisting.BranchOrigin.branch_name)
+      formData.append('BranchDest', this.OrderDataExisting.BranchDest.branch_name)
+      formData.append('BranchOrigin_code', this.OrderDataExisting.BranchOrigin.branch_id)
+      formData.append('BranchDest_code', this.OrderDataExisting.BranchDest.branch_id)
       formData.append('AllRowsDet', this.Id)
       formData.append('user_id', this.user_id)
       for (var index = 0; index < this.Id; index++) {
-        if (document.getElementById("ddlMoneyType" + (index + 1))) {
-          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
-          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
-          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
-          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
-          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+        if (document.getElementById("ddlMoneyTypeEdit" + (index + 1))) {
+          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyTypeEdit" + (index + 1)).value)
+          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyTypeEdit" + (index + 1)).value)
+          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyTypeEdit" + (index + 1)).value)
+          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantityEdit" + (index + 1)).value)
+          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmountEdit" + (index + 1)).value)
           // Id_++
         }
       }
@@ -1485,8 +1597,9 @@ export default defineComponent({
     return {
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish,
       OrderDataExisting, getBranchAndCashEdit, addEditItem, rowDataEdit
-      , editOrder, formatPrice
-    };
+      , editOrder, formatPrice, router, format_date,sendFile,selectFile,file,error,error2, message,messageNew,messageEdit,OrderCategory,OrderType,BankType,JobDate,
+      user_id ,department_id,position_id ,CustomerID,gfc_cct,
+    }
   },
   // computed: {
   //   locale: () => enUS,
@@ -1499,42 +1612,43 @@ export default defineComponent({
       console.log(index)
       this.rowData.splice(index, 1)
     },
-    selectFile() {
-      this.file = this.$refs.file.files[0]
-      this.error = false
-      this.message = ""
-    },
-    async sendFile() {
-      const formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('OrderCategory', this.OrderCategory)
-      formData.append('OrderType', this.OrderType)
-      formData.append('BankType', this.BankType)
-      formData.append('JobDate', this.JobDate)
-      formData.append('gfc_cct', this.gfc_cct)
-      formData.append('user_id', this.user_id)
-      // formData.forEach(element => console.log(element))
-      try {
-        await axios.post('/upload', formData)
-          .then((res) => {
-            // success callback
-            console.log(res.data)
-            this.$refs.ClosemyModal.click();
-            this.$router.push('/listorder')
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-        this.message = "File has been upload"
-        this.file = ""
-        this.error = false
-      }
-      catch (err) {
-        console.log(err)
-        this.message = "Something went wrong"
-        this.error = true
-      }
-    },
+    // selectFile() {
+    //   this.file = this.$refs.file.files[0]
+    //   this.error = false
+    //   this.message = ""
+    // },
+    // async sendFile() {
+    //   const formData = new FormData()
+    //   formData.append('file', this.file)
+    //   formData.append('OrderCategory', this.OrderCategory)
+    //   formData.append('OrderType', this.OrderType)
+    //   formData.append('BankType', this.BankType)
+    //   formData.append('JobDate', this.JobDate)
+    //   formData.append('gfc_cct', this.gfc_cct)
+    //   formData.append('user_id', this.user_id)
+    //   //console.log
+    //   // formData.forEach(element => console.log(element))
+    //   // try {
+    //   //   await axios.post('/upload', formData)
+    //   //     .then((res) => {
+    //   //       // success callback
+    //   //       console.log(res.data)
+    //   //       this.$refs.ClosemyModal.click();
+    //   //       this.$router.push('/listorder')
+    //   //     }, (res) => {
+    //   //       // error callback
+    //   //       console.log(res.data.message)
+    //   //     });
+    //   //   this.message = "File has been upload"
+    //   //   this.file = ""
+    //   //   this.error = false
+    //   // }
+    //   // catch (err) {
+    //   //   console.log(err)
+    //   //   this.message = "Something went wrong"
+    //   //   this.error = true
+    //   // }
+    // },
     dateTime(value) {
       return moment(value).format("DD-MM-YYYY");
     },
@@ -1732,6 +1846,9 @@ export default defineComponent({
         this.error = true
       }
     },
+    formatDate(date) {
+      return moment(date).format('DD-MM-YYYY')
+    }
     // isToday (date) {
     // 	return isSameDay(date, new Date())
     // },
