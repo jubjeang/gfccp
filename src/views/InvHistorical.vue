@@ -24,7 +24,8 @@
                     </div>
                 </div> -->
                 <div class="col m-0 p-0">
-                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiNjY4ZjVmZTItZWRjYS00NDJhLThmNmUtOTJhNGRhZjg3OTcxIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
+                    <!-- <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiNjY4ZjVmZTItZWRjYS00NDJhLThmNmUtOTJhNGRhZjg3OTcxIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe> -->
                 </div>
             </div>
         </div>
@@ -33,145 +34,43 @@
 
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
-import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
+import { sidebarWidth } from '../components/sidebar/state'
 import Header from '../components/Header'
 import axios from 'axios'
-import { ref } from "vue";
-
+import { reactive, ref } from "vue"
 export default {
-name: 'InvHistorical',
-components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
-setup() { 
-    const probs_isVisible = ref(true)
-        const probs_isVisible2 = ref(false)
-return { collapsed, toggleSidebar, sidebarWidth, probs_isVisible, probs_isVisible2 }
-},
-data() {
-return {
-file: "",
-error: false,
-message: "",
-OrderCategory: "BankBranch",
-OrderType: "",
-BankType: "",
-JobDate: null,
+  name: 'InvHistorical',
+  components: { Sidebar, Header },
+  data() {
+    return {
+      user_name: localStorage.getItem('user_name'),
+    }
+  },
+  setup() { 
+    const data = reactive({
+      user_name: localStorage.getItem('user_name'),
+      user_id: localStorage.getItem('user_id'),
+      CustomerID: localStorage.getItem('CustomerID'),
+      pbi_url: '',      
+    })
+    const params = {
+          CustomerID: data.CustomerID,
+          pagname: 'invhistorical'
+        };
+    axios.get('/get_pbi_url', { params })
+      .then((res) => {
+        data.pbi_url = JSON.parse(JSON.stringify(res.data[0].pbi_url))
+        //console.log( data.pbi_url )
+        // console.log("Data_: ",Data_)
+        //Data_
+        // console.log(fakeData)
+      }, (res) => {
+        // error callback
+        console.log(res.data)
+      })
+    return { sidebarWidth,data }
+  }
 }
-},
-// data: () => ({
-//       date: '2019-01-01'
-//   })
-methods: {
-selectFile() {
-this.file = this.$refs.file.files[0]
-this.error = false
-this.message = ""
-},
-async sendFile() {
-
-const formData = new FormData()
-formData.append('file', this.file)
-formData.append('OrderCategory', this.OrderCategory)
-formData.append('OrderType', this.OrderType)
-formData.append('BankType', this.BankType)
-formData.append('JobDate', this.JobDate)
-formData.forEach(element => console.log(element))
-try {
-await axios.post('/upload', formData)
-.then((res) => {
-// success callback
-console.log(res.data.message)
-}, (res) => {
-// error callback
-console.log(res.data.message)
-});
-console.log(formData)
-console.log(this.OrderCategory)
-this.message = "File has been upload"
-this.file = ""
-this.error = false
-}
-catch (err) {
-console.log(err)
-this.message = "Something went wrong"
-this.error = true
-}
-}
-// format(value, event) {
-//   return moment(value).format('DD/MM/YYYY')
-// }
-},
-mounted() {
-console.log('test')
-const ctx_doughnut = document.getElementById("myChart_doughnut")
-const ctx_bar = document.getElementById("myChart_bar")
-const data_doughnut = {
-labels: [
-'ศูนย์หลักสี่',
-'ศูนย์ชลบุรี',
-'ศูนย์ฉะเชิงเทรา',
-'ศูนย์เชียงใหม่',
-'ศูนย์หาดใหญ่'
-],
-datasets: [{
-label: 'คงคลัง',
-data: [220, 100, 150, 180, 120],
-backgroundColor: [
-'rgb(255, 99, 132)',
-'rgb(54, 162, 235)',
-'rgb(255, 162, 235)',
-'rgb(170, 162, 235)',
-'rgb(255, 205, 86)'
-],
-hoverOffset: 4
-}]
-};
-const data_bar = {
-labels: ['ศูนย์หลักสี่',
-'ศูนย์ชลบุรี',
-'ศูนย์ฉะเชิงเทรา',
-'ศูนย์เชียงใหม่',
-'ศูนย์หาดใหญ่'],
-datasets: [{
-label: 'คงคลัง',
-data: [220, 100, 150, 180, 120],
-backgroundColor: [
-'rgb(255, 99, 132)',
-'rgb(54, 162, 235)',
-'rgb(255, 162, 235)',
-'rgb(170, 162, 235)',
-'rgb(255, 205, 86)'
-],
-borderColor: [
-'rgba(255, 99, 132, 1)',
-'rgba(54, 162, 235, 1)',
-'rgba(255, 206, 86, 1)',
-'rgba(75, 192, 192, 1)',
-'rgba(153, 102, 255, 1)',
-'rgba(255, 159, 64, 1)'
-],
-borderWidth: 1
-}]
-};
-// const myChart_doughnut = new Chart(ctx_doughnut, {
-// type: 'doughnut',
-// data: data_doughnut,
-// });
-// const myChart_bar = new Chart(ctx_bar, {
-// type: 'bar',
-// data: data_bar,
-// options: {
-// scales: {
-// y: {
-// beginAtZero: true
-// }
-// }
-// },
-// });
-// myChart_doughnut;
-// myChart_bar;
-}
-}
-
 </script>
 
 <style scoped lang="css">

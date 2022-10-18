@@ -23,25 +23,7 @@ export default {
       router.push('/main')
     }
     return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,router,toggleVisible,toggleVisible2,gotoMainPage }
-   },// data() { 
-  //   return {
-  //     // isVisible: false,
-  //     // isVisible2: false,
-  //     isVisible: probs_isVisible,
-  //     isVisible2: probs_isVisible2,
-  //   }
-  // },
-  // methods: {
-  //   toggleVisible() {
-  //     setTimeout(() => this.isVisible = !this.isVisible, 200);
-  //   },
-  //   toggleVisible2() {
-  //     setTimeout(() => this.isVisible2 = !this.isVisible2, 200);
-  //   },
-  //   gotoMainPage() {
-  //     this.$router.push('/main')
-  //   },
-  // }
+   },
 }
 </script>
 
@@ -100,9 +82,14 @@ export default {
             ประวัติคงคลัง
           </SidebarLink>
         </li>
+        <li>
+          <SidebarLink to="/dayliactivity" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
+            กิจกรรมรายวัน
+          </SidebarLink>
+        </li>
       </ul>
     </transition>
-    <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink>
+    <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />
     </span>

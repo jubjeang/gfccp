@@ -37,6 +37,11 @@ const routes = [
     component: () => import('../views/InvHistorical.vue')
   },
   {
+    path: '/dayliactivity',
+    name: 'DayliActivity',
+    component: () => import('../views/DayliActivity.vue')
+  },
+  {
     path: '/approvelist',
     name: 'ApproveList',
     component: () => import('../views/ApproveList.vue')

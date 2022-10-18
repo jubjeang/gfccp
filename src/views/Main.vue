@@ -7,11 +7,12 @@
         <div class="col text-left">&nbsp;</div>
       </div>
       <div class="d-flex justify-content-start">
-        <h3 class="d-flex justify-content-start ps-3">ยินดีต้อนรับคุณ {{ user_name }}</h3>
+        <h3 class="d-flex justify-content-start ps-3">ยินดีต้อนรับคุณ {{ data.user_name }}</h3>
       </div>
       <div class="row p-1" style="width: 100%">
         <div class="col text-center">
-          <iframe title="Home" width="1200rem" height="550rem" src="https://app.powerbi.com/view?r=eyJrIjoiNGQzNDMxNTktMzk0OC00ZWMyLWIxMzUtMGNhMTZkNmQ3ZmI5IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+          <!-- <iframe title="Home" width="1200rem" height="550rem" :src src="https://app.powerbi.com/view?r=eyJrIjoiNGQzNDMxNTktMzk0OC00ZWMyLWIxMzUtMGNhMTZkNmQ3ZmI5IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe> -->
+          <iframe title="Home" width="1200rem" height="550rem" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
         </div>
       </div>
     </div>
@@ -21,6 +22,8 @@
 import Sidebar from '../components/sidebar/Sidebar'
 import { sidebarWidth } from '../components/sidebar/state'
 import HeaderMain from '../components/HeaderMain'
+import axios from 'axios'
+import { reactive, ref } from "vue"
 export default {
   name: 'Main',
   components: { Sidebar, HeaderMain },
@@ -29,10 +32,29 @@ export default {
       user_name: localStorage.getItem('user_name'),
     }
   },
-  setup() {
-    let var_ = localStorage.getItem('user_id')
-    console.log(var_)
-    return { sidebarWidth }
+  setup() { 
+    const data = reactive({
+      user_name: localStorage.getItem('user_name'),
+      user_id: localStorage.getItem('user_id'),
+      CustomerID: localStorage.getItem('CustomerID'),
+      pbi_url: '',      
+    })
+    const params = {
+          CustomerID: data.CustomerID,
+          pagname: 'main'
+        };
+    axios.get('/get_pbi_url', { params })
+      .then((res) => {
+        data.pbi_url = JSON.parse(JSON.stringify(res.data[0].pbi_url))
+        //console.log( data.pbi_url )
+        // console.log("Data_: ",Data_)
+        //Data_
+        // console.log(fakeData)
+      }, (res) => {
+        // error callback
+        console.log(res.data)
+      })
+    return { sidebarWidth,data }
   }
 }
 </script>

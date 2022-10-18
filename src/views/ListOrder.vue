@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible=true :probs_isVisible2=false  />
+  <Sidebar :probs_isVisible=true :probs_isVisible2=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
@@ -27,7 +27,7 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label>SearchBy:</label><input v-model="searchTerm" />
+          <label>SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -38,6 +38,7 @@
     </div>
     <!-- </div> -->
   </div>
+  <!--<div class="modal fade" id="myModal">---->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="sendFile" id="form0">
@@ -113,7 +114,8 @@
                     <div class="col">
                       <!-- <input type="date" id="JobDate" class="form-control" style="width:15rem;" 
                          @change="setFormat" v-model="JobDate" > -->
-                         <datepicker v-model="JobDate"  id="JobDate" class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
+                      <datepicker v-model="JobDate" id="JobDate" class="form-control" style="width:15rem;"
+                        input-format="dd/MM/yyyy" />
                       <!-- <datepicker class="form-control"  v-model="date_" style="width:15rem;"
                          :format="format" :inline="true" >
                         <template v-slot:clear="{ onClear }">
@@ -128,15 +130,16 @@
                       แนบไฟล์
                     </div>
                     <div class="col">
-                      <input class="form-control form-control-sm form-control-file" @change="selectFile" style="width:15rem;" type="file" id="formFile" />
+                      <input class="form-control form-control-sm form-control-file" @change="selectFile"
+                        style="width:15rem;" type="file" id="formFile" />
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary">บันทึก</button>
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal"
-                  ref="ClosemyModal" id="ClosemyModal">ยกเลิก</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" ref="ClosemyModal"
+                  id="ClosemyModal">ยกเลิก</button>
               </div>
             </div>
           </div>
@@ -144,6 +147,7 @@
       </form>
     </div>
   </div>
+  <!--<div class="modal fade" id="myModalNew">---->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
@@ -151,7 +155,7 @@
           <div class="modal-dialog  modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">รายการคำสั่ง</h5>
+                <h5 class="modal-title">สร้างรายการคำสั่ง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -161,9 +165,10 @@
                       <h5 class="ps-1 text-gray">รายการใหม่</h5>
                     </div>
                   </div>
-                  <div class="row p-2" v-if="messageNew">
+                  <div class="row p-2" v-if="message_addManual">
                     <div class="col">
-                      <div :class="`alert ${errorNew ? 'alert-danger' : 'alert-success'}`">{{ messageNew }}</div>
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual
+                      }}</div>
                     </div>
                   </div>
                   <div class="row p-2">
@@ -212,8 +217,8 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" id="JobDateNew" class="form-control" style="width:15rem;"
-                        v-model="NewOrder.JobDateNew">
+                      <datepicker v-model="NewOrder.JobDateNew" id="JobDateNew" class="form-control"
+                        style="width:15rem;" input-format="dd/MM/yyyy" />
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -224,12 +229,10 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="BranchOrigin" style="width:15rem;"
                         v-model="NewOrder.BranchOrigin">
-
                         <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
                           data.branch_name }}
                         </option>
-
                       </select>
                     </div>
                     <div class="col">
@@ -261,6 +264,7 @@
                       <h5 class="ps-1 text-gray">รายละเอียดคำสั่ง</h5>
                     </div>
                   </div>
+                  <!---Loop Manual New Order------>
                   <div class="row p-2">
                     <table class="table table-hover">
                       <thead>
@@ -300,7 +304,7 @@
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
                     class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalNew"
-                    style="width:4rem; height:2rem;">ยกเลิก</button>
+                    style="width:4rem; height:2rem;" id="ClosemyModalNew">ยกเลิก</button>
                 </div>
               </div>
             </div>
@@ -309,9 +313,10 @@
       </form>
     </div>
   </div>
+  <!--<div class="modal fade" id="ModalEditOrder">---->
   <div class="container py-2">
     <div class="py-2">
-      <form enctype="multipart/form-data" id="form2" @submit.prevent="editOrder">
+      <form @submit.prevent="editOrder" enctype="multipart/form-data" id="form2">
         <div class="modal fade" id="ModalEditOrder">
           <div class="modal-dialog  modal-lg">
             <div class="modal-content">
@@ -321,11 +326,11 @@
               </div>
               <div class="modal-body">
                 <div class="container">
-                  <div class="row p-2">
+                  <!-- <div class="row p-2">
                     <div class="col ps-4 d-flex">
                       <h5 class="ps-1 text-gray">รายการใหม่</h5>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row p-2" v-if="messageEdit">
                     <div class="col">
                       <div :class="`alert ${errorEdit ? 'alert-danger' : 'alert-success'}`">{{ messageEdit }}</div>
@@ -333,7 +338,7 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-sm-2">
-                      เลือกธนาคาร
+                      เลือกธนาคาร<input type="hidden" id="ordedrId" v-model="OrderDataExisting.orderId" />
                     </div>
                     <div class="col ps-4 d-flex">
                       &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
@@ -378,25 +383,9 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <input type="date" rules="required" id="JobDateEdit" class="form-control " style="width:15rem;"
-                        v-model="OrderDataExisting.JobDate" v-bind="{value:  format_date(OrderDataExisting.JobDate) }">
-                      <!-- <Datepicker :format="format_date(OrderDataExisting.JobDate)" /> -->
-
-                      <!-- <Datepicker  rules="required" id="JobDateEdit" class="form-control " style="width:15rem;"
-                         :format="format_date" v-model="OrderDataExisting.JobDate" 
-                        v-bind="{value:  OrderDataExisting.JobDate }"></Datepicker> -->
-
-                      <!-- <input type="date" pattern="\d{2}/\m{2}/\d{4}" rules="required" id="JobDateEdit" class="form-control " style="width:15rem;" 
-                      v-model="OrderDataExisting.JobDate"
-                        v-bind="{value:  OrderDataExisting.JobDate }"  data-date-format="dd/mm/yyyy"> -->
-
-                      <!-- <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control">
-                        <div class="input-group-addon">
-                          <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                      </div> -->
-                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                      <datepicker v-model="OrderDataExisting.JobDate"
+                        :value="formatdate_show( new Date(OrderDataExisting.JobDate) )" id="JobDateEdit"
+                        class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
                     </div>
                   </div>
                   <div class="row p-2">
@@ -407,10 +396,9 @@
                       <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchOriginId">
                         <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
-                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchOriginId">{{
                           data.branch_name }}
                         </option>
-
                       </select>
                     </div>
                     <div class="col">
@@ -420,7 +408,7 @@
                       <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchDestId">
                         <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
-                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchDestId">{{
                           data.branch_name }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
@@ -442,14 +430,14 @@
                       <h5 class="ps-1 text-gray">รายละเอียดคำสั่ง</h5>
                     </div>
                   </div>
+                  <!---Loop Edit Order------>
                   <div class="row p-2">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th scope="col"><span @click.prevent="addEditItem()"
-                              class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i
-                                class="fa fa-plus-circle align-middle" />
-                            </span>
+                          <th scope="col">
+                            <!-- <span @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
+                            </span> -->
                           </th>
                           <th scope="col">ชนิดราคา</th>
                           <th scope="col">คุณภาพ</th>
@@ -460,11 +448,12 @@
                       </thead>
                       <tbody>
                         <tr v-for="data, index in OrderDataExisting.OrderDataDet" :key="data.Id">
-                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
-                                class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
-                              @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7"
-                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
-                          <td scope="col" @click="calamount(data.Id)" @keyup="calamount(data.Id)">
+                          <td scope="col">
+                            <!-- <span @click="deleteData(index)" style="cursor: pointer">
+                              <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;
+                            <span @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle"></i></span> -->
+                          </td>
+                          <td scope="col" @click="calamount_orderEdit(index+1)" @keyup="calamount_orderEdit(index+1)">
                             <select class="form-select form-select-sm text-right"
                               v-bind="{ id: 'ddlMoneyTypeEdit'+(index+1)}"
                               v-model="OrderDataExisting.OrderDataDet[index].MoneyType">
@@ -492,19 +481,26 @@
                           <td scope="col">
                             <select class='form-select form-select-sm'
                               v-model="OrderDataExisting.OrderDataDet[index].PackageMoneyType"
-                              v-bind="{ id: 'ddlPackageMoneyTypeEdit'+(index+1)}" @click="calamount(data.Id)"
-                              @keyup="calamount(data.Id)">
+                              v-bind="{ id: 'ddlPackageMoneyTypeEdit'+(index+1)}" @click="calamount_orderEdit(index+1)"
+                              @keyup="calamount_orderEdit(index+1)">
                               <option value='Bundle'>มัด</option>
                               <option value='Piece'>ฉบับ</option>
                               <option value='Coin'>เหรียญ</option>
                               <option value='Pack'>แพ็ค</option>
                             </select>
                           </td>
+                          <!-- <td scope="col">
+                            <input type='text'
+                              v-bind="{ id: 'tbQuantityEdit'+(index+1) ,value: formatPrice(OrderDataExisting.OrderDataDet[index].Quantity)}"
+                              v-model="OrderDataExisting.OrderDataDet[index].Quantity" class='form-control text-right'
+                              style='width:10rem;' @change="calamount_orderEdit(index+1)" @keyup="calamount_orderEdit(data.Id)">
+                          </td> -->
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbQuantityEdit'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Quantity)}"
+                              v-bind="{ id: 'tbQuantityEdit'+(index+1) ,value: formatPrice_noFixed(OrderDataExisting.OrderDataDet[index].Quantity)}"
                               v-model="OrderDataExisting.OrderDataDet[index].Quantity" class='form-control text-right'
-                              style='width:10rem;' @change="calamount(data.Id)" @keyup="calamount(data.Id)">
+                              style='width:10rem;' @change="calamount_orderEdit(index+1)"
+                              @keyup="calamount_orderEdit(index+1)" @keypress="calamount_orderEdit(index+1)">
                           </td>
                           <td scope="col">
                             <input type='text'
@@ -522,7 +518,7 @@
                 <div class="align-top pt-1 d-flex justify-content-center">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
                     class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
-                    style="width:4rem; height:2rem;">ยกเลิก</button>
+                    id="ClosemyModalEidt" style="width:4rem; height:2rem;">ยกเลิก</button>
                 </div>
               </div>
             </div>
@@ -532,77 +528,30 @@
     </div>
   </div>
 </template>
-
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
 import { collapsed, toggleSidebar, sidebarWidth } from '../components/sidebar/state'
 import Header from '../components/Header'
 import axios from 'axios'
 import moment from 'moment'
-import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
+import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
-
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
   name: 'ListOrder',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth,Datepicker },
-  data() {
-    return {
-      // file: "",
-      // error: false,
-      // error2: false,
-      // message: "",
-      // messageNew: "",
-      // messageEdit: "",
-      // OrderCategory: "BankBranch",
-      // OrderType: "",
-      // BankType: "",
-      // JobDate: new Date(),
-      //Data_: [],
-      rowData: [],
-      NewOrder: {
-        OrderCategoryNew: "BankBranch",
-        OrderTypeNew: "",
-        BankTypeNew: "",
-        JobDateNew: null,
-        RefNo: "",
-        RemarkNew: "",
-        DataBranchToOrigin: [],
-        DataBranchToDest: [],
-        BranchOrigin: "",
-        BranchDest: "",
-      },
-      NewOrderDet: [],
-      Id: 0,
-      // user_id: localStorage.getItem('user_id'),
-      // department_id: localStorage.getItem('department_id'),
-      // position_id: localStorage.getItem('position_id'),
-      // CustomerID: localStorage.getItem('CustomerID'),
-      // gfc_cct: localStorage.getItem('gfc_cct'),
-      // time: null,
-      // full: null,
-      // selected: null,
-      // from: null,
-      // to: null,
-      // yearSelected: null,
-      // monthSelected: null,
-      // disabledTime: [
-      //   set(new Date(), { hours: 11, minutes: 12 }),
-      //   set(new Date(), { hours: 12, minutes: 30 })
-      // ],
-    }
-  },
+  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
   setup() {
     //upload data
     const file = ref(File | null)//ref('')
-    const error = ref( false )
-    const error2 = ref( false )
+    const error = ref(false)
+    const error_addManual = ref(false)
+    const error_editOrder = ref(false)
     const message = ref('')
-    const messageNew = ref('')
-    const messageEdit = ref('')
+    const message_addManual = ref('')
+    const message_editOrder = ref('')
     const OrderCategory = ref('BankBranch')
     const OrderType = ref('')
     const BankType = ref('')
@@ -612,33 +561,65 @@ export default defineComponent({
     const position_id = ref(localStorage.getItem('position_id'))
     const CustomerID = ref(localStorage.getItem('CustomerID'))
     const gfc_cct = ref(localStorage.getItem('gfc_cct'))
-
+    const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
     const router = useRouter()
-    console.log("setup")
-    
-    const sendFile = async (e) =>{  
+    const rowData = reactive([])
+    const NewOrder = reactive({
+      OrderCategoryNew: "BankBranch",
+      OrderTypeNew: "",
+      BankTypeNew: "",
+      JobDateNew: new Date(),
+      RefNo: "",
+      RemarkNew: "",
+      DataBranchToOrigin: [],
+      DataBranchToDest: [],
+      BranchOrigin: "",
+      BranchDest: "",
+    })
+    // const NewOrderDet = reactive([])
+    const Id = ref(0)
+    const rowDataEdit = ref([])
+    const OrderDataExisting = reactive({
+      orderId: "",
+      BankType: "",
+      OrderCategory: "BankBranch",
+      OrderType: "",
+      RefNo: "",
+      JobDate: null,
+      BranchOriginText: "",
+      BranchOriginId: "",
+      BranchDestText: "",
+      BranchDestId: "",
+      DataBranchToOrigin: [],
+      DataBranchToDest: [],
+      Remark: "",
+      OrderDataDet: [],
+    });
+    const sendFile = async (e) => {
+      // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
       const target = e.target
-            if (target && target.files) {
-                file.value = target.files[0];
-            }
+      if (target && target.files) {
+        file.value = target.files[0];
+      }
       let formData = new FormData()
       formData.append('file', file.value)
       formData.append('OrderCategory', OrderCategory.value)
       formData.append('OrderType', OrderType.value)
       formData.append('BankType', BankType.value)
-      formData.append('JobDate', JobDate.value)
+      formData.append('JobDate', moment(JobDate.value).format('YYYY-MM-DD'))
       formData.append('gfc_cct', gfc_cct.value)
+      formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
-      //console.log(formData)
-       formData.forEach(element => console.log(element))
+      console.log('sendFile')
+      formData.forEach(element => console.log(element))
       try {
         await axios.post('/upload', formData)
           .then((res) => {
             // success callback
             console.log(res.data)
             document.getElementById('ClosemyModal').click();
-            //this.$refs.ClosemyModal.click();
-            router.push('/listorder')
+            // router.push('/listorder')
+            location.reload()
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -654,12 +635,77 @@ export default defineComponent({
       }
 
     }
-    const selectFile =(e)=>  {
+    const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
       //headline.value.textContent
       error.value = false
       message.value = ""
+    }
+    //onMounted(async () => {
+    // const res = await axios.get('/orderlist')
+    //   .then((res) => {
+    //     Data_.value = JSON.parse(JSON.stringify(res.data))
+    //     console.log("Data_: ",Data_)
+    //     //Data_
+    //     // console.log(fakeData)
+    //   }, (res) => {
+    //     // error callback
+    //     console.log(res.data)
+    //   })
+    //file.value =  ref_file.value.        
+    //})    
+    const format_date = (date_) => {
+      // console.log('date_: ' + date_)
+      let date__ = null
+      let day = null//date__.getDate();
+      let month = null//date__.getMonth() + 1;
+      let year = null//date__.getFullYear();
+      if (date_) {
+        date__ = moment(new Date(date_)).format('DD-MM-YYYY')
+        console.log('date__: ' + date__)
+        console.log('moment: ' + moment(date_).format('DD-MM-YYYY'))
+        day = moment(date_).format('DD');//date__.getDate();
+        month = moment(date_).format('MM')//date__.getMonth() + 1;
+        year = moment(date_).format('YYYY')//date__.getFullYear();
+        console.log('day: ' + day)
+        console.log('month: ' + month)
+        console.log('year: ' + year)
+      }
+      else {
+        date__ = moment(new Date()).format('DD-MM-YYYY')//new Date(date_)
+        //const date__ = moment(date_).format('DD-MM-YYYY')
+        ///console.log('moment: ' + moment(date_).format('DD-MM-YYYY') )
+        day = date__.getDate();
+        month = date__.getMonth() + 1;
+        year = date__.getFullYear();
+        console.log('day: ' + day)
+        console.log('month: ' + month)
+        console.log('year: ' + year)
+      }
+      // console.log(`${day}/${month}/${year}`)
+      return `${day}/${month}/${year}`;
+      // return `${year}-${month}-${day}`;
+      // date_ = new Date(date_)
+      // date_ = moment(date_).format('MM/DD/YYYY')
+      // return date_
+    }
+    const formatdate_show = (date_) => {
+      console.log('date_: ' + date_)
+      let date__ = null
+      let day = null//date__.getDate();
+      let month = null//date__.getMonth() + 1;
+      let year = null//date__.getFullYear();
+      // if (date_) {
+      date__ = moment(date_).format('DD/MM/YYYY')
+      // console.log('date__: ' + date__)
+      // console.log('moment: ' + moment(date_).format('DD-MM-YYYY') )
+      // day = moment(date_).format('DD');//date__.getDate();
+      // month = moment(date_).format('MM')//date__.getMonth() + 1;
+      // year = moment(date_).format('YYYY')//date__.getFullYear();
+      return date__;
+      //return `${day}/${month}/${year}`;
+      // return `${year}-${month}-${day}`;
     }
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -667,62 +713,35 @@ export default defineComponent({
       rows: [],
     });
     let Data_ = ref([]);//[]
-    onMounted(async () => {
+    /**
+     * Get server data request
+     */
+    const myRequest = async (keyword) => {
+      //const fakeData = [];
       const res = await axios.get('/orderlist')
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log(Data_)
+          console.log("Data_: ", Data_)
           //Data_
           // console.log(fakeData)
         }, (res) => {
           // error callback
           console.log(res.data)
         })
-        //file.value =  ref_file.value.        
-    })    
-    const format_date = (date_) => {
-        console.log('date_: ' + date_)
-        let date__ = null
-        let day = null//date__.getDate();
-        let month = null//date__.getMonth() + 1;
-        let year = null//date__.getFullYear();
-        if (date_) {
-          date__ = moment(date_).format('DD-MM-YYYY')
-          console.log('date__: ' + date__)
-          console.log('moment: ' + moment(date_).format('DD-MM-YYYY'))
-          day = moment(date_).format('DD');//date__.getDate();
-          month = moment(date_).format('MM')//date__.getMonth() + 1;
-          year = moment(date_).format('YYYY')//date__.getFullYear();
-          console.log('day: ' + day)
-          console.log('month: ' + month)
-          console.log('year: ' + year)
-        }
-        else {
-          date__ = new Date(date_)
-          //const date__ = moment(date_).format('DD-MM-YYYY')
-          ///console.log('moment: ' + moment(date_).format('DD-MM-YYYY'))
-          day = date__.getDate();
-          month = date__.getMonth() + 1;
-          year = date__.getFullYear();
-          console.log('day: ' + day)
-          console.log('month: ' + month)
-          console.log('year: ' + year)
+      // Data_.value
+      // Data_.value.forEach((item) => {
+      //   console.log("found: ", item)
+      //   console.log("found AutoID: ", item.AutoID)
 
-        }
-        console.log(`${day}/${month}/${year}`)
-        return `${year}-${month}-${day}`;
-      }    
-    /**
-     * Get server data request
-     */
-    const myRequest = async (keyword) => {
-      const fakeData = [];
+      // });
+      //fakeData.push(Data_.value)
+      //console.log('fakeData: ', fakeData)
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
           setTimeout(() => {
-            table.isLoading = false;
+            table.isLoading = true;
             let newData = Data_.value.filter(
               (x) =>
                 x.AutoID.toString().toLowerCase().includes(keyword.toLowerCase()) ||
@@ -730,7 +749,8 @@ export default defineComponent({
                 x.branchorigin_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.branchdest_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 formatPrice(x.total_by_branch).toString().toLowerCase().includes(keyword.toLowerCase()) ||
-                x.order_date.toLowerCase().includes(keyword.toLowerCase())
+                x.order_date.toLowerCase().includes(keyword.toLowerCase()) || 
+                x.remark.toLowerCase().includes(keyword.toLowerCase())
             );
             resolve(newData);
           }, 200);
@@ -740,102 +760,6 @@ export default defineComponent({
         }
       });
     };
-    const formatPrice = (value) => {
-      let val = (value / 1).toFixed(2)
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
-    const dateTime = (value) => {
-      return moment(value).format("DD-MM-YYYY");
-    }
-    const getBranchAndCashEdit = () => {
-      OrderDataExisting.DataBranchToOrigin = []
-      OrderDataExisting.DataBranchToDest = []
-      if (OrderDataExisting.OrderType === "Withdraw") {
-        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
-      }
-      if (OrderDataExisting.OrderType === "Deposit") {
-        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-      }
-    }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
-
-      if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata')
-          .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        await axios.get('/getcashcenterdata')
-          .then((res) => {
-            // success callback
-            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-    }
-    const Id = ref(0)
-    const rowDataEdit = ref([])
-    const addEditItem = () => {
-      Id.value++
-      let ddlMoneyTypeEdit = ""
-      ddlMoneyTypeEdit = "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" + Id.value + "'>"
-      ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
-      ddlMoneyTypeEdit += "<option value='500'>500</option>"
-      ddlMoneyTypeEdit += "<option value='100'>100</option>"
-      ddlMoneyTypeEdit += "<option value='20'>20</option>"
-      ddlMoneyTypeEdit += "<option value='10'>10</option>"
-      ddlMoneyTypeEdit += "<option value='5'>5</option>"
-      ddlMoneyTypeEdit += "<option value='2'>2</option>"
-      ddlMoneyTypeEdit += "<option value='1'>1</option>"
-      ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
-      ddlMoneyTypeEdit += "</select>"
-      let ddlQualityMoneyTypeEdit = ""
-      ddlQualityMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" + Id.value + "'>"
-      ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
-      ddlQualityMoneyTypeEdit += "</select>"
-      let ddlPackageMoneyTypeEdit = ""
-      ddlPackageMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" + Id.value + "'>"
-      ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
-      ddlPackageMoneyTypeEdit += "</select>"
-      let tbQuantityEdit = ""
-      tbQuantityEdit = "<input type='text' id='tbQuantityEdit" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
-      let tbAmount = ""
-      tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
-      let my_object = {
-        Id: Id.value,
-        ddlMoneyType_: ddlMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
-        tbQuantity_: tbQuantityEdit,
-        tbAmount_: tbAmount,
-      };
-      if (rowDataEdit.value.length > 1) {
-        //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
-      }
-      rowDataEdit.value.push(my_object)
-      console.log(rowDataEdit)
-    }
     // Table config
     const table = reactive({
       isLoading: false,
@@ -953,25 +877,23 @@ export default defineComponent({
       },
     });
     /**
-     * Use vue.js watch to watch your state's change
-     */
-    const OrderDataExisting = reactive({
-      BankType: "",
-      OrderCategory: "BankBranch",
-      OrderType: "",
-      RefNo: "",
-      JobDate: null,
-      BranchOriginText: "",
-      BranchOriginId: "",
-      BranchDestText: "",
-      BranchDestId: "",
-      DataBranchToOrigin: [],
-      DataBranchToDest: [],
-      Remark: "",
-      OrderDataDet: [],
-    });
+ * Use vue.js watch to watch your state's change
+*/
     watch(
       () => searchTerm.value,
+      // (val) => {
+      //   //Data_.value
+      //   const res = axios.get('/orderlist')
+      //     .then((res) => {
+      //       Data_.value = JSON.parse(JSON.stringify(res.data))
+      //       console.log("Data_: ", Data_)
+      //       //Data_
+      //       // console.log(fakeData)
+      //     }, (res) => {
+      //       // error callback
+      //       console.log(res.data)
+      //     })
+      // },
       (val) => {
         myRequest(val).then((newData) => {
           data.rows = newData;
@@ -1000,7 +922,8 @@ export default defineComponent({
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
                     console.log(obj[0])
-                    router.push('/listorder')
+                    // router.push('/listorder')
+                    location.reload()
                     // addEditItem
                   }, (res) => {
                     // error callback
@@ -1031,7 +954,8 @@ export default defineComponent({
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
                     console.log(obj[0])
-                    router.push('/listorder')
+                    // router.push('/listorder')
+                    location.reload()
                     // addEditItem
                   }, (res) => {
                     // error callback
@@ -1054,18 +978,21 @@ export default defineComponent({
             const params = {
               Id: this.dataset.id
             };
+            let Id_ = this.dataset.id
             //console.log( params )
             try {
               await axios.get('/getcashorder', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
-                  console.log(obj[0])
+                  console.log("obj[0], getcashorder: ", obj[0])
+                  OrderDataExisting.orderId = Id_
                   OrderDataExisting.BankType = obj[0].customerID
                   OrderDataExisting.OrderCategory = obj[0].order_category
                   OrderDataExisting.OrderType = obj[0].servicetype
                   OrderDataExisting.RefNo = obj[0].refno
-                  OrderDataExisting.JobDate = format_date(obj[0].order_date)
+                  OrderDataExisting.JobDate = new Date(obj[0].order_date)
+                  // OrderDataExisting.JobDate =  obj[0].order_date
                   OrderDataExisting.BranchOriginText = obj[0].branchorigin_name
                   OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
@@ -1075,7 +1002,7 @@ export default defineComponent({
                   // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
                   // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
                   // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
-                  console.log(OrderDataExisting);//OrderDataDet
+                  console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -1296,7 +1223,7 @@ export default defineComponent({
                       QualityMoneyType: "New",
                       PackageMoneyType: obj[0].unit_coin_new_5,
                       Quantity: obj[0].pcs_coin_new_5,
-                      Amount: obj[0].note_coin_new_5
+                      Amount: obj[0].coin_new_5
                     })
                   } if (obj[0].coin_new_2 > 0) {
                     OrderDataExisting.OrderDataDet.push({
@@ -1347,13 +1274,16 @@ export default defineComponent({
                       Quantity: obj[0].pcs_coin_fit_10,
                       Amount: obj[0].coin_fit_10
                     })
-                  } if (obj[0].coin_fit_5 > 0) {
+                  }
+                  //console.log('if (obj[0].coin_fit_5 > 0) {')
+                  if (obj[0].coin_fit_5 > 0) {
+                    //console.log('obj[0].coin_fit_5: ',obj[0].coin_fit_5)
                     OrderDataExisting.OrderDataDet.push({
                       MoneyType: "5",
                       QualityMoneyType: "Fit",
                       PackageMoneyType: obj[0].unit_coin_fit_5,
                       Quantity: obj[0].pcs_coin_fit_5,
-                      Amount: obj[0].note_coin_fit_5
+                      Amount: obj[0].coin_fit_5
                     })
                   } if (obj[0].coin_fit_2 > 0) {
                     OrderDataExisting.OrderDataDet.push({
@@ -1410,7 +1340,7 @@ export default defineComponent({
                       QualityMoneyType: "Unfit",
                       PackageMoneyType: obj[0].unit_coin_unfit_5,
                       Quantity: obj[0].pcs_coin_unfit_5,
-                      Amount: obj[0].note_coin_unfit_5
+                      Amount: obj[0].coin_unfit_5
                     })
                   } if (obj[0].coin_unfit_2 > 0) {
                     OrderDataExisting.OrderDataDet.push({
@@ -1467,7 +1397,7 @@ export default defineComponent({
                       QualityMoneyType: "Uncount",
                       PackageMoneyType: obj[0].unit_coin_uncount_5,
                       Quantity: obj[0].pcs_coin_uncount_5,
-                      Amount: obj[0].note_coin_uncount_5
+                      Amount: obj[0].coin_uncount_5
                     })
                   } if (obj[0].coin_uncount_2 > 0) {
                     OrderDataExisting.OrderDataDet.push({
@@ -1510,8 +1440,9 @@ export default defineComponent({
                       Amount: obj[0].coin_uncount_025
                     })
                   }
-                  console.log(OrderDataExisting.OrderDataDet[1].MoneyType)
-                  console.log(OrderDataExisting.OrderDataDet.length)
+                  // console.log(OrderDataExisting.OrderDataDet[1].MoneyType)
+                  Id.value = OrderDataExisting.OrderDataDet.length
+                  console.log('OrderDataExisting.OrderDataDet.length: ' + OrderDataExisting.OrderDataDet.length)
                   // addEditItem
                 }, (res) => {
                   // error callback
@@ -1538,166 +1469,36 @@ export default defineComponent({
     myRequest("").then((newData) => {
       data.rows = newData;
     });
-    const updateCheckedRows = (rowsKey) => {
-      console.log(rowsKey);
-    };
-    const editOrder = async () => {
-      const formData = new FormData()
-      formData.append('OrderCategory', this.OrderDataExisting.OrderCategory)
-      formData.append('OrderType', this.OrderDataExisting.OrderType)
-      formData.append('BankType', this.OrderDataExisting.BankType)
-      formData.append('JobDateNew', this.OrderDataExisting.JobDate)
-      formData.append('RefNo', this.OrderDataExisting.RefNo)
-      formData.append('RemarkNew', this.OrderDataExisting.Remark)
-      formData.append('BranchOrigin', this.OrderDataExisting.BranchOrigin.branch_name)
-      formData.append('BranchDest', this.OrderDataExisting.BranchDest.branch_name)
-      formData.append('BranchOrigin_code', this.OrderDataExisting.BranchOrigin.branch_id)
-      formData.append('BranchDest_code', this.OrderDataExisting.BranchDest.branch_id)
-      formData.append('AllRowsDet', this.Id)
-      formData.append('user_id', this.user_id)
-      for (var index = 0; index < this.Id; index++) {
-        if (document.getElementById("ddlMoneyTypeEdit" + (index + 1))) {
-          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyTypeEdit" + (index + 1)).value)
-          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyTypeEdit" + (index + 1)).value)
-          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyTypeEdit" + (index + 1)).value)
-          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantityEdit" + (index + 1)).value)
-          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmountEdit" + (index + 1)).value)
-          // Id_++
-        }
-      }
-      this.showmyModalNew = true
-      var object = {}
-      formData.forEach((value, key) => object[key] = value)
-      var json = JSON.stringify(object)
-      console.log('add data')
-      console.log(json)
-      // try {
-      //   await axios.post('/edit_order', json)
-      //     .then((res) => {
-      //       // success callback
-      //       console.log(res.data)
-      //       this.$refs.ClosemyModalNew.click();
-
-      //     }, (res) => {
-      //       // error callback
-      //       console.log(res.data.message)
-      //     }).finally(() => {
-      //       this.$router.push('/listorder')
-      //     });
-      //   this.message = "File has been upload"
-      //   this.file = ""
-      //   this.error = false
-      // }
-      // catch (err) {
-      //   console.log(err)
-      //   this.message = "Something went wrong"
-      //   this.error = true
-      // }
-    }
-    return {
-      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish,
-      OrderDataExisting, getBranchAndCashEdit, addEditItem, rowDataEdit
-      , editOrder, formatPrice, router, format_date,sendFile,selectFile,file,error,error2, message,messageNew,messageEdit,OrderCategory,OrderType,BankType,JobDate,
-      user_id ,department_id,position_id ,CustomerID,gfc_cct,
-    }
-  },
-  // computed: {
-  //   locale: () => enUS,
-  // },
-  // watch: {
-  //   selected: (value) => console.log(value),
-  // },
-  methods: {
-    deleteData(index) {
-      console.log(index)
-      this.rowData.splice(index, 1)
-    },
-    // selectFile() {
-    //   this.file = this.$refs.file.files[0]
-    //   this.error = false
-    //   this.message = ""
-    // },
-    // async sendFile() {
-    //   const formData = new FormData()
-    //   formData.append('file', this.file)
-    //   formData.append('OrderCategory', this.OrderCategory)
-    //   formData.append('OrderType', this.OrderType)
-    //   formData.append('BankType', this.BankType)
-    //   formData.append('JobDate', this.JobDate)
-    //   formData.append('gfc_cct', this.gfc_cct)
-    //   formData.append('user_id', this.user_id)
-    //   //console.log
-    //   // formData.forEach(element => console.log(element))
-    //   // try {
-    //   //   await axios.post('/upload', formData)
-    //   //     .then((res) => {
-    //   //       // success callback
-    //   //       console.log(res.data)
-    //   //       this.$refs.ClosemyModal.click();
-    //   //       this.$router.push('/listorder')
-    //   //     }, (res) => {
-    //   //       // error callback
-    //   //       console.log(res.data.message)
-    //   //     });
-    //   //   this.message = "File has been upload"
-    //   //   this.file = ""
-    //   //   this.error = false
-    //   // }
-    //   // catch (err) {
-    //   //   console.log(err)
-    //   //   this.message = "Something went wrong"
-    //   //   this.error = true
-    //   // }
-    // },
-    dateTime(value) {
-      return moment(value).format("DD-MM-YYYY");
-    },
-    formatPrice(value) {
+    const formatPrice = (value) => {
       let val = (value / 1).toFixed(2)
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    },
-    formatPrice_noFixed(value) {
-      let val = (value / 1)
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    },
-    downloadItem() {
-      // let url = "./templete_file.zip"
-      //https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing
-      axios({
-        url: 'http://localhost:4000/templete_file.zip',
-        method: 'GET',
-        responseType: 'blob',
-      }).then((response) => {
-        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fURL = document.createElement('a');
-
-        fURL.href = fileURL;
-        fURL.setAttribute('download', 'templete_file.zip');
-        document.body.appendChild(fURL);
-
-        fURL.click();
-      });
-    },
-    getBranchAndCash() {
-      this.NewOrder.DataBranchToOrigin = []
-      this.NewOrder.DataBranchToDest = []
-      if (this.NewOrder.OrderTypeNew === "Withdraw") {
-        this.getBranchOrCashCen('cashtobranch', 'BranchOrigin')
-        this.getBranchOrCashCen('branchtocash', 'BranchDest')
+    }
+    const dateTime = (value) => {
+      return moment(value).format("DD-MM-YYYY");
+    }
+    const getBranchAndCashEdit = () => {
+      OrderDataExisting.DataBranchToOrigin = []
+      OrderDataExisting.DataBranchToDest = []
+      if (OrderDataExisting.OrderType === "Withdraw") {
+        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
+        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
       }
-      if (this.NewOrder.OrderTypeNew === "Deposit") {
-        this.getBranchOrCashCen('branchtocash', 'BranchOrigin')
-        this.getBranchOrCashCen('cashtobranch', 'BranchDest')
+      if (OrderDataExisting.OrderType === "Deposit") {
+        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
+        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
       }
-    },
-    async getBranchOrCashCen(servicetype, ddltype) {
+    }
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
       if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata')
+        const params = {
+          CustomerID: CustomerID.value
+        };
+        await axios.get('/getbranchdata', { params })
           .then((res) => {
             // success callback           
-            ddltype === 'BranchOrigin' ? this.NewOrder.DataBranchToOrigin = res.data : this.NewOrder.DataBranchToDest = res.data
-            console.log(this.NewOrder.DataBranchToOrigin)
-            console.log(this.NewOrder.DataBranchToDest)
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1705,19 +1506,151 @@ export default defineComponent({
       }
       //--------------------------------------------
       if (servicetype === 'cashtobranch') {
-        await axios.get('/getcashcenterdata')
+        const params = {
+          CustomerID: CustomerID.value
+        };
+        await axios.get('/getcashcenterdata', { params })
           .then((res) => {
             // success callback
-            ddltype === 'BranchOrigin' ? this.NewOrder.DataBranchToOrigin = res.data : this.NewOrder.DataBranchToDest = res.data
-            console.log(this.NewOrder.DataBranchToOrigin)
-            console.log(this.NewOrder.DataBranchToDest)
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
           });
       }
-    },
-    calamount(value) {
+    }
+    const addManualOrder = async () => {
+      const formData = new FormData()
+      formData.append('OrderCategoryNew', NewOrder.OrderCategoryNew)
+      formData.append('OrderTypeNew', NewOrder.OrderTypeNew)
+      formData.append('BankTypeNew', NewOrder.BankTypeNew)
+      formData.append('JobDateNew', NewOrder.JobDateNew)
+      formData.append('RefNo', NewOrder.RefNo)
+      formData.append('RemarkNew', NewOrder.RemarkNew)
+      formData.append('BranchOrigin', NewOrder.BranchOrigin.branch_name)
+      formData.append('BranchDest', NewOrder.BranchDest.branch_name)
+      formData.append('BranchOrigin_code', NewOrder.BranchOrigin.branch_id)
+      formData.append('BranchDest_code', NewOrder.BranchDest.branch_id)
+      formData.append('AllRowsDet', Id.value)
+      formData.append('gfc_cct_code', gfc_cct_code.value)
+      formData.append('user_id', user_id.value)
+      for (var index = 0; index < Id.value; index++) {
+        if (document.getElementById("ddlMoneyType" + (index + 1))) {
+          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
+          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
+          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
+          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
+          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+          // Id_++
+        }
+      }
+      // this.showmyModalNew = true
+      var object = {}
+      formData.forEach((value, key) => object[key] = value)
+      var json = JSON.stringify(object)
+      console.log('add data')
+      console.log(json)
+      try {
+        await axios.post('/manual_add_order', json)
+          .then((res) => {
+            // success callback
+            console.log(res.data)
+            // this.$refs.ClosemyModalNew.click();
+            // document.getElementById('ClosemyModalNew').click();//************************** */
+
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+            message_addManual.value = res.data.message
+          }).finally(() => {
+            // router.push('/listorder')
+            location.reload()
+          });
+        error_addManual.value = false
+      }
+      catch (err) {
+        console.log(err)
+        message_addManual.value = "Something went wrong: " + err
+        error_addManual.value = true
+      }
+    }
+    const getBranchAndCash = () => {
+      NewOrder.DataBranchToOrigin = []
+      NewOrder.DataBranchToDest = []
+      if (NewOrder.OrderTypeNew === "Withdraw") {
+        getBranchOrCashCen('cashtobranch', 'BranchOrigin')
+        getBranchOrCashCen('branchtocash', 'BranchDest')
+      }
+      if (NewOrder.OrderTypeNew === "Deposit") {
+        getBranchOrCashCen('branchtocash', 'BranchOrigin')
+        getBranchOrCashCen('cashtobranch', 'BranchDest')
+      }
+    }
+    const getBranchOrCashCen = async (servicetype, ddltype) => {
+      if (servicetype === 'branchtocash') {
+        const params = {
+          CustomerID: CustomerID.value
+        };
+        await axios.get('/getbranchdata', { params })
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+            console.log(NewOrder.DataBranchToOrigin)
+            console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+      //--------------------------------------------
+      if (servicetype === 'cashtobranch') {
+        const params = {
+          CustomerID: CustomerID.value
+        };
+        await axios.get('/getcashcenterdata', { params })
+          .then((res) => {
+            // success callback
+            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+            console.log(NewOrder.DataBranchToOrigin)
+            console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+    }
+    const calamount_orderEdit = (value) => {
+      console.log(document.getElementById("ddlMoneyTypeEdit" + value).value)
+      console.log(document.getElementById("ddlPackageMoneyTypeEdit" + value).value)
+      console.log(document.getElementById("tbQuantityEdit" + value).value)
+      console.log(document.getElementById("tbAmountEdit" + value).value)
+      let ddlMoneyType = parseFloat(document.getElementById("ddlMoneyTypeEdit" + value).value, 10)
+      let tbQuantity = parseFloat((document.getElementById("tbQuantityEdit" + value).value).replaceAll(',', ''), 10)
+      let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyTypeEdit" + value).value
+      // let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyTypeEdit" + value).value
+      if (ddlPackageMoneyType === 'Bundle') {
+        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmountEdit" + value).value = ''
+      }
+      else if (ddlPackageMoneyType === 'Pack') {
+        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmountEdit" + value).value = ''
+      }
+      else {
+        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmountEdit" + value).value = ""
+      }
+      //console.log(ddlMoneyType * tbQuantity * 5000) 
+      // let my_object = {
+      //   Id: value,
+      //   ddlMoneyType_: ddlMoneyType,
+      //   ddlQualityMoneyType_: ddlQualityMoneyType,
+      //   ddlPackageMoneyType_: ddlPackageMoneyType,
+      //   tbQuantity_: tbQuantity,
+      //   tbAmount_: document.getElementById("tbAmount" + value).value
+      // };
+      // NewOrderDet.push(my_object)
+    }
+    const calamount = (value) => {
       console.log(document.getElementById("ddlMoneyType" + value).value)
       console.log(document.getElementById("ddlPackageMoneyType" + value).value)
       console.log(document.getElementById("tbQuantity" + value).value)
@@ -1727,30 +1660,91 @@ export default defineComponent({
       let ddlPackageMoneyType = document.getElementById("ddlPackageMoneyType" + value).value
       let ddlQualityMoneyType = document.getElementById("ddlQualityMoneyType" + value).value
       if (ddlPackageMoneyType === 'Bundle') {
-        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmount" + value).value = ''
+        !isNaN(ddlMoneyType * tbQuantity * 1000) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity * 1000) : document.getElementById("tbAmount" + value).value = ''
       }
       else if (ddlPackageMoneyType === 'Pack') {
-        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmount" + value).value = ''
+        !isNaN(ddlMoneyType * tbQuantity * 5000) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity * 5000) : document.getElementById("tbAmount" + value).value = ''
       }
       else {
-        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = this.formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
+        !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmount" + value).value = formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmount" + value).value = ""
       }
       console.log(ddlMoneyType * tbQuantity * 5000)
-
+      // let my_object = {
+      //   Id: value,
+      //   ddlMoneyType_: ddlMoneyType,
+      //   ddlQualityMoneyType_: ddlQualityMoneyType,
+      //   ddlPackageMoneyType_: ddlPackageMoneyType,
+      //   tbQuantity_: tbQuantity,
+      //   tbAmount_: document.getElementById("tbAmount" + value).value
+      // };
+      // NewOrderDet.push(my_object)
+    }
+    const addEditItem = () => {
+      Id.value++
+      let ddlMoneyTypeEdit = ""
+      ddlMoneyTypeEdit = "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" + Id.value + "'>"
+      ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
+      ddlMoneyTypeEdit += "<option value='500'>500</option>"
+      ddlMoneyTypeEdit += "<option value='100'>100</option>"
+      ddlMoneyTypeEdit += "<option value='20'>20</option>"
+      ddlMoneyTypeEdit += "<option value='10'>10</option>"
+      ddlMoneyTypeEdit += "<option value='5'>5</option>"
+      ddlMoneyTypeEdit += "<option value='2'>2</option>"
+      ddlMoneyTypeEdit += "<option value='1'>1</option>"
+      ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
+      ddlMoneyTypeEdit += "</select>"
+      let ddlQualityMoneyTypeEdit = ""
+      ddlQualityMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" + Id.value + "'>"
+      ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
+      ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
+      ddlQualityMoneyTypeEdit += "</select>"
+      let ddlPackageMoneyTypeEdit = ""
+      ddlPackageMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" + Id.value + "'>"
+      ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
+      ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
+      ddlPackageMoneyTypeEdit += "</select>"
+      let tbQuantityEdit = ""
+      tbQuantityEdit = "<input type='text' id='tbQuantityEdit" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
+      let tbAmount = ""
+      tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
       let my_object = {
-        Id: value,
-        ddlMoneyType_: ddlMoneyType,
-        ddlQualityMoneyType_: ddlQualityMoneyType,
-        ddlPackageMoneyType_: ddlPackageMoneyType,
-        tbQuantity_: tbQuantity,
-        tbAmount_: document.getElementById("tbAmount" + value).value
+        Id: Id.value,
+        ddlMoneyType_: ddlMoneyTypeEdit,
+        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+        ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
+        tbQuantity_: tbQuantityEdit,
+        tbAmount_: tbAmount,
       };
-      this.NewOrderDet.push(my_object)
-    },
-    addItem() {
-      this.Id++
+      if (rowDataEdit.value.length > 1) {
+
+        if (!isNaN(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)
+          && document.getElementById("tbQuantityEdit" + (Id.value - 1)).value != ""
+          && !!(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)) {
+          document.getElementById("tbQuantityEdit" + (Id.value - 1)).value = formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value.replaceAll(',', '')))
+        }
+      }
+      // if (rowDataEdit.value.length > 1) {
+      //   //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
+      // }
+      rowDataEdit.value.push(my_object)
+      console.log(rowDataEdit)
+    }
+    const updateCheckedRows = (rowsKey) => {
+      console.log('rowsKey: ', rowsKey);
+    };
+    const formatPrice_noFixed = (value) => {
+      let val = (value / 1)
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
+    const addItem = () => {
+      Id.value++
       let ddlMoneyType = ""
-      ddlMoneyType = "<select class='form-select form-select-sm text-right' id='ddlMoneyType" + this.Id + "'>"
+      ddlMoneyType = "<select class='form-select form-select-sm text-right' id='ddlMoneyType" + Id.value + "'>"
       ddlMoneyType += "<option value='1000'>1,000</option>"
       ddlMoneyType += "<option value='500'>500</option>"
       ddlMoneyType += "<option value='100'>100</option>"
@@ -1762,25 +1756,25 @@ export default defineComponent({
       ddlMoneyType += "<option value='0.5'>0.50</option>"
       ddlMoneyType += "</select>"
       let ddlQualityMoneyType = ""
-      ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + this.Id + "'>"
+      ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + Id.value + "'>"
       ddlQualityMoneyType += "<option value='New'>ใหม่</option>"
       ddlQualityMoneyType += "<option value='Fit'>ดี</option>"
       ddlQualityMoneyType += "<option value='Unfit'>เสีย</option>"
       ddlQualityMoneyType += "<option value='Uncount'>รอคัดนับ</option>"
       ddlQualityMoneyType += "</select>"
       let ddlPackageMoneyType = ""
-      ddlPackageMoneyType = "<select class='form-select form-select-sm' id='ddlPackageMoneyType" + this.Id + "'>"
+      ddlPackageMoneyType = "<select class='form-select form-select-sm' id='ddlPackageMoneyType" + Id.value + "'>"
       ddlPackageMoneyType += "<option value='Bundle'>มัด</option>"
       ddlPackageMoneyType += "<option value='Piece'>ฉบับ</option>"
       ddlPackageMoneyType += "<option value='Coin'>เหรียญ</option>"
       ddlPackageMoneyType += "<option value='Pack'>แพ็ค</option>"
       ddlPackageMoneyType += "</select>"
       let tbQuantity = ""
-      tbQuantity = "<input type='text' id='tbQuantity" + this.Id + "' class='form-control text-right' style='width:10rem;'>"
+      tbQuantity = "<input type='text' id='tbQuantity" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
       let tbAmount = ""
-      tbAmount = "<input type='text' id='tbAmount" + this.Id + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
+      tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
       let my_object = {
-        Id: this.Id,
+        Id: Id.value,
         ddlMoneyType_: ddlMoneyType,
         ddlQualityMoneyType_: ddlQualityMoneyType,
         ddlQualityMoneyType_: ddlQualityMoneyType,
@@ -1788,96 +1782,84 @@ export default defineComponent({
         tbQuantity_: tbQuantity,
         tbAmount_: tbAmount,
       };
-      if (this.rowData.length > 1) {
-        document.getElementById("tbQuantity" + (this.Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantity" + (this.Id - 1)).value))
+      if (rowData.length > 1) {
+        if (!isNaN(document.getElementById("tbQuantity" + (Id.value - 1)).value)
+          && document.getElementById("tbQuantity" + (Id.value - 1)).value != ""
+          && !!(document.getElementById("tbQuantity" + (Id.value - 1)).value)) {
+          document.getElementById("tbQuantity" + (Id.value - 1)).value = formatPrice_noFixed(parseFloat(document.getElementById("tbQuantity" + (Id.value - 1)).value.replaceAll(',', '')))
+        }
       }
-      this.rowData.push(my_object)
-    },
-    async addManualOrder() {
+      rowData.push(my_object)
+    }
+    const deleteData = (index) => {
+      console.log(index)
+      rowData.splice(index, 1)
+    }
+    const editOrder = async () => {
       const formData = new FormData()
-      formData.append('OrderCategoryNew', this.NewOrder.OrderCategoryNew)
-      formData.append('OrderTypeNew', this.NewOrder.OrderTypeNew)
-      formData.append('BankTypeNew', this.NewOrder.BankTypeNew)
-      formData.append('JobDateNew', this.NewOrder.JobDateNew)
-      formData.append('RefNo', this.NewOrder.RefNo)
-      formData.append('RemarkNew', this.NewOrder.RemarkNew)
-      formData.append('BranchOrigin', this.NewOrder.BranchOrigin.branch_name)
-      formData.append('BranchDest', this.NewOrder.BranchDest.branch_name)
-      formData.append('BranchOrigin_code', this.NewOrder.BranchOrigin.branch_id)
-      formData.append('BranchDest_code', this.NewOrder.BranchDest.branch_id)
-      formData.append('AllRowsDet', this.Id)
-      formData.append('user_id', this.user_id)
-      for (var index = 0; index < this.Id; index++) {
-        if (document.getElementById("ddlMoneyType" + (index + 1))) {
-          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
-          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
-          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
-          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
-          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
+      formData.append('orderId', OrderDataExisting.orderId)
+      formData.append('OrderCategory', OrderDataExisting.OrderCategory)
+      formData.append('OrderType', OrderDataExisting.OrderType)
+      formData.append('BankType', OrderDataExisting.BankType)
+      formData.append('JobDate', OrderDataExisting.JobDate)
+      formData.append('RefNo', OrderDataExisting.RefNo)
+      formData.append('RemarkNew', OrderDataExisting.Remark)
+      //formData.append('BranchOrigin', OrderDataExisting.BranchOrigin.branch_name)
+      formData.append('BranchOrigin', OrderDataExisting.BranchOriginText)
+      formData.append('BranchOrigin_code', OrderDataExisting.BranchOriginId)
+      formData.append('BranchDest', OrderDataExisting.BranchDestText)
+      formData.append('BranchDest_code', OrderDataExisting.BranchDestId)
+      formData.append('AllRowsDet', Id.value)
+      formData.append('user_id', user_id.value)
+      for (var index = 0; index < Id.value; index++) {
+        if (document.getElementById("ddlMoneyTypeEdit" + (index + 1))) {
+          formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyTypeEdit" + (index + 1)).value)
+          formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyTypeEdit" + (index + 1)).value)
+          formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyTypeEdit" + (index + 1)).value)
+          formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantityEdit" + (index + 1)).value)
+          formData.append('tbAmount' + (index + 1), document.getElementById("tbAmountEdit" + (index + 1)).value)
           // Id_++
         }
       }
-      this.showmyModalNew = true
+      // this.showmyModalNew = true
       var object = {}
+      console.log('edit data')
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
-      console.log('add data')
       console.log(json)
       try {
-        await axios.post('/manual_add_order', json)
+        await axios.post('/edit_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)
-            this.$refs.ClosemyModalNew.click();
-
+            // this.$refs.ClosemyModalNew.click();
+            document.getElementById("ClosemyModalEidt").click();
+            
           }, (res) => {
             // error callback
-            console.log(res.data.message)
+            error_editOrder.value = false
+            console.log(res.message)
+            message_editOrder.value = res.message
           }).finally(() => {
-            this.$router.push('/listorder')
+            //router.push('/listorder')
+            location.reload()
           });
-        this.message = "File has been upload"
-        this.file = ""
-        this.error = false
+        message_editOrder.value = "Edit Done"
       }
       catch (err) {
         console.log(err)
-        this.message = "Something went wrong"
-        this.error = true
+        message_editOrder.value = "Something went wrong: " + err
+        error_editOrder.value = true
       }
-    },
-    formatDate(date) {
-      return moment(date).format('DD-MM-YYYY')
     }
-    // isToday (date) {
-    // 	return isSameDay(date, new Date())
-    // },
-    // isMorning(date) {
-    //   const newDate = set(new Date(date.getTime()), { hours: 11, minutes: 0 })
-    //   return date < newDate;
-    // },
+    return {
+      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
+      , OrderDataExisting, getBranchAndCashEdit, addEditItem
+      , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate
+      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder
+      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit//,NewOrderDet
+    }
   },
-  // mounted() {
-  //   this.oModalNew = new Modal(this.$refs.myModalNew)
-  // },
-  // created() {
-  //   try {
-  //     axios.get('/orderlist')
-  //       .then((res) => {
-  //         // success callback
-  //         this.Data_ = res.data
-  //         console.log(this.Data_)
-  //       }, (res) => {
-  //         // error callback
-  //         console.log(res.data)
-  //       });
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //     this.message = "Something went wrong"
-  //     this.error = true
-  //   }
-  // }
 })
 </script>
 
@@ -1887,6 +1869,7 @@ export default defineComponent({
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
   background-color: #5D6D7E;
   border-color: #EAEDED;
+  vertical-align: middle;
 }
 
 /* #formFile::before {

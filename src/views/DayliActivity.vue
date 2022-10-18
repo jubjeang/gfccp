@@ -1,13 +1,13 @@
 <template>
     <Header />
-    <Sidebar />
+    <Sidebar :probs_isVisible=false :probs_isVisible2=true />
     <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
         <div class="row p-1" style="width: 100%">
             <div class="col text-left">&nbsp;</div>
         </div>
         <div class="row p-1" style="width: 100%">
             <div class="col text-left">
-                <h3>ติดตามคำสั่ง</h3>
+                <h3>กิจกรรมรายวัน</h3>
             </div>
         </div>
         <div class="row p-1" style="width: 100%">
@@ -27,7 +27,7 @@ import Header from '../components/Header'
 import axios from 'axios'
 import { reactive, ref } from "vue"
 export default {
-  name: 'OrderTracking',
+  name: 'DayliActivity',
   components: { Sidebar, Header },
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
     })
     const params = {
           CustomerID: data.CustomerID,
-          pagname: 'ordertracking'
+          pagname: 'dayliactivity'
         };
     axios.get('/get_pbi_url', { params })
       .then((res) => {

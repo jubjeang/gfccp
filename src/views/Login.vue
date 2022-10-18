@@ -10,7 +10,7 @@
         vw-100
       ">
       <div>
-        <img src="@/assets/images/sl_logo.png" />
+        <img src="@/assets/images/sl_logo.png"  style="display: block; max-width: auto height: auto;" /><!-- class="img-fluid"  -->
       </div>
     </div>
     <div class="container-fluid h-custom">
@@ -132,6 +132,7 @@ export default {
               localStorage.setItem('RoleId', userdata[0].RoleId)
               localStorage.setItem('branchbaseid', userdata[0].branchbaseid)
               localStorage.setItem('gfc_cct', userdata[0].gfc_cct)
+              localStorage.setItem('gfc_cct_code', userdata[0].gfc_cct_code)
               localStorage.setItem('ApproveID', userdata[0].ApproveID)
               this.$router.push('/main')
             }, (res) => {
@@ -153,58 +154,7 @@ export default {
       else {
         alert('กรอกชื่อผู้ใช้/รหัสผ่าน ผิดพลาด')
       }
-      // if (this.jobid === this.jobid_ && this.password === this.password_) {
-      //   localStorage.setItem('user_id', this.jobid_)
-      //   localStorage.setItem('user_name', 'UserDemo')
-      //   this.$router.push('/main')
-      // } else {
-      //   alert('Invalid Job Id or Password')
-      // }
     },
-    async addManualOrder() {
-      const formData = new FormData()
-      formData.append('OrderCategoryNew', this.NewOrder.OrderCategoryNew)
-      formData.append('OrderTypeNew', this.NewOrder.OrderTypeNew)
-      formData.append('BankTypeNew', this.NewOrder.BankTypeNew)
-      formData.append('JobDateNew', this.NewOrder.JobDateNew)
-      formData.append('RefNo', this.NewOrder.RefNo)
-      formData.append('RemarkNew', this.NewOrder.RemarkNew)
-      formData.append('BranchOrigin', this.NewOrder.BranchOrigin)
-      formData.append('BranchDest', this.NewOrder.BranchDest)
-      formData.append('AllRowsDet', this.Id)
-      formData.append('user_id', this.user_id)
-      for (var index = 0; index < this.Id; index++) {
-        formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
-        formData.append('ddlQualityMoneyType' + (index + 1), document.getElementById("ddlQualityMoneyType" + (index + 1)).value)
-        formData.append('ddlPackageMoneyType' + (index + 1), document.getElementById("ddlPackageMoneyType" + (index + 1)).value)
-        formData.append('tbQuantity' + (index + 1), document.getElementById("tbQuantity" + (index + 1)).value)
-        formData.append('tbAmount' + (index + 1), document.getElementById("tbAmount" + (index + 1)).value)
-      }
-      //formData.forEach((element, index) => console.log(index, element))
-      var object = {}
-      formData.forEach((value, key) => object[key] = value)
-      var json = JSON.stringify(object)
-      console.log(json)
-
-      try {
-        await axios.post('/manual_add_order', json)
-          .then((res) => {
-            // success callback
-            console.log(res.data.message)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-        this.message = "File has been upload"
-        this.file = ""
-        this.error = false
-      }
-      catch (err) {
-        console.log(err)
-        this.message = "Something went wrong"
-        this.error = true
-      }
-    }
   },
   mounted() {
     let externalScript = document.createElement('script')
