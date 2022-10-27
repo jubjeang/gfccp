@@ -12,7 +12,7 @@
       <div class="row p-1" style="width: 100%">
         <div class="col text-center">
           <!-- <iframe title="Home" width="1200rem" height="550rem" :src src="https://app.powerbi.com/view?r=eyJrIjoiNGQzNDMxNTktMzk0OC00ZWMyLWIxMzUtMGNhMTZkNmQ3ZmI5IiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe> -->
-          <iframe title="Home" width="1200rem" height="550rem" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
+          <iframe title="Home" width="100%" height="700%" :src="data.pbi_url" frameborder="0" allowFullScreen="true" ></iframe>
         </div>
       </div>
     </div>
@@ -58,3 +58,22 @@ export default {
   }
 }
 </script>
+<style scoped lang="css">
+@import '../assets/css/style.css';
+
+::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
+  background-color: #5D6D7E;
+  border-color: #EAEDED;
+  vertical-align: middle;
+}
+
+/* #formFile::before {
+  content: "Pick file";
+  position: absolute;
+  z-index: 2;
+  display: block;
+  background-color: #eee;
+  width: 80px;
+} */
+</style>
+

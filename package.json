@@ -21,7 +21,8 @@
     "vue-moment": "^4.1.0",
     "vue-router": "^4.0.0-0",
     "vue3-datepicker": "^0.3.4",
-    "vue3-table-lite": "^1.2.4"
+    "vue3-table-lite": "^1.2.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

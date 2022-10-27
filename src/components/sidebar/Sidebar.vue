@@ -12,6 +12,14 @@ export default {
   setup(props) {  
     const isVisible = ref(props.probs_isVisible)
     const isVisible2 = ref(props.probs_isVisible2)
+    const RoleId = ref(localStorage.getItem('RoleId'))
+    // const department_id = ref(localStorage.getItem('department_id'))
+    // const position_id = ref(localStorage.getItem('position_id'))
+    // const CustomerID = ref(localStorage.getItem('CustomerID'))
+    // const gfc_cct = ref(localStorage.getItem('gfc_cct'))
+    // const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
+    console.log( RoleId.value )
+
     const router = useRouter() 
     const toggleVisible =()=>{
       setTimeout(() => isVisible.value = !isVisible.value, 200);
@@ -22,7 +30,7 @@ export default {
     const gotoMainPage =()=>{
       router.push('/main')
     }
-    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,router,toggleVisible,toggleVisible2,gotoMainPage }
+    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,router,toggleVisible,toggleVisible2,gotoMainPage,RoleId }
    },
 }
 </script>
@@ -45,7 +53,7 @@ export default {
     <transition name="fade">
       <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
         <li class="w-100">
-          <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">
+          <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId === '1'">
             รายการคำสั่ง</SidebarLink>
           <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
@@ -55,9 +63,13 @@ export default {
         </a> -->
         </li>
         <li>
-          <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1">รายการอนุมัติ
+          <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId !== '1' ">รายการอนุมัติ
           </SidebarLink>
         </li>
+        <li>
+          <SidebarLink to="/reportinv" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId === '1' ">รายงานคงคลัง SLA
+          </SidebarLink>
+        </li>        
       </ul>
     </transition>
 

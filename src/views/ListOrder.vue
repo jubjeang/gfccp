@@ -13,8 +13,7 @@
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
-        <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank"
-          class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+        <a :href="DownloadLink" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
           <h4>ตัวอย่างไฟล์อัพโหลด</h4>
         </a>&nbsp;<h4>|
         </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
@@ -38,7 +37,7 @@
     </div>
     <!-- </div> -->
   </div>
-  <!--<div class="modal fade" id="myModal">---->
+  <!--<div class="modal fade" id="myModal">-----------Upload File---->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="sendFile" id="form0">
@@ -88,6 +87,11 @@
                     <div class="col">
                       <select id="BankType" class="form-select form-select-sm" style="width:15rem;" v-model="BankType">
                         <option selected="selected" value="">ธนาคาร</option>
+                        <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
+                          :selected="data.customerID === BankType">{{
+                              data.customer_name
+                          }}
+                        </option>
                         <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
                         <option value="9e6f6cff-6e64-41f1-a7be-c07335764423">AIRA</option>
                         <option value="58194020-9eaf-4a6c-a5cc-b8fa6f628ba9">BAY</option>
@@ -100,7 +104,7 @@
                         <option value="fb790fb5-76e4-4d0e-8651-0259d73dc0b6">LHB</option>
                         <option value="64956e74-51fe-42d5-8445-90c90740c5db">TBANK</option>
                         <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option> -->
-                        <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
+                        <!-- <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option> -->
                         <!-- <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
                         <option value="80cb96dd-ea99-401a-9615-bba6db501acd">ธนาคารเจพีมอร์แกนเชส</option>
                         <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option> -->
@@ -147,7 +151,7 @@
       </form>
     </div>
   </div>
-  <!--<div class="modal fade" id="myModalNew">---->
+  <!--<div class="modal fade" id="myModalNew">--------Add Order Manual--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
@@ -176,10 +180,15 @@
                       เลือกธนาคาร
                     </div>
                     <div class="col ps-4 d-flex">
-                      &nbsp; <select id="BankTypeNew" class="form-select form-select-sm" style="width:15rem;"
+                      &nbsp;<select id="BankTypeNew" class="form-select form-select-sm" style="width:15rem;"
                         v-model="NewOrder.BankTypeNew">
                         <!-- <option selected="selected" value="">ธนาคาร</option> -->
-                        <option selected="selected" value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
+                        <option selected="selected" value="">ธนาคาร</option>
+                        <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
+                          :selected="data.customerID === BankType">{{
+                              data.customer_name
+                          }}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -189,8 +198,9 @@
                     </div>
                     <div class="col">
                       <select class="form-select form-select-sm" name="OrderCategoryNew" style="width:15rem;"
-                        v-model="NewOrder.OrderCategoryNew">
+                        v-model="NewOrder.OrderCategoryNew" @click="getOrderType()">
                         <option value="BankBranch">Bank Branch</option>
+                        <option value="BOT">BOT</option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
@@ -198,7 +208,7 @@
                       ประเภทบริการ
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
+                      <select class="form-select form-select-sm" id="OrderTypeNew" style="width:15rem;"
                         v-model="NewOrder.OrderTypeNew" @click="getBranchAndCash()">
                         <option value="">Please Select One Type</option>
                         <option value="Withdraw">Withdraw</option>
@@ -227,11 +237,13 @@
                       ต้นทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchOrigin" style="width:15rem;"
-                        v-model="NewOrder.BranchOrigin">
+                      <select class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin"
+                        style="width:15rem;" v-model="NewOrder.BranchOrigin"
+                        @click="getBranchForCash(NewOrder.BranchOrigin, 'BranchDest')">
                         <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                          data.branch_name }}
+                              data.branch_name
+                          }}
                         </option>
                       </select>
                     </div>
@@ -239,11 +251,12 @@
                       ปลายทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchDest" style="width:15rem;"
-                        v-model="NewOrder.BranchDest">
+                      <select class="form-select form-select-sm" name="BranchDest" id="BranchDest" style="width:15rem;"
+                        v-model="NewOrder.BranchDest" @click="getBranchForCash(NewOrder.BranchDest, 'BranchOrigin')">
                         <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                          data.branch_name }}
+                              data.branch_name
+                          }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
@@ -313,7 +326,7 @@
       </form>
     </div>
   </div>
-  <!--<div class="modal fade" id="ModalEditOrder">---->
+  <!--<div class="modal fade" id="ModalEditOrder">----------Edit Order--->
   <div class="container py-2">
     <div class="py-2">
       <form @submit.prevent="editOrder" enctype="multipart/form-data" id="form2">
@@ -343,8 +356,15 @@
                     <div class="col ps-4 d-flex">
                       &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
                         v-model="OrderDataExisting.BankType">
-                        <!-- <option selected="selected" value="">ธนาคาร</option> -->
-                        <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
+                        <!--OrderDataExisting.BankType = obj[0].customerID-->
+
+                        <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
+                          :selected="data.customerID === OrderDataExisting.BankType">{{
+                              data.customer_name
+                          }}
+                        </option>
+                        <!-- <option selected="selected" value="">ธนาคาร</option> 
+                        <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>-->
                       </select>
                     </div>
                   </div>
@@ -384,7 +404,7 @@
                     </div>
                     <div class="col">
                       <datepicker v-model="OrderDataExisting.JobDate"
-                        :value="formatdate_show( new Date(OrderDataExisting.JobDate) )" id="JobDateEdit"
+                        :value="formatdate_show(new Date(OrderDataExisting.JobDate))" id="JobDateEdit"
                         class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
                     </div>
                   </div>
@@ -396,8 +416,9 @@
                       <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchOriginId">
                         <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
-                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchOriginId">{{
-                          data.branch_name }}
+                          :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchOriginId">{{
+                              data.branch_name
+                          }}
                         </option>
                       </select>
                     </div>
@@ -408,8 +429,9 @@
                       <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchDestId">
                         <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
-                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchDestId">{{
-                          data.branch_name }}
+                          :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchDestId">{{
+                              data.branch_name
+                          }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
@@ -453,24 +475,27 @@
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;
                             <span @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle"></i></span> -->
                           </td>
-                          <td scope="col" @click="calamount_orderEdit(index+1)" @keyup="calamount_orderEdit(index+1)">
+                          <td scope="col" @click="calamount_orderEdit(index + 1)"
+                            @keyup="calamount_orderEdit(index + 1)">
                             <select class="form-select form-select-sm text-right"
-                              v-bind="{ id: 'ddlMoneyTypeEdit'+(index+1)}"
+                              v-bind="{ id: 'ddlMoneyTypeEdit' + (index + 1) }"
                               v-model="OrderDataExisting.OrderDataDet[index].MoneyType">
                               <option value='1000'>1,000</option>
                               <option value='500'>500</option>
                               <option value='100'>100</option>
+                              <option value='50'>50</option>
                               <option value='20'>20</option>
                               <option value='10'>10</option>
                               <option value='5'>5</option>
                               <option value='2'>2</option>
                               <option value='1'>1</option>
                               <option value='0.5'>0.50</option>
+                              <option value='0.25'>0.25</option>
                             </select>
                           </td>
                           <td scope="col">
                             <select class='form-select form-select-sm'
-                              v-bind="{ id: 'ddlQualityMoneyTypeEdit'+(index+1)}"
+                              v-bind="{ id: 'ddlQualityMoneyTypeEdit' + (index + 1) }"
                               v-model="OrderDataExisting.OrderDataDet[index].QualityMoneyType">
                               <option value='New'>ใหม่</option>
                               <option value='Fit'>ดี</option>
@@ -481,8 +506,8 @@
                           <td scope="col">
                             <select class='form-select form-select-sm'
                               v-model="OrderDataExisting.OrderDataDet[index].PackageMoneyType"
-                              v-bind="{ id: 'ddlPackageMoneyTypeEdit'+(index+1)}" @click="calamount_orderEdit(index+1)"
-                              @keyup="calamount_orderEdit(index+1)">
+                              v-bind="{ id: 'ddlPackageMoneyTypeEdit' + (index + 1) }"
+                              @click="calamount_orderEdit(index + 1)" @keyup="calamount_orderEdit(index + 1)">
                               <option value='Bundle'>มัด</option>
                               <option value='Piece'>ฉบับ</option>
                               <option value='Coin'>เหรียญ</option>
@@ -497,14 +522,14 @@
                           </td> -->
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbQuantityEdit'+(index+1) ,value: formatPrice_noFixed(OrderDataExisting.OrderDataDet[index].Quantity)}"
+                              v-bind="{ id: 'tbQuantityEdit' + (index + 1), value: formatPrice_noFixed(OrderDataExisting.OrderDataDet[index].Quantity) }"
                               v-model="OrderDataExisting.OrderDataDet[index].Quantity" class='form-control text-right'
-                              style='width:10rem;' @change="calamount_orderEdit(index+1)"
-                              @keyup="calamount_orderEdit(index+1)" @keypress="calamount_orderEdit(index+1)">
+                              style='width:10rem;' @change="calamount_orderEdit(index + 1)"
+                              @keyup="calamount_orderEdit(index + 1)" @keypress="calamount_orderEdit(index + 1)">
                           </td>
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbAmountEdit'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount)}"
+                              v-bind="{ id: 'tbAmountEdit' + (index + 1), value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount) }"
                               v-model="OrderDataExisting.OrderDataDet[index].Amount" class='form-control text-right'
                               style='width:10rem;' readonly='readonly' />
                           </td>
@@ -516,8 +541,11 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
-                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;"
+                    v-show="checkstatus_send_to_checker">บันทึก</button>
+                  <button class="btn btn-primary" style="width:6rem; height:2rem;" @click.prevent="sendApprove"
+                    v-show="checkstatus_send_to_checker">ส่งอนุมัติ</button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
                     id="ClosemyModalEidt" style="width:4rem; height:2rem;">ยกเลิก</button>
                 </div>
               </div>
@@ -547,6 +575,7 @@ export default defineComponent({
     //upload data
     const file = ref(File | null)//ref('')
     const error = ref(false)
+    const checkstatus_send_to_checker = ref(false)
     const error_addManual = ref(false)
     const error_editOrder = ref(false)
     const message = ref('')
@@ -555,6 +584,7 @@ export default defineComponent({
     const OrderCategory = ref('BankBranch')
     const OrderType = ref('')
     const BankType = ref('')
+    const DownloadLink = ref('')
     const JobDate = ref(new Date())
     const user_id = ref(localStorage.getItem('user_id'))
     const department_id = ref(localStorage.getItem('department_id'))
@@ -575,10 +605,11 @@ export default defineComponent({
       DataBranchToDest: [],
       BranchOrigin: "",
       BranchDest: "",
+      BankTypeData: [],
     })
-    // const NewOrderDet = reactive([])
     const Id = ref(0)
     const rowDataEdit = ref([])
+    // const NewOrderDet = reactive([])
     const OrderDataExisting = reactive({
       orderId: "",
       BankType: "",
@@ -594,7 +625,210 @@ export default defineComponent({
       DataBranchToDest: [],
       Remark: "",
       OrderDataDet: [],
+      Cashstatus: "",
+      BankTypeData: [],
     });
+    const getBranchForCash = async (value,ddltype) => { 
+      console.log('value: ',value.branch_name,'branch: ',ddltype)
+      const params = {
+        CustomerID: CustomerID.value,
+        CCT: value.branch_name,
+        user_id: user_id.value
+      };
+      if(NewOrder.OrderCategoryNew !=="BOT")
+      {
+        if (NewOrder.OrderTypeNew === "Withdraw") { 
+          await axios.get('/getbranchforcash', { params })
+          .then((res) => {
+            // success callback           
+            if( ddltype === 'BranchDest' )
+            { 
+              NewOrder.DataBranchToDest = res.data
+              console.log( 'NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest )
+              //Withdraw
+              document.getElementById("BranchDest").disabled = false
+              // document.getElementById("BranchOrigin").removeEventListener('click','getBranchForCash');
+            }            
+            // console.log(NewOrder.DataBranchToOrigin)
+            // console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data)
+          });
+
+        }
+        if (NewOrder.OrderTypeNew === "Deposit") { 
+          await axios.get('/getbranchforcash', { params })
+          .then((res) => {
+            // success callback           
+            if( ddltype === 'BranchOrigin' )
+            {
+              NewOrder.DataBranchToOrigin = res.data
+              console.log( 'NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin )
+              document.getElementById("BranchOrigin").disabled = false
+              // document.getElementById("BranchDest").removeEventListener('click','getBranchForCash');
+            } 
+            // console.log(NewOrder.DataBranchToOrigin)
+            // console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data)
+          });
+
+        }
+      }
+
+      //document.getElementById("BranchDest").disabled = true
+    }
+    const getOrderType = async (e) => {
+      getBranchAndCash()
+    }
+    const getBranchAndCash = () => {
+      NewOrder.DataBranchToOrigin = []
+      NewOrder.DataBranchToDest = []
+      console.log("NewOrder.OrderCategoryNew: ", NewOrder.OrderCategoryNew)
+      if (NewOrder.OrderTypeNew === "Withdraw") {
+        if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
+          getBranchOrCashCen('bot', 'BranchOrigin')
+          getBranchOrCashCen('cct', 'BranchDest')
+          document.getElementById("BranchOrigin").disabled = false
+          document.getElementById("BranchDest").disabled = false
+        }
+        if (NewOrder.OrderCategoryNew === "BankBranch") {
+          getBranchOrCashCen('cashtobranch', 'BranchOrigin')
+          document.getElementById("BranchOrigin").disabled = false
+          document.getElementById("BranchDest").disabled = true
+        }
+      }
+      if (NewOrder.OrderTypeNew === "Deposit") {
+        if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
+          getBranchOrCashCen('cct', 'BranchOrigin')
+          getBranchOrCashCen('bot', 'BranchDest')
+          document.getElementById("BranchOrigin").disabled = false
+          document.getElementById("BranchDest").disabled = false
+        }
+        if (NewOrder.OrderCategoryNew === "BankBranch") {
+          getBranchOrCashCen('cashtobranch', 'BranchDest')
+          document.getElementById("BranchOrigin").disabled = true
+          document.getElementById("BranchDest").disabled = false          
+        }
+      }
+    }
+    const getBranchOrCashCen = async (servicetype, ddltype) => { 
+      let type_ =''
+      type_ = NewOrder.OrderCategoryNew
+      const params = {
+        CustomerID: CustomerID.value,
+        user_id: user_id.value,
+        type_: type_
+      };
+      if ( (servicetype === 'cct') || (servicetype === 'cashtobranch') ) {
+        await axios.get('/getcashcenterdata', { params })
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+            console.log(NewOrder.DataBranchToOrigin)
+            console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+      //---------------------------------------------      
+      if (servicetype === 'bot') {
+        await axios.get('/getbotbranch', { params })
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+            console.log(NewOrder.DataBranchToOrigin)
+            console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+      //--------------------------------------------- 
+      if (servicetype === 'branchtocash') {
+        await axios.get('/getbranchdata', { params })
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+            console.log(NewOrder.DataBranchToOrigin)
+            console.log(NewOrder.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }     
+      //--------------------------------------------
+      // if (servicetype === 'cashtobranch') {
+      //   await axios.get('/getcashcenterdata', { params })
+      //     .then((res) => {
+      //       // success callback
+      //       ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+      //       console.log(NewOrder.DataBranchToOrigin)
+      //       console.log(NewOrder.DataBranchToDest)
+      //     }, (res) => {
+      //       // error callback
+      //       console.log(res.data.message)
+      //     });
+      // }
+
+    }
+    const getBranchAndCashEdit = () => {
+      OrderDataExisting.DataBranchToOrigin = []
+      OrderDataExisting.DataBranchToDest = []
+      if (OrderDataExisting.OrderType === "Withdraw") {
+        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
+        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
+      }
+      if (OrderDataExisting.OrderType === "Deposit") {
+        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
+        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
+      }
+    }
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => { 
+      let type_ =''
+      type_ = NewOrder.OrderCategoryNew
+      const params = {
+        CustomerID: CustomerID.value,
+        user_id: user_id.value,
+        type_: type_
+      };
+      if (servicetype === 'branchtocash') {
+        // const params = {
+        //   CustomerID: CustomerID.value
+        // };
+
+        
+        await axios.get('/getbranchdata', { params })
+          .then((res) => {
+            // success callback           
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+      //--------------------------------------------
+      if (servicetype === 'cashtobranch') {
+        // const params = {
+        //   CustomerID: CustomerID.value
+        // };
+        await axios.get('/getcashcenterdata', { params })
+          .then((res) => {
+            // success callback
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+            // console.log(OrderDataExisting.DataBranchToOrigin)
+            // console.log(OrderDataExisting.DataBranchToDest)
+          }, (res) => {
+            // error callback
+            console.log(res.data.message)
+          });
+      }
+    }
     const sendFile = async (e) => {
       // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
       const target = e.target
@@ -610,6 +844,7 @@ export default defineComponent({
       formData.append('gfc_cct', gfc_cct.value)
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
+      formData.append('CustomerID', CustomerID.value)
       console.log('sendFile')
       formData.forEach(element => console.log(element))
       try {
@@ -633,7 +868,34 @@ export default defineComponent({
         message.value = "Something went wrong"
         error.value = true
       }
-
+    }
+    const sendApprove = async (e) => {
+      // alert( OrderDataExisting.orderId )
+      if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง?")) {
+        const params = {
+          Id: OrderDataExisting.orderId,
+          Type_: 'send_to_check'
+        };
+        try {
+          await axios.get('/update_cashstatus_order', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+              console.log(obj[0])
+              // router.push('/listorder')
+              location.reload()
+              // addEditItem
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
     }
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
@@ -716,9 +978,13 @@ export default defineComponent({
     /**
      * Get server data request
      */
-    const myRequest = async (keyword) => {
-      //const fakeData = [];
-      const res = await axios.get('/orderlist')
+    const myRequest = async ( keyword ) => {
+      //const fakeData = [];      
+      const params = {
+        user_id: user_id.value,
+        CustomerID: CustomerID.value
+      };
+      const res = await axios.get('/orderlist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("Data_: ", Data_)
@@ -728,20 +994,43 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-      // Data_.value
-      // Data_.value.forEach((item) => {
-      //   console.log("found: ", item)
-      //   console.log("found AutoID: ", item.AutoID)
+      //-------------get banktypedata
+      const params_banktypedata = {
+        user_id: user_id.value
+      };
+      console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
+      // await axios.get('/getbranchdata', { params })
+      await axios.get('/getbanktypedata', { params })
+        .then((res) => {
+          // success callback     
+          console.log('res.data:', res.data)
+          NewOrder.BankTypeData = res.data
+          // ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+          console.log(' NewOrder.BankTypeData: ', NewOrder.BankTypeData)
+          // console.log(NewOrder.DataBranchToDest)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
+      await axios.get('/getdownloadlink', { params })
+        .then((res) => {
+          // success callback     
+          //console.log('res.data:', res.data)
+          DownloadLink.value = res.data[0].url_link
+          // ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+          console.log('DownloadLink.value: ', DownloadLink.value)
+          // console.log(NewOrder.DataBranchToDest)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
 
-      // });
-      //fakeData.push(Data_.value)
-      //console.log('fakeData: ', fakeData)
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
           setTimeout(() => {
-            table.isLoading = true;
+            table.isLoading = false;
             let newData = Data_.value.filter(
               (x) =>
                 x.AutoID.toString().toLowerCase().includes(keyword.toLowerCase()) ||
@@ -749,11 +1038,11 @@ export default defineComponent({
                 x.branchorigin_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.branchdest_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 formatPrice(x.total_by_branch).toString().toLowerCase().includes(keyword.toLowerCase()) ||
-                x.order_date.toLowerCase().includes(keyword.toLowerCase()) || 
+                x.order_date.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.remark.toLowerCase().includes(keyword.toLowerCase())
             );
             resolve(newData);
-          }, 200);
+          }, 100);
         } catch (error) {
           console.log("Fetch error", error);
           reject();
@@ -826,13 +1115,19 @@ export default defineComponent({
           display: function (row) {
             let sOutput = ''
             if (row.cashstatus === '1') {
-              sOutput = 'สร้างคำสั่ง'
+              sOutput = 'สร้างรายการคำสั่ง'
             }
             if (row.cashstatus === '2') {
-              sOutput = 'รออนุมัติ'
+              sOutput = 'รอ Checker อนุมัติ'
             }
             if (row.cashstatus === '3') {
-              sOutput = 'อนุมัติคำสั่ง'
+              sOutput = 'รอ Approve1 อนุมัติ'
+            }
+            if (row.cashstatus === '4') {
+              sOutput = 'รอ Approve2 อนุมัติ'
+            }
+            if (row.cashstatus === '5') {
+              sOutput = 'รอ ApproveN อนุมัติ'
             }
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
@@ -850,10 +1145,10 @@ export default defineComponent({
           width: "10%",
           display: function (row) {
             return (
-              '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
-              +
+              // '<button type="button" data-id="' +
+              // row.AutoID +
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
+              // +
               '<button type="button" data-id="' +
               row.AutoID +
               '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">Cancel</button>'
@@ -900,7 +1195,7 @@ export default defineComponent({
         });
       }
     );
-    const tableLoadingFinish = (elements) => {
+    const tableLoadingFinish = ( elements ) => {
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("name-btn")) {
@@ -931,12 +1226,10 @@ export default defineComponent({
                   }).finally(() => {
                     //
                   });
-
               }
               catch (err) {
                 console.log(err)
               }
-
             }
           });
         }
@@ -973,6 +1266,7 @@ export default defineComponent({
           });
 
         }
+        //----------------------------------------------------------------------event click button edit
         if (element.classList.contains("editorder")) {
           element.addEventListener("click", async function () {
             const params = {
@@ -998,11 +1292,20 @@ export default defineComponent({
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
                   OrderDataExisting.Remark = obj[0].remark
+                  OrderDataExisting.Cashstatus = obj[0].cashstatus
+                  if (obj[0].cashstatus === '1') {
+                    checkstatus_send_to_checker.value = true
+                  }
+                  else {
+                    checkstatus_send_to_checker.value = false
+                  }
+                  console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
+                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
                   // console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
                   // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
                   // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
                   // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
-                  console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
+                  // console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -1443,6 +1746,8 @@ export default defineComponent({
                   // console.log(OrderDataExisting.OrderDataDet[1].MoneyType)
                   Id.value = OrderDataExisting.OrderDataDet.length
                   console.log('OrderDataExisting.OrderDataDet.length: ' + OrderDataExisting.OrderDataDet.length)
+                  console.log("OrderDataExisting.BankType: ", OrderDataExisting.BankType)
+
                   // addEditItem
                 }, (res) => {
                   // error callback
@@ -1476,50 +1781,22 @@ export default defineComponent({
     const dateTime = (value) => {
       return moment(value).format("DD-MM-YYYY");
     }
-    const getBranchAndCashEdit = () => {
-      OrderDataExisting.DataBranchToOrigin = []
-      OrderDataExisting.DataBranchToDest = []
-      if (OrderDataExisting.OrderType === "Withdraw") {
-        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
-      }
-      if (OrderDataExisting.OrderType === "Deposit") {
-        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-      }
-    }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
-      if (servicetype === 'branchtocash') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
-        await axios.get('/getbranchdata', { params })
-          .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
-        await axios.get('/getcashcenterdata', { params })
-          .then((res) => {
-            // success callback
-            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
+    const getBankTypeData = async () => {
+      const params = {
+        user_id: user_id.value
+      };
+      // await axios.get('/getbranchdata', { params })
+      await axios.get('/getbanktypedata', { params })
+        .then((res) => {
+          // success callback       
+          NewOrder.BankTypeData = res.data
+          // ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+          // console.log(NewOrder.DataBranchToOrigin)
+          // console.log(NewOrder.DataBranchToDest)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
     }
     const addManualOrder = async () => {
       const formData = new FormData()
@@ -1536,6 +1813,7 @@ export default defineComponent({
       formData.append('AllRowsDet', Id.value)
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
+      formData.append('CustomerID', CustomerID.value)
       for (var index = 0; index < Id.value; index++) {
         if (document.getElementById("ddlMoneyType" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
@@ -1574,51 +1852,6 @@ export default defineComponent({
         console.log(err)
         message_addManual.value = "Something went wrong: " + err
         error_addManual.value = true
-      }
-    }
-    const getBranchAndCash = () => {
-      NewOrder.DataBranchToOrigin = []
-      NewOrder.DataBranchToDest = []
-      if (NewOrder.OrderTypeNew === "Withdraw") {
-        getBranchOrCashCen('cashtobranch', 'BranchOrigin')
-        getBranchOrCashCen('branchtocash', 'BranchDest')
-      }
-      if (NewOrder.OrderTypeNew === "Deposit") {
-        getBranchOrCashCen('branchtocash', 'BranchOrigin')
-        getBranchOrCashCen('cashtobranch', 'BranchDest')
-      }
-    }
-    const getBranchOrCashCen = async (servicetype, ddltype) => {
-      if (servicetype === 'branchtocash') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
-        await axios.get('/getbranchdata', { params })
-          .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
-        await axios.get('/getcashcenterdata', { params })
-          .then((res) => {
-            // success callback
-            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
       }
     }
     const calamount_orderEdit = (value) => {
@@ -1748,12 +1981,14 @@ export default defineComponent({
       ddlMoneyType += "<option value='1000'>1,000</option>"
       ddlMoneyType += "<option value='500'>500</option>"
       ddlMoneyType += "<option value='100'>100</option>"
+      ddlMoneyType += "<option value='50'>50</option>"
       ddlMoneyType += "<option value='20'>20</option>"
       ddlMoneyType += "<option value='10'>10</option>"
       ddlMoneyType += "<option value='5'>5</option>"
       ddlMoneyType += "<option value='2'>2</option>"
       ddlMoneyType += "<option value='1'>1</option>"
       ddlMoneyType += "<option value='0.5'>0.50</option>"
+      ddlMoneyType += "<option value='0.25'>0.25</option>"
       ddlMoneyType += "</select>"
       let ddlQualityMoneyType = ""
       ddlQualityMoneyType = "<select class='form-select form-select-sm' id='ddlQualityMoneyType" + Id.value + "'>"
@@ -1811,6 +2046,7 @@ export default defineComponent({
       formData.append('BranchDest_code', OrderDataExisting.BranchDestId)
       formData.append('AllRowsDet', Id.value)
       formData.append('user_id', user_id.value)
+      formData.append('CustomerID', CustomerID.value)
       for (var index = 0; index < Id.value; index++) {
         if (document.getElementById("ddlMoneyTypeEdit" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyTypeEdit" + (index + 1)).value)
@@ -1823,7 +2059,7 @@ export default defineComponent({
       }
       // this.showmyModalNew = true
       var object = {}
-      console.log('edit data')
+      // console.log('edit data')
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
       console.log(json)
@@ -1834,7 +2070,6 @@ export default defineComponent({
             console.log(res.data)
             // this.$refs.ClosemyModalNew.click();
             document.getElementById("ClosemyModalEidt").click();
-            
           }, (res) => {
             // error callback
             error_editOrder.value = false
@@ -1853,11 +2088,12 @@ export default defineComponent({
       }
     }
     return {
-      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
+      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
       , OrderDataExisting, getBranchAndCashEdit, addEditItem
-      , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate
-      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder
-      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit//,NewOrderDet
+      , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
+      , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
+      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder, DownloadLink
+      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData//,NewOrderDet
     }
   },
 })

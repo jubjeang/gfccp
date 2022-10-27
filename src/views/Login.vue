@@ -124,7 +124,7 @@ export default {
               let userdata = res.data
               console.log(userdata)
               console.log(userdata[0].name)
-              localStorage.setItem('user_id', userdata[0].username)
+              localStorage.setItem('user_id', userdata[0].id)
               localStorage.setItem('user_name', userdata[0].name)
               localStorage.setItem('department_id', userdata[0].department_id)
               localStorage.setItem('position_id', userdata[0].position_id)
