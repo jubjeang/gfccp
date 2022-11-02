@@ -13,7 +13,9 @@
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
-        <a :href="DownloadLink" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+        <!-- <a :href="DownloadLink" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+          <h4>ตัวอย่างไฟล์อัพโหลด</h4> -->
+          <a @click="DownloadLink_" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
           <h4>ตัวอย่างไฟล์อัพโหลด</h4>
         </a>&nbsp;<h4>|
         </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
@@ -628,6 +630,20 @@ export default defineComponent({
       Cashstatus: "",
       BankTypeData: [],
     });
+    const DownloadLink_ = async () =>{
+       await axios({ 
+        url: "http://localhost:4000/img/template.zip",
+        method: "GET",
+        responseType:"blob"
+      }).then((res)=>{
+        let fileurl = window.URL.createObjectURL(new Blob([res.data]))
+        let filelink = document.createElement('a')
+        filelink.href = fileurl
+        filelink.setAttribute('download','template.zip')
+        document.body.appendChild(filelink)
+        filelink.click()
+      })
+    }
     const getBranchForCash = async (value,ddltype) => { 
       console.log('value: ',value.branch_name,'branch: ',ddltype)
       const params = {
@@ -2089,7 +2105,7 @@ export default defineComponent({
     }
     return {
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
-      , OrderDataExisting, getBranchAndCashEdit, addEditItem
+      , OrderDataExisting, getBranchAndCashEdit, addEditItem,DownloadLink_
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
       , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder, DownloadLink

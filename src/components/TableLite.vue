@@ -433,8 +433,11 @@ export default defineComponent({
         return {
           pagingInfo: "Showing {0}-{1} of {2}",
           pageSizeChangeLabel: "Row count:",
-          gotoPageLabel: "Go to page:",
-          noDataAvailable: "No data",
+          // pageSizeChangeLabel: "Row count:",
+          gotoPageLabel: "ไปหน้าที่:",
+          // gotoPageLabel: "Go to page:",
+          noDataAvailable: "ไม่พบข้อมูล",
+          // noDataAvailable: "No data",
         };
       },
     },

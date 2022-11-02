@@ -15,7 +15,7 @@
                 <!-- <iframe title="Order tracking detail" width="1300" height="800"
                     src="https://app.powerbi.com/view?r=eyJrIjoiODUxMTNjYmYtZGNhMi00YWQyLWJmMGEtMWViNjdiMjUyOGNmIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D&pageName=ReportSection"
                     frameborder="0" allowFullScreen="true"></iframe> -->
-                    <iframe title="Home" width="1200rem" height="550rem" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
+                    <iframe title="Home" width="100%" height="700%" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
             </div>
         </div>
     </div>

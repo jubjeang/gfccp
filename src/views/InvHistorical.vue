@@ -1,37 +1,25 @@
 <template>
-    <Header />
-    <Sidebar :probs_isVisible=false :probs_isVisible2=true  />
-    <div :style="{ 'margin-left': sidebarWidth }">
-
-        <div class="container p-0" style="width: 100%">
-            <div class="row p-1" style="width: 100%">
-                <div class="col text-left">&nbsp;</div>
-            </div>
-            <div class="row p-1" style="width: 100%">
-                <div class="col text-left">
-                    <h3>ประวัติคงคลัง</h3>
-                </div>
-            </div>
-            <div class="row p-1">
-                <!-- <div class="col">
-                    <div class="p-0" style="width: 100%; border-radius: 5px; border:1px solid black;">
-                        <canvas id="myChart_doughnut" width="200" height="200"></canvas>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="p-0" style="width: 100%; border-radius: 5px; border:1px solid black;">
-                        <canvas id="myChart_bar" width="200" height="200"></canvas>
-                    </div>
-                </div> -->
-                <div class="col m-0 p-0">
-                    <iframe title="Historical - HistoricalOrder" width="1200" height="900" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
-                    <!-- <iframe title="Historical - HistoricalOrder" width="1200" height="900" src="https://app.powerbi.com/view?r=eyJrIjoiNjY4ZjVmZTItZWRjYS00NDJhLThmNmUtOTJhNGRhZjg3OTcxIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe> -->
-                </div>
-            </div>
-        </div>
-    </div>
+  <Header />
+  <Sidebar :probs_isVisible=false :probs_isVisible2=true />
+  <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
+      <div class="row p-1" style="width: 100%">
+          <div class="col text-left">&nbsp;</div>
+      </div>
+      <div class="row p-1" style="width: 100%">
+          <div class="col text-left">
+              <h3>ประวัติคงคลัง</h3>
+          </div>
+      </div>
+      <div class="row p-1" style="width: 100%">
+          <div class="col text-center">
+              <!-- <iframe title="Order tracking detail" width="1300" height="800"
+                  src="https://app.powerbi.com/view?r=eyJrIjoiODUxMTNjYmYtZGNhMi00YWQyLWJmMGEtMWViNjdiMjUyOGNmIiwidCI6IjE5NjkwZWQwLTQzODctNDhkMi1iMmM5LWUzZGM2Y2EzOGNkZiIsImMiOjEwfQ%3D%3D&pageName=ReportSection"
+                  frameborder="0" allowFullScreen="true"></iframe> -->
+                  <iframe title="Home" width="100%" height="700%" :src="data.pbi_url" frameborder="0" allowFullScreen="true"></iframe>
+          </div>
+      </div>
+  </div>
 </template>
-
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
 import { sidebarWidth } from '../components/sidebar/state'

@@ -65,11 +65,7 @@ export default {
         <li>
           <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId !== '1' ">รายการอนุมัติ
           </SidebarLink>
-        </li>
-        <li>
-          <SidebarLink to="/reportinv" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId === '1' ">รายงานคงคลัง SLA
-          </SidebarLink>
-        </li>        
+        </li>                
       </ul>
     </transition>
 
@@ -99,6 +95,11 @@ export default {
             กิจกรรมรายวัน
           </SidebarLink>
         </li>
+        <li>
+          <SidebarLink to="/reportinv" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
+            รายงานคงคลัง
+          </SidebarLink>
+        </li>        
       </ul>
     </transition>
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
