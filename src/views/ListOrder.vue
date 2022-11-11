@@ -22,7 +22,7 @@
           style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
         &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
         </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-          style="cursor: pointer">รายการใหม่</h4>
+          style="cursor: pointer">สร้างรายการคำสั่ง</h4>
       </div>
     </div>
     <div class="row p-0" style="width: 100%">
@@ -47,7 +47,7 @@
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Import</h5>
+                <h5 class="modal-title">อัพโหลด</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -76,15 +76,15 @@
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
                         v-model="OrderType">
-                        <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
                       </select>
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col">
-                      เลือกธนาคาร
+                      ธนาคาร
                     </div>
                     <div class="col">
                       <select id="BankType" class="form-select form-select-sm" style="width:15rem;" v-model="BankType">
@@ -168,7 +168,7 @@
                 <div class="container">
                   <div class="row p-2">
                     <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">รายการใหม่</h5>
+                      <h5 class="ps-1 text-gray">สร้างรายการคำสั่ง</h5>
                     </div>
                   </div>
                   <div class="row p-2" v-if="message_addManual">
@@ -212,9 +212,9 @@
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderTypeNew" style="width:15rem;"
                         v-model="NewOrder.OrderTypeNew" @click="getBranchAndCash()">
-                        <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -353,7 +353,7 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-sm-2">
-                      เลือกธนาคาร<input type="hidden" id="ordedrId" v-model="OrderDataExisting.orderId" />
+                      ธนาคาร<input type="hidden" id="ordedrId" v-model="OrderDataExisting.orderId" />
                     </div>
                     <div class="col ps-4 d-flex">
                       &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
@@ -387,9 +387,9 @@
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderTypeEdit" style="width:15rem;"
                         v-model="OrderDataExisting.OrderType" @click="getBranchAndCashEdit()">
-                        <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -1167,11 +1167,11 @@ export default defineComponent({
               // +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">Cancel</button>'
+              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">ยกเลิก</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">Edit</button>'
+              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">แก้ไข</button>'
             );
           },
         },
@@ -1216,7 +1216,7 @@ export default defineComponent({
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("name-btn")) {
           element.addEventListener("click", function () {
-            console.log(this.dataset.id + " name-btn click!!");
+            console.log(this.dataset.id + " name-btn click!!")
           });
         }
         if (element.classList.contains("rejectorder")) {

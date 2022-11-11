@@ -45,12 +45,12 @@
           input-format="dd/MM/yyyy" />
       </div>
       <div class="col-1">
-        <button class="btn btn-primary" style="width:4rem; height:2rem;">ค้นหา</button>
+        <button class="btn btn-primary" style="width:4rem; height:2rem;" @click.prevent="getData">ค้นหา</button>
       </div>
       <div class="col-1">
-        <a @click="DownloadReports" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+        <!-- <a @click="DownloadReports" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
           <h4>ตัวอย่างไฟล์อัพโหลด</h4>
-        </a>&nbsp;
+        </a>&nbsp; -->
       </div>
     </div>
     <div class="row p-0" style="width: 100%">
@@ -79,13 +79,12 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
-import cors from 'cors';
-import fs from 'fs';
+import FileSaver from 'file-saver'
 // Vue.prototype.axios = axios;
 
 export default defineComponent({
   name: 'ReportInv',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
+  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, FileSaver },
   setup() {
     //upload data
     const file = ref(File | null)//ref('')
@@ -116,30 +115,12 @@ export default defineComponent({
     const Id = ref(0)
     const rowDataEdit = ref([])
     // const NewOrderDet = reactive([])
-    const DownloadReports = async () => {
-      console.log('DownloadReports')
-      const params = {
-        CCT_Data: Criteria.CCT_Data,
-        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
-      };
-      //alert( params.CCT_Data+" : "+params.JobDate);
-      const res = await axios.get('/getdownloadreports', { params })
-        .then((res) => {
-          //Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log("res.data: ", res.data)
-          //Data_
-          // console.log(fakeData)
-        }, (res) => {
-          // error callback
-          console.log(res.data)
-        })
-    }
     // const DownloadLink_ = async () => { 
     //   let filesrcs=[{
     //       title: 'template.zip',
     //       src: 'http://localhost:4000/dd',//require('~/assets/images/template.zip'),
     //     }]
-      
+
     //   await axios.get(filesrcs.src,{responseType: 'blob'}).then((response) => {
     //     let fileurl = window.URL.createObjectURL(new Blob([response.data]))
     //     let filelink = document.createElement('a')
@@ -207,12 +188,64 @@ export default defineComponent({
       rows: [],
     });
     let Data_ = ref([]);//[]
+    const getData = async () => {
+      // console.log('DownloadReports')
+      const params = {
+        CCT_Data: Criteria.CCT_Data,
+        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
+      };
+      //alert( params.CCT_Data+" : "+params.JobDate);
+      const res = await axios.get('/getdownloadreports', { params })
+        .then((res) => {
+          Data_.value = JSON.parse(JSON.stringify(res.data))
+          console.log("res.data: ", res.data)
+          console.log('Data_', Data_)
+          console.log('Data_.value[0].jobdate : ', Data_.value[0].jobdate)
+          // table.isLoading = true;
+          // table.rows = Data_
+
+          setTimeout(() => {
+            table.isLoading = false;
+            // table.totalRecordCount = 20;              
+          }, 600)
+          table.rows = Data_;
+          table.isLoading = true
+          //location.reload()
+          //Data_
+          // console.log(fakeData)
+        }, (res) => {
+          // error callback
+          console.log(res.data)
+        })
+    }
+    const DownloadReports = async () => {
+      // console.log('DownloadReports')
+      const params = {
+        CCT_Data: Criteria.CCT_Data,
+        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
+      };
+      //alert( params.CCT_Data+" : "+params.JobDate);
+      const res = await axios.get('/getdownloadreports', { params })
+        .then((res) => {
+          //Data_.value = JSON.parse(JSON.stringify(res.data))
+          console.log("res.data: ", res.data)
+          //console.log('Data_')
+          //Data_
+          // console.log(fakeData)
+        }, (res) => {
+          // error callback
+          console.log(res.data)
+        })
+    }
     /**
      * Get server data request
      */
     const myRequest = async (keyword) => {
-      //const fakeData = [];      
+      //const fakeData = []; 
+      //----------------Data from backend server
       const params = {
+        CCT_Data: Criteria.CCT_Data,
+        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
         user_id: user_id.value,
         CustomerID: CustomerID.value
       };
@@ -220,18 +253,11 @@ export default defineComponent({
         .then((res) => {
           Criteria.CCT_DataSource = JSON.parse(JSON.stringify(res.data))
           console.log("Criteria.CCT_DataSource: ", Criteria.CCT_DataSource)
-          //Data_
           // console.log(fakeData)
         }, (res) => {
           // error callback
           console.log(res.data)
         })
-      //-------------get banktypedata
-      const params_banktypedata = {
-        user_id: user_id.value
-      };
-
-
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -240,13 +266,9 @@ export default defineComponent({
             table.isLoading = false;
             let newData = Data_.value.filter(
               (x) =>
-                x.AutoID.toString().toLowerCase().includes(keyword.toLowerCase()) ||
-                x.servicetype.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.branchorigin_name.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.branchdest_name.toLowerCase().includes(keyword.toLowerCase()) ||
-                formatPrice(x.total_by_branch).toString().toLowerCase().includes(keyword.toLowerCase()) ||
-                x.order_date.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.remark.toLowerCase().includes(keyword.toLowerCase())
+                x.typeofreport.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.jobdate.toLowerCase().includes(keyword.toLowerCase()) ||
+                x.cctname.toLowerCase().includes(keyword.toLowerCase())
             );
             resolve(newData);
           }, 100);
@@ -257,52 +279,49 @@ export default defineComponent({
       });
     };
     // Table config
-    // Table config
     const table = reactive({
       isLoading: false,
       columns: [
         {
           label: "Job Date",
-          field: "AutoID",
+          field: "jobdate",
           width: "10%",
           sortable: true,
-          isKey: true,
         },
         {
           label: "Vendor",
-          field: "servicetype",
+          //field: "servicetype",
           width: "5%",
           sortable: true,
+          display: function (row) {
+            return (
+              'Guardforce'//dateTime(row.order_date)
+            );
+          },
         },
         {
           label: "CCT Name",
-          field: "branchorigin_name",
+          field: "cctname",
           width: "15%",
           sortable: true,
         },
         {
           label: "Type Of Report",
-          field: "branchdest_name",
+          field: "typeofreport",
           width: "15%",
           sortable: true,
         },
         {
           label: "",
-          //field: "quick",
+          field: "id_",
           width: "10%",
+          isKey: true,
           display: function (row) {
             return (
-              // '<button type="button" data-id="' +
-              // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
-              // +
-              '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">Cancel</button>'
-              +
-              '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">Edit</button>'
+              '<a  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':'+ row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</a>&nbsp;' +
+              '|&nbsp;<a data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':'+ row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</a>'
+              // '<a  target="blank" data-id="' + row.jobdate + '" class="text-decoration-none text-gray fs-12 is-rows-el download_execel" style="cursor: pointer">Excel</a>&nbsp;' +
+              // '|&nbsp;<a data-id="' + row.jobdate + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el download_csv" style="cursor: pointer">CVS</a>'
             );
           },
         },
@@ -332,128 +351,106 @@ export default defineComponent({
     const tableLoadingFinish = (elements) => {
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
-        if (element.classList.contains("name-btn")) {
+        if (element.classList.contains("name-btn-download-csv")) {
           element.addEventListener("click", function () {
-            console.log(this.dataset.id + " name-btn click!!");
-          });
-        }
-        if (element.classList.contains("rejectorder")) {
-          element.addEventListener("click", async function () {
-            //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: 'reject'
-              };
-              try {
-                await axios.get('/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-              }
-              catch (err) {
-                console.log(err)
-              }
-            }
-          });
-        }
-        if (element.classList.contains("cancelorder")) {
-          element.addEventListener("click", async function () {
-            // console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: 'cancel'
-              };
-              try {
-                await axios.get('/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-
-              }
-              catch (err) {
-                console.log(err)
-              }
-
-            }
-          });
-
-        }
-        //----------------------------------------------------------------------event click button edit
-        if (element.classList.contains("editorder")) {
-          element.addEventListener("click", async function () {
+            // console.log(this.dataset.id + " name-btn click!!")
             const params = {
-              Id: this.dataset.id
+              CCT_Data: Criteria.CCT_Data,
+              JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
+              responseType: 'blob',
+              data_: this.dataset.id
             };
-            let Id_ = this.dataset.id
-            //console.log( params )
-            try {
-              await axios.get('/getcashorder', { params })
-                .then((res) => {
-                  // success callback
-                  let obj = JSON.parse(JSON.stringify(res.data))
-                  console.log("obj[0], getcashorder: ", obj[0])
-                  OrderDataExisting.orderId = Id_
-                  OrderDataExisting.BankType = obj[0].customerID
-                  OrderDataExisting.OrderCategory = obj[0].order_category
-                  OrderDataExisting.OrderType = obj[0].servicetype
-                  OrderDataExisting.RefNo = obj[0].refno
-                  OrderDataExisting.JobDate = new Date(obj[0].order_date)
-                  // OrderDataExisting.JobDate =  obj[0].order_date
-                  OrderDataExisting.BranchOriginText = obj[0].branchorigin_name
-                  OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
-                  OrderDataExisting.BranchDestText = obj[0].branchdest_name
-                  OrderDataExisting.BranchDestId = obj[0].branchdest_code
-                  OrderDataExisting.Remark = obj[0].remark
-                  OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if (obj[0].cashstatus === '1') {
-                    checkstatus_send_to_checker.value = true
-                  }
-                  else {
-                    checkstatus_send_to_checker.value = false
-                  }
-                  console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
-                  Id.value = OrderDataExisting.OrderDataDet.length
-                  console.log('OrderDataExisting.OrderDataDet.length: ' + OrderDataExisting.OrderDataDet.length)
-                  console.log("OrderDataExisting.BankType: ", OrderDataExisting.BankType)
-
-                  // addEditItem
-                }, (res) => {
-                  // error callback
-                  console.log(res.data)
-                }).finally(() => {
-                  //
-                });
-              // onMounted(getBranchAndCashEdit)
-            }
-            catch (err) {
-              console.log(err)
-            }
+            let data_ = this.dataset.id.split(':')            
+            axios.get('/generateCSV', { params }).then(function (response) {
+              const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csvcsv;charset=utf-8,' + encodeURIComponent(response.data) })
+              const link = document.createElement('a')
+              // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
+              link.href = url
+              link.setAttribute(
+                'download',
+                data_[3]
+              )
+              document.body.appendChild(link)
+              link.click()
+            }); // Please catch me!
           });
         }
-
+        if (element.classList.contains("name-btn-download-excel")) {
+          element.addEventListener("click", function () {
+            // console.log(this.dataset.id + "name-btn-download-excel click!!")
+            // console.log(this.dataset.id + "name-btn-download-excel!!")
+            //console.log('aaa')
+            const params = {
+              CCT_Data: Criteria.CCT_Data,
+              JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
+              responseType: 'blob',
+              data_: this.dataset.id
+            };
+            let data_ = this.dataset.id.split(':')
+            axios.get('/generateXLS', { params }).then(function (response) { 
+              console.log('response: ', response)
+              console.log('response.data: ', response.data)
+              const url = URL.createObjectURL(new Blob([response.data]), { type: 'application/vnd.ms-excel;charset=utf-8;' })
+              const link = document.createElement('a')
+              // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
+              link.href = url
+              link.setAttribute(
+                'download',
+                data_[4]
+              )
+              document.body.appendChild(link)
+              link.click()
+            }); // Please catch me!
+          });
+        }
+        // if (element.classList.contains("name-btn")) {
+        //   element.addEventListener("click", ()=> {
+        //     console.log(this.dataset.id + "name-btn")
+        //     const params = {
+        //       CCT_Data: Criteria.CCT_Data,
+        //       JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
+        //       responseType: 'blob',
+        //       data_:this.dataset.id
+        //     };            
+        //     axios.post('/generateXLS', { params }).then(function (response) {
+        //       console.log('response: ', response)
+        //       const url = URL.createObjectURL(new Blob([response.data]), { type: 'application/excel' })
+        //       const link = document.createElement('a')
+        //       // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
+        //       link.href = url
+        //       link.setAttribute(
+        //         'download',
+        //         `aa.xls`
+        //       )
+        //       document.body.appendChild(link)
+        //       link.click()
+        //     }); // Please catch me!
+        //   })
+        // }
+        // if (element.classList.contains("name-btn-download-excel")) {
+        //   element.addEventListener("click", ()=> { 
+        //     console.log(this.dataset.id + "name-btn-download-excel!!")
+        //     //console.log('aaa')
+        //     const params = {
+        //       CCT_Data: Criteria.CCT_Data,
+        //       JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
+        //       responseType: 'blob',
+        //       data_:this.dataset.id
+        //     };            
+        //     axios.post('/generateCSV', { params }).then(function (response) {               
+        //       const url = URL.createObjectURL(new Blob([response.data]), { type: 'text/csv' })
+        //       const link = document.createElement('a')
+        //       // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
+        //       link.href = url
+        //       link.setAttribute(
+        //         'download',
+        //         `aa.csv`
+        //       )
+        //       document.body.appendChild(link)
+        //       link.click()
+        //     }); // Please catch me!
+        //   })
+        // }
       });
     };
     // Get data on first rendering
@@ -478,9 +475,10 @@ export default defineComponent({
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       //, DownloadLink_
       , formatPrice, router, format_date, file, error, error_addManual
+      , getData, formatdate_show, formatPrice_noFixed, DownloadLink
       , message, message_addManual, message_editOrder, error_editOrder, DownloadReports
       , OrderCategory, OrderType, BankType, JobDate, Criteria
-      , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, DownloadLink
+      , user_id, department_id, position_id, CustomerID, gfc_cct
       , rowData, Id, rowDataEdit, checkstatus_send_to_checker//,NewOrderDet
     }
   },

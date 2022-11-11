@@ -431,8 +431,8 @@ export default defineComponent({
       type: Object,
       default: () => {
         return {
-          pagingInfo: "Showing {0}-{1} of {2}",
-          pageSizeChangeLabel: "Row count:",
+          pagingInfo: "แสดง {0}-{1} of {2}",
+          pageSizeChangeLabel: "ทั้งหมด:",
           // pageSizeChangeLabel: "Row count:",
           gotoPageLabel: "ไปหน้าที่:",
           // gotoPageLabel: "Go to page:",
