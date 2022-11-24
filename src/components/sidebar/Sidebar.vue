@@ -6,12 +6,14 @@ import { useRouter } from 'vue-router'
 export default {
   props: { 
     probs_isVisible: { type: Boolean, required: true, default: false },
-    probs_isVisible2: { type: Boolean, required: true, default: false }
+    probs_isVisible2: { type: Boolean, required: true, default: false },
+    probs_isVisible3: { type: Boolean, required: true, default: false }
   },
   components: { SidebarLink },
   setup(props) {  
     const isVisible = ref(props.probs_isVisible)
     const isVisible2 = ref(props.probs_isVisible2)
+    const isVisible3 = ref(props.probs_isVisible3)
     const RoleId = ref(localStorage.getItem('RoleId'))
     // const department_id = ref(localStorage.getItem('department_id'))
     // const position_id = ref(localStorage.getItem('position_id'))
@@ -27,10 +29,13 @@ export default {
     const toggleVisible2 =()=>{
       setTimeout(() => isVisible2.value = !isVisible2.value, 200);
     }
+    const toggleVisible3 =()=>{
+      setTimeout(() => isVisible3.value = !isVisible3.value, 200);
+    }    
     const gotoMainPage =()=>{
       router.push('/main')
     }
-    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,router,toggleVisible,toggleVisible2,gotoMainPage,RoleId }
+    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,isVisible3,router,toggleVisible,toggleVisible2,toggleVisible3,gotoMainPage,RoleId }
    },
 }
 </script>
@@ -77,13 +82,7 @@ export default {
         <li class="w-100">
           <SidebarLink to="/inventorystatus" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
             สถานะคลังปัจจุบัน
-          </SidebarLink>
-          <!-- 
-          <i class="fas fa-cloud-hail-mixed"></i>
-          <a href="#" class="nav-link px-0">
-          <span class="d-none d-sm-inline">Item</span>
-          1
-        </a> -->
+          </SidebarLink>          
         </li>
         <li>
           <SidebarLink to="/invhistorical" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu2">
@@ -102,6 +101,17 @@ export default {
         </li>        
       </ul>
     </transition>
+    <SidebarLink to="" icon="fa fa-check-square" class="nav-link align-middle" @click="toggleVisible3">
+      กระบวนการอนุมัติ</SidebarLink>
+      <transition name="fade">
+        <ul class=" nav flex-column ms-1" id="submenu3" v-show="isVisible3">
+        <li class="w-100">
+          <SidebarLink to="/approveprocess" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu3">
+            ตั้งค่ารายการอนุมัติ
+          </SidebarLink>          
+        </li>
+      </ul>
+      </transition>
     <!-- <SidebarLink to="/ordertracking" icon="fa fa-user-circle">บัญชีผู้ใช้</SidebarLink> -->
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <i class="fas fa-angle-double-left" style="cursor: pointer;" />

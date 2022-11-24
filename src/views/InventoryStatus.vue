@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible=false :probs_isVisible2=true />
+  <Sidebar :probs_isVisible=false :probs_isVisible2=true :probs_isVisible3=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
       <div class="row p-1" style="width: 100%">
           <div class="col text-left">&nbsp;</div>

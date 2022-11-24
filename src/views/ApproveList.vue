@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible=true :probs_isVisible2=false />
+  <Sidebar :probs_isVisible=true :probs_isVisible2=false :probs_isVisible3=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
@@ -38,281 +38,6 @@
     </div>
     <!-- </div> -->
   </div>
-  <!--<div class="modal fade" id="myModal">---->
-  <div class="container py-2">
-    <div class="py-2">
-      <form @submit.prevent="sendFile" id="form0">
-        <div class="modal fade" id="myModal">
-          <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Import</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row p-2" v-if="message">
-                    <div class="col">
-                      <div :class="`alert ${error ? 'alert-danger' : 'alert-success'}`">{{ message }}</div>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ประเภทกิจกรรม
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" name="OrderCategory" style="width:15rem;"
-                        v-model="OrderCategory">
-                        <option value="BankBranch">Bank Branch</option>
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ประเภทบริการ
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
-                        v-model="OrderType">
-                        <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      เลือกธนาคาร
-                    </div>
-                    <div class="col">
-                      <select id="BankType" class="form-select form-select-sm" style="width:15rem;" v-model="BankType">
-                        <option selected="selected" value="">ธนาคาร</option>
-                        <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
-                        <option value="9e6f6cff-6e64-41f1-a7be-c07335764423">AIRA</option>
-                        <option value="58194020-9eaf-4a6c-a5cc-b8fa6f628ba9">BAY</option>
-                        <option value="045426c5-9fd9-4c26-b4f0-dc0015ee96b8">BOC</option>
-                        <option value="1493f524-c52e-4c06-aee8-8ef962929242">BOT</option>
-                        <option value="ea0087c9-4172-4c03-92c5-4cc0cd9ac62d">CIMB</option>
-                        <option value="2c164463-ef08-4cb6-a200-08e70aece9ae">GSB</option>
-                        <option value="08daa272-2c66-486f-b992-a540cd25bd6c">IBANK</option>
-                        <option value="c05896c4-72ec-4b4a-8a5d-5b8f9212ce24">KBANK</option>
-                        <option value="fb790fb5-76e4-4d0e-8651-0259d73dc0b6">LHB</option>
-                        <option value="64956e74-51fe-42d5-8445-90c90740c5db">TBANK</option>
-                        <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option> -->
-                        <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
-                        <!-- <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
-                        <option value="80cb96dd-ea99-401a-9615-bba6db501acd">ธนาคารเจพีมอร์แกนเชส</option>
-                        <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option> -->
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      วันที่ปฎิบัติการ
-                    </div>
-                    <div class="col">
-                      <!-- <input type="date" id="JobDate" class="form-control" style="width:15rem;" 
-                         @change="setFormat" v-model="JobDate" > -->
-                      <datepicker v-model="JobDate" id="JobDate" class="form-control" style="width:15rem;"
-                        input-format="dd/MM/yyyy" />
-                      <!-- <datepicker class="form-control"  v-model="date_" style="width:15rem;"
-                         :format="format" :inline="true" >
-                        <template v-slot:clear="{ onClear }">
-                          <button @click="onClear">x</button>
-                        </template>
-                      </datepicker> -->
-                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      แนบไฟล์
-                    </div>
-                    <div class="col">
-                      <input class="form-control form-control-sm form-control-file" @change="selectFile"
-                        style="width:15rem;" type="file" id="formFile" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-primary">บันทึก</button>
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" ref="ClosemyModal"
-                  id="ClosemyModal">ยกเลิก</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <!--<div class="modal fade" id="myModalNew">---->
-  <div class="container py-2">
-    <div class="py-2">
-      <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
-        <div class="modal fade" id="myModalNew">
-          <div class="modal-dialog  modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">สร้างรายการคำสั่ง</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row p-2">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">รายการใหม่</h5>
-                    </div>
-                  </div>
-                  <div class="row p-2" v-if="message_addManual">
-                    <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual
-                      }}</div>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col-sm-2">
-                      เลือกธนาคาร
-                    </div>
-                    <div class="col ps-4 d-flex">
-                      &nbsp; <select id="BankTypeNew" class="form-select form-select-sm" style="width:15rem;"
-                        v-model="NewOrder.BankTypeNew">
-                        <!-- <option selected="selected" value="">ธนาคาร</option> -->
-                        <option selected="selected" value="38bfc1b0-e86e-48b8-9a28-afbeb01770ef">UOB</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ประเภทกิจกรรม
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" name="OrderCategoryNew" style="width:15rem;"
-                        v-model="NewOrder.OrderCategoryNew">
-                        <option value="BankBranch">Bank Branch</option>
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
-                    </div>
-                    <div class="col">
-                      ประเภทบริการ
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
-                        v-model="NewOrder.OrderTypeNew" @click="getBranchAndCash()">
-                        <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      เลขที่อ้างอิง
-                    </div>
-                    <div class="col">
-                      <input type="text" id="RefNo" class="form-control" style="width:15rem;" v-model="NewOrder.RefNo">
-                    </div>
-                    <div class="col">
-                      วันที่ปฎิบัติการ
-                    </div>
-                    <div class="col">
-                      <datepicker v-model="NewOrder.JobDateNew" id="JobDateNew" class="form-control"
-                        style="width:15rem;" input-format="dd/MM/yyyy" />
-                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col">
-                      ต้นทาง
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" name="BranchOrigin" style="width:15rem;"
-                        v-model="NewOrder.BranchOrigin">
-                        <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
-                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                          data.branch_name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col">
-                      ปลายทาง
-                    </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" name="BranchDest" style="width:15rem;"
-                        v-model="NewOrder.BranchDest">
-                        <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id"
-                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                          data.branch_name }}
-                        </option>
-                        <!-- <option value="BankBranch">Bank Branch</option> -->
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col-sm-2">
-                      หมายเหตุ
-                    </div>
-                    <div class="col ps-4 d-flex">
-                      &nbsp;<input type="text" id="RemarkNew" class="form-control" style="width:15rem;"
-                        v-model="NewOrder.RemarkNew">
-                    </div>
-                  </div>
-                  <div class="row p-2">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">รายละเอียดคำสั่ง</h5>
-                    </div>
-                  </div>
-                  <!---Loop Manual New Order------>
-                  <div class="row p-2">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col"><span @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
-                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" />
-                            </span>
-                          </th>
-                          <th scope="col">ชนิดราคา</th>
-                          <th scope="col">คุณภาพ</th>
-                          <th scope="col">หน่วย</th>
-                          <th scope="col">จำนวน</th>
-                          <th scope="col">ยอดรวม</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="data, index in rowData" :key="data.Id">
-                          <td scope="col"><span @click="deleteData(index)" style="cursor: pointer"><i
-                                class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;<span
-                              @click.prevent="addItem()" class="text-decoration-none text-gray fs-7"
-                              style="cursor: pointer"><i class="fa fa-plus-circle align-middle" /></span></td>
-                          <td scope="col" v-html="data.ddlMoneyType_" @click="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.ddlQualityMoneyType_"></td>
-                          <td scope="col" v-html="data.ddlPackageMoneyType_" @click="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.tbQuantity_" @change="calamount(data.Id)"
-                            @keyup="calamount(data.Id)"></td>
-                          <td scope="col" v-html="data.tbAmount_"></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer pt-0 justify-content-center">
-                <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
-                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalNew"
-                    style="width:4rem; height:2rem;" id="ClosemyModalNew">ยกเลิก</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
   <!--<div class="modal fade" id="ModalEditOrder">---->
   <div class="container py-2">
     <div class="py-2">
@@ -321,7 +46,7 @@
           <div class="modal-dialog  modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">แก้ไขรายการคำสั่ง</h5>
+                <h5 class="modal-title">รายการคำสั่ง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -338,14 +63,24 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-sm-2">
-                      เลือกธนาคาร<input type="hidden" id="ordedrId" v-model="OrderDataExisting.orderId" />
+                      ธนาคาร<input type="hidden" id="ordedrId" v-model="OrderDataExisting.orderId" />
                     </div>
                     <div class="col ps-4 d-flex">
                       &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
                         v-model="OrderDataExisting.BankType">
-                        <!-- <option selected="selected" value="">ธนาคาร</option> -->
-                        <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
+                        <!--OrderDataExisting.BankType = obj[0].customerID-->
+                        <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
+                          :selected="data.customerID === OrderDataExisting.BankType">{{
+                              data.customer_name
+                          }}
+                        </option>
+                        <!-- <option selected="selected" value="">ธนาคาร</option> 
+                        <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>-->
                       </select>
+                      <!-- &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
+                        v-model="OrderDataExisting.BankType">
+                       <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
+                      </select> -->
                     </div>
                   </div>
                   <div class="row p-2">
@@ -598,47 +333,6 @@ export default defineComponent({
       OrderDataDet: [],
       Cashstatus:"",
     });
-    const sendFile = async (e) => {
-      // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0];
-      }
-      let formData = new FormData()
-      formData.append('file', file.value)
-      formData.append('OrderCategory', OrderCategory.value)
-      formData.append('OrderType', OrderType.value)
-      formData.append('BankType', BankType.value)
-      formData.append('JobDate', moment(JobDate.value).format('YYYY-MM-DD'))
-      formData.append('gfc_cct', gfc_cct.value)
-      formData.append('gfc_cct_code', gfc_cct_code.value)
-      formData.append('user_id', user_id.value)
-      formData.append('CustomerID', CustomerID.value)
-      console.log('sendFile')
-      formData.forEach(element => console.log(element))
-      try {
-        await axios.post('/upload', formData)
-          .then((res) => {
-            // success callback
-            console.log(res.data)
-            document.getElementById('ClosemyModal').click();
-            // router.push('/listorder')
-            location.reload()
-          }, (res) => {
-            // error callback
-            console.log(res.data.message)
-          });
-        message.value = "File has been upload"
-        file.value = ""
-        error.value = false
-      }
-      catch (err) {
-        console.log(err)
-        message.value = "Something went wrong"
-        error.value = true
-      }
-
-    }
     const sendApprove = async (e)=>{
       // alert( OrderDataExisting.orderId )
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง?")) {
@@ -667,26 +361,6 @@ export default defineComponent({
               }
             }
     }
-    const selectFile = (e) => {
-      // file.value = this.$refs.file.files[0]
-      file.value = e.target.files[0]
-      //headline.value.textContent
-      error.value = false
-      message.value = ""
-    }
-    //onMounted(async () => {
-    // const res = await axios.get('/orderlist')
-    //   .then((res) => {
-    //     Data_.value = JSON.parse(JSON.stringify(res.data))
-    //     console.log("Data_: ",Data_)
-    //     //Data_
-    //     // console.log(fakeData)
-    //   }, (res) => {
-    //     // error callback
-    //     console.log(res.data)
-    //   })
-    //file.value =  ref_file.value.        
-    //})    
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -729,15 +403,8 @@ export default defineComponent({
       let month = null//date__.getMonth() + 1;
       let year = null//date__.getFullYear();
       // if (date_) {
-      date__ = moment(date_).format('DD/MM/YYYY')
-      // console.log('date__: ' + date__)
-      // console.log('moment: ' + moment(date_).format('DD-MM-YYYY') )
-      // day = moment(date_).format('DD');//date__.getDate();
-      // month = moment(date_).format('MM')//date__.getMonth() + 1;
-      // year = moment(date_).format('YYYY')//date__.getFullYear();
-      return date__;
-      //return `${day}/${month}/${year}`;
-      // return `${year}-${month}-${day}`;
+      date__ = moment(date_).format('DD/MM/YYYY')      
+      return date__;      
     }
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -1049,13 +716,7 @@ export default defineComponent({
                     checkstatus_send_to_checker.value=false
                   }
                   console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
-                  
-                  // console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
-                  // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
-                  // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
-                  // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
-                  // console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
+                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)                  
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -1328,7 +989,6 @@ export default defineComponent({
                       Amount: obj[0].coin_fit_10
                     })
                   }
-                  //console.log('if (obj[0].coin_fit_5 > 0) {')
                   if (obj[0].coin_fit_5 > 0) {
                     //console.log('obj[0].coin_fit_5: ',obj[0].coin_fit_5)
                     OrderDataExisting.OrderDataDet.push({
@@ -1909,7 +1569,7 @@ export default defineComponent({
     return {
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       , OrderDataExisting, getBranchAndCashEdit, addEditItem
-      , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate
+      , editOrder, formatPrice, router, format_date, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate
       , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder
       , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit, sendApprove,checkstatus_send_to_checker//,NewOrderDet
     }

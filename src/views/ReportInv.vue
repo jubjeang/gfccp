@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible=false :probs_isVisible2=true />
+  <Sidebar :probs_isVisible=false :probs_isVisible2=true :probs_isVisible3=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
@@ -218,22 +218,16 @@ export default defineComponent({
           console.log(res.data)
         })
     }
+    //-------for download templete
     const DownloadReports = async () => {
-      // console.log('DownloadReports')
       const params = {
         CCT_Data: Criteria.CCT_Data,
         JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
       };
-      //alert( params.CCT_Data+" : "+params.JobDate);
       const res = await axios.get('/getdownloadreports', { params })
         .then((res) => {
-          //Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("res.data: ", res.data)
-          //console.log('Data_')
-          //Data_
-          // console.log(fakeData)
         }, (res) => {
-          // error callback
           console.log(res.data)
         })
     }
@@ -318,8 +312,8 @@ export default defineComponent({
           isKey: true,
           display: function (row) {
             return (
-              '<a  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':'+ row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</a>&nbsp;' +
-              '|&nbsp;<a data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':'+ row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</a>'
+              '<button  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</button>&nbsp;' +
+              '|&nbsp;<button data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</button>'
               // '<a  target="blank" data-id="' + row.jobdate + '" class="text-decoration-none text-gray fs-12 is-rows-el download_execel" style="cursor: pointer">Excel</a>&nbsp;' +
               // '|&nbsp;<a data-id="' + row.jobdate + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el download_csv" style="cursor: pointer">CVS</a>'
             );
@@ -352,19 +346,32 @@ export default defineComponent({
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("name-btn-download-csv")) {
-          element.addEventListener("click", function () {
-            // console.log(this.dataset.id + " name-btn click!!")
-            const params = {
-              CCT_Data: Criteria.CCT_Data,
-              JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
-              responseType: 'blob',
-              data_: this.dataset.id
-            };
-            let data_ = this.dataset.id.split(':')            
-            axios.get('/generateCSV', { params }).then(function (response) {
-              const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csvcsv;charset=utf-8,' + encodeURIComponent(response.data) })
+          element.addEventListener("click", async function () {
+            // console.log(this.dataset.id + " name-btn click!!")            
+            let formData = new FormData()
+            formData.append('CCT_Data', Criteria.CCT_Data)
+            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
+            formData.append('responseType', 'blob')
+            formData.append('data_', this.dataset.id)
+
+            //formData.forEach(element => console.log(element))
+
+
+           // {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }
+            var object = {}
+            formData.forEach((value, key) => object[key] = value)
+            var json = JSON.stringify(object)
+            console.log(json)
+
+            let data_ = this.dataset.id.split(':')
+            await axios.post('/generateCSV', json, {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }).then(function (response) {
+              console.log('response.data: ',response.data)
+              //var csvContent = "ทดสอบ\n";
+              const url = URL.createObjectURL( new Blob([response.data], { type: "data:text/csv;charset=utf-8" }) )
+              //const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csv;charset=utf-8,' + encodeURIComponent(response.data) })
+              //const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent) })
               const link = document.createElement('a')
-              // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
+              //link.setAttribute("href", "data:text/csv;charset=utf-8," + response.data);
               link.href = url
               link.setAttribute(
                 'download',
@@ -376,21 +383,29 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("name-btn-download-excel")) {
-          element.addEventListener("click", function () {
-            // console.log(this.dataset.id + "name-btn-download-excel click!!")
-            // console.log(this.dataset.id + "name-btn-download-excel!!")
-            //console.log('aaa')
-            const params = {
-              CCT_Data: Criteria.CCT_Data,
-              JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
-              responseType: 'blob',
-              data_: this.dataset.id
-            };
+          element.addEventListener("click", async function () {  
+            // console.log(this.dataset.id + " name-btn click!!")            
+            let formData = new FormData()
+            formData.append('CCT_Data', Criteria.CCT_Data)
+            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
+            formData.append('responseType', 'blob')
+            formData.append('data_', this.dataset.id)
+            //formData.forEach(element => console.log(element))
+            var object = {}
+            formData.forEach((value, key) => object[key] = value)
+            var json = JSON.stringify(object)
+            console.log(json)
             let data_ = this.dataset.id.split(':')
-            axios.get('/generateXLS', { params }).then(function (response) { 
-              console.log('response: ', response)
-              console.log('response.data: ', response.data)
-              const url = URL.createObjectURL(new Blob([response.data]), { type: 'application/vnd.ms-excel;charset=utf-8;' })
+            await axios.post('/generateXLS', json).then(function (response) {
+    //           let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // const fileName = `file.xlsx`;
+    // let file = new File([blob], fileName);
+    // let fileUrl = URL.createObjectURL(file);
+//https://www.appsloveworld.com/nodejs/100/520/how-to-download-excel-files-generated-by-node-nodeangular
+              console.log('response.data: ',response.data)              
+              const url = URL.createObjectURL(new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }), { type: 'application/vnd.ms-excel;charset=utf-8;' })
               const link = document.createElement('a')
               // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
               link.href = url
@@ -400,57 +415,12 @@ export default defineComponent({
               )
               document.body.appendChild(link)
               link.click()
+
+
             }); // Please catch me!
           });
         }
-        // if (element.classList.contains("name-btn")) {
-        //   element.addEventListener("click", ()=> {
-        //     console.log(this.dataset.id + "name-btn")
-        //     const params = {
-        //       CCT_Data: Criteria.CCT_Data,
-        //       JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
-        //       responseType: 'blob',
-        //       data_:this.dataset.id
-        //     };            
-        //     axios.post('/generateXLS', { params }).then(function (response) {
-        //       console.log('response: ', response)
-        //       const url = URL.createObjectURL(new Blob([response.data]), { type: 'application/excel' })
-        //       const link = document.createElement('a')
-        //       // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
-        //       link.href = url
-        //       link.setAttribute(
-        //         'download',
-        //         `aa.xls`
-        //       )
-        //       document.body.appendChild(link)
-        //       link.click()
-        //     }); // Please catch me!
-        //   })
-        // }
-        // if (element.classList.contains("name-btn-download-excel")) {
-        //   element.addEventListener("click", ()=> { 
-        //     console.log(this.dataset.id + "name-btn-download-excel!!")
-        //     //console.log('aaa')
-        //     const params = {
-        //       CCT_Data: Criteria.CCT_Data,
-        //       JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
-        //       responseType: 'blob',
-        //       data_:this.dataset.id
-        //     };            
-        //     axios.post('/generateCSV', { params }).then(function (response) {               
-        //       const url = URL.createObjectURL(new Blob([response.data]), { type: 'text/csv' })
-        //       const link = document.createElement('a')
-        //       // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
-        //       link.href = url
-        //       link.setAttribute(
-        //         'download',
-        //         `aa.csv`
-        //       )
-        //       document.body.appendChild(link)
-        //       link.click()
-        //     }); // Please catch me!
-        //   })
-        // }
+
       });
     };
     // Get data on first rendering

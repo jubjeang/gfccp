@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <Sidebar :probs_isVisible=true :probs_isVisible2=false />
+  <Sidebar :probs_isVisible=true :probs_isVisible2=false :probs_isVisible3=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
     <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
@@ -142,11 +142,21 @@
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
+              <!-- <div class="modal-footer">
                 <button class="btn btn-primary">บันทึก</button>
                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" ref="ClosemyModal"
                   id="ClosemyModal">ยกเลิก</button>
+              </div> -->
+              <div class="modal-footer pt-0 justify-content-right">
+                <div class="align-top pt-1 d-flex justify-content-right">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
+                  <button
+                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModal"
+                    style="width:4rem; height:2rem;" id="ClosemyModal">ยกเลิก</button>
+                </div>
               </div>
+
+
             </div>
           </div>
         </div>
@@ -1316,12 +1326,7 @@ export default defineComponent({
                     checkstatus_send_to_checker.value = false
                   }
                   console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
-                  // console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
-                  // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
-                  // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
-                  // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId) 
-                  // console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
+                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)                  
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -1594,7 +1599,6 @@ export default defineComponent({
                       Amount: obj[0].coin_fit_10
                     })
                   }
-                  //console.log('if (obj[0].coin_fit_5 > 0) {')
                   if (obj[0].coin_fit_5 > 0) {
                     //console.log('obj[0].coin_fit_5: ',obj[0].coin_fit_5)
                     OrderDataExisting.OrderDataDet.push({
@@ -1763,7 +1767,6 @@ export default defineComponent({
                   Id.value = OrderDataExisting.OrderDataDet.length
                   console.log('OrderDataExisting.OrderDataDet.length: ' + OrderDataExisting.OrderDataDet.length)
                   console.log("OrderDataExisting.BankType: ", OrderDataExisting.BankType)
-
                   // addEditItem
                 }, (res) => {
                   // error callback

@@ -50,7 +50,12 @@ const routes = [
     path: '/reportinv',
     name: 'ReportInv',
     component: () => import('../views/ReportInv.vue')
-  },    
+  },  
+  {
+    path: '/approveprocess',
+    name: 'ApproveProcess',
+    component: () => import('../views/ApproveProcess.vue')
+  },     
 ]
 
 const router = createRouter({
