@@ -134,6 +134,7 @@ export default {
               localStorage.setItem('gfc_cct', userdata[0].gfc_cct)
               localStorage.setItem('gfc_cct_code', userdata[0].gfc_cct_code)
               localStorage.setItem('ApproveID', userdata[0].ApproveID)
+              localStorage.setItem('approve_setting_id', userdata[0].approve_setting_id)
               this.$router.push('/main')
             }, (res) => {
               // error callback

@@ -155,8 +155,6 @@
                     style="width:4rem; height:2rem;" id="ClosemyModal">ยกเลิก</button>
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
@@ -620,7 +618,7 @@ export default defineComponent({
       BankTypeData: [],
     })
     const Id = ref(0)
-    const rowDataEdit = ref([])
+    // const rowDataEdit = ref([])
     // const NewOrderDet = reactive([])
     const OrderDataExisting = reactive({
       orderId: "",
@@ -871,6 +869,8 @@ export default defineComponent({
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
+      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id') )
+      formData.append( 'roleid', 0 )
       console.log('sendFile')
       formData.forEach(element => console.log(element))
       try {
@@ -900,8 +900,11 @@ export default defineComponent({
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง?")) {
         const params = {
           Id: OrderDataExisting.orderId,
-          Type_: 'send_to_check'
+          Type_: 'send_to_check',
+          user_id: user_id.value
+
         };
+        console.log('params: ',params)
         try {
           await axios.get('/update_cashstatus_order', { params })
             .then((res) => {
@@ -1140,19 +1143,19 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             let sOutput = ''
-            if (row.cashstatus === '1') {
+            if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
             }
-            if (row.cashstatus === '2') {
+            if (row.cashstatus === 1) {
               sOutput = 'รอ Checker อนุมัติ'
             }
-            if (row.cashstatus === '3') {
+            if (row.cashstatus === 2) {
               sOutput = 'รอ Approve1 อนุมัติ'
             }
-            if (row.cashstatus === '4') {
+            if (row.cashstatus === 3) {
               sOutput = 'รอ Approve2 อนุมัติ'
             }
-            if (row.cashstatus === '5') {
+            if (row.cashstatus === 4) {
               sOutput = 'รอ ApproveN อนุมัติ'
             }
             sOutput = '<span>' + sOutput + '</span>'
@@ -1319,7 +1322,7 @@ export default defineComponent({
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if (obj[0].cashstatus === '1') {
+                  if (obj[0].cashstatus === 0) {
                     checkstatus_send_to_checker.value = true
                   }
                   else {
@@ -1832,7 +1835,9 @@ export default defineComponent({
       formData.append('AllRowsDet', Id.value)
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
+      formData.append('roleid', 0)
       formData.append('CustomerID', CustomerID.value)
+      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id') )
       for (var index = 0; index < Id.value; index++) {
         if (document.getElementById("ddlMoneyType" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
@@ -1848,7 +1853,7 @@ export default defineComponent({
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
       console.log('add data')
-      console.log(json)
+      console.log('json: ',json)
       try {
         await axios.post('/manual_add_order', json)
           .then((res) => {
@@ -1931,61 +1936,61 @@ export default defineComponent({
       // };
       // NewOrderDet.push(my_object)
     }
-    const addEditItem = () => {
-      Id.value++
-      let ddlMoneyTypeEdit = ""
-      ddlMoneyTypeEdit = "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" + Id.value + "'>"
-      ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
-      ddlMoneyTypeEdit += "<option value='500'>500</option>"
-      ddlMoneyTypeEdit += "<option value='100'>100</option>"
-      ddlMoneyTypeEdit += "<option value='20'>20</option>"
-      ddlMoneyTypeEdit += "<option value='10'>10</option>"
-      ddlMoneyTypeEdit += "<option value='5'>5</option>"
-      ddlMoneyTypeEdit += "<option value='2'>2</option>"
-      ddlMoneyTypeEdit += "<option value='1'>1</option>"
-      ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
-      ddlMoneyTypeEdit += "</select>"
-      let ddlQualityMoneyTypeEdit = ""
-      ddlQualityMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" + Id.value + "'>"
-      ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
-      ddlQualityMoneyTypeEdit += "</select>"
-      let ddlPackageMoneyTypeEdit = ""
-      ddlPackageMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" + Id.value + "'>"
-      ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
-      ddlPackageMoneyTypeEdit += "</select>"
-      let tbQuantityEdit = ""
-      tbQuantityEdit = "<input type='text' id='tbQuantityEdit" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
-      let tbAmount = ""
-      tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
-      let my_object = {
-        Id: Id.value,
-        ddlMoneyType_: ddlMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
-        tbQuantity_: tbQuantityEdit,
-        tbAmount_: tbAmount,
-      };
-      if (rowDataEdit.value.length > 1) {
+    // const addEditItem = () => {
+    //   Id.value++
+    //   let ddlMoneyTypeEdit = ""
+    //   ddlMoneyTypeEdit = "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" + Id.value + "'>"
+    //   ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
+    //   ddlMoneyTypeEdit += "<option value='500'>500</option>"
+    //   ddlMoneyTypeEdit += "<option value='100'>100</option>"
+    //   ddlMoneyTypeEdit += "<option value='20'>20</option>"
+    //   ddlMoneyTypeEdit += "<option value='10'>10</option>"
+    //   ddlMoneyTypeEdit += "<option value='5'>5</option>"
+    //   ddlMoneyTypeEdit += "<option value='2'>2</option>"
+    //   ddlMoneyTypeEdit += "<option value='1'>1</option>"
+    //   ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
+    //   ddlMoneyTypeEdit += "</select>"
+    //   let ddlQualityMoneyTypeEdit = ""
+    //   ddlQualityMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" + Id.value + "'>"
+    //   ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
+    //   ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
+    //   ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
+    //   ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
+    //   ddlQualityMoneyTypeEdit += "</select>"
+    //   let ddlPackageMoneyTypeEdit = ""
+    //   ddlPackageMoneyTypeEdit = "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" + Id.value + "'>"
+    //   ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
+    //   ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
+    //   ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
+    //   ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
+    //   ddlPackageMoneyTypeEdit += "</select>"
+    //   let tbQuantityEdit = ""
+    //   tbQuantityEdit = "<input type='text' id='tbQuantityEdit" + Id.value + "' class='form-control text-right' style='width:10rem;'>"
+    //   let tbAmount = ""
+    //   tbAmount = "<input type='text' id='tbAmount" + Id.value + "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
+    //   let my_object = {
+    //     Id: Id.value,
+    //     ddlMoneyType_: ddlMoneyTypeEdit,
+    //     ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+    //     ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
+    //     ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
+    //     tbQuantity_: tbQuantityEdit,
+    //     tbAmount_: tbAmount,
+    //   };
+    //   if (rowDataEdit.value.length > 1) {
 
-        if (!isNaN(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)
-          && document.getElementById("tbQuantityEdit" + (Id.value - 1)).value != ""
-          && !!(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)) {
-          document.getElementById("tbQuantityEdit" + (Id.value - 1)).value = formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value.replaceAll(',', '')))
-        }
-      }
-      // if (rowDataEdit.value.length > 1) {
-      //   //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
-      // }
-      rowDataEdit.value.push(my_object)
-      console.log(rowDataEdit)
-    }
+    //     if (!isNaN(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)
+    //       && document.getElementById("tbQuantityEdit" + (Id.value - 1)).value != ""
+    //       && !!(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value)) {
+    //       document.getElementById("tbQuantityEdit" + (Id.value - 1)).value = formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id.value - 1)).value.replaceAll(',', '')))
+    //     }
+    //   }
+    //   // if (rowDataEdit.value.length > 1) {
+    //   //   //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
+    //   // }
+    //   rowDataEdit.value.push(my_object)
+    //   console.log(rowDataEdit)
+    // }
     const updateCheckedRows = (rowsKey) => {
       console.log('rowsKey: ', rowsKey);
     };
@@ -2108,19 +2113,19 @@ export default defineComponent({
     }
     return {
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
-      , OrderDataExisting, getBranchAndCashEdit, addEditItem,DownloadLink_
+      , OrderDataExisting, getBranchAndCashEdit, DownloadLink_
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
       , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder, DownloadLink
-      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData//,NewOrderDet
+      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id
+      //, rowDataEdit
+      , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData//,NewOrderDet
     }
   },
 })
 </script>
-
 <style scoped lang="css">
 @import '../assets/css/style.css';
-
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
   background-color: #5D6D7E;
   border-color: #EAEDED;

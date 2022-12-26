@@ -14,13 +14,14 @@
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
         &nbsp;
-        <h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-          style="cursor: pointer">
+        <h4 data-bs-target="#addApproveProc" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5" style="cursor: pointer" @click="openModal"  id="openModal_1">
+          <!-- <h4 data-bs-target="#addApproveProc" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+          style="cursor: pointer"> -->
           สร้างรายการอนุมัติใหม่
         </h4>
       </div>
     </div>
-    <div class="row p-1 mb-5" style="width: 100%">
+    <!-- <div class="row p-1 mb-5" style="width: 100%">
       <div class="accordion" id="CreateApproveProcess">
         <div class="accordion-item">
           <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -30,7 +31,7 @@
               สร้างรายการอนุมัติใหม่
             </button>
           </h2>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
             aria-labelledby="panelsStayOpen-headingOne">
             <div class="accordion-body">
               <div class="container-fluid">
@@ -92,8 +93,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div>col-1
+    </div> -->
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
@@ -109,48 +110,103 @@
     </div>
     <!-- </div> -->
   </div>
-  <!--<div class="modal fade" id="myModalNew">--------Add Order Manual--->
+  <!--<div class="modal fade" id="addApproveProc">--------Add Approve Process--->
   <div class="container py-2">
     <div class="py-2">
-      <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
-        <div class="modal fade" id="addApproveProc">
-          <div class="modal-dialog  modal-lg">
+      <form @submit.prevent="addApproveProc" enctype="multipart/form-data" id="form1">
+        <div class="modal fade" id="addApproveProc"><!-- <div class="modal fade" id="addApproveProc" > -->
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">กำหนดผู้อนุมัติ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div class="container">
-                  <div class="row p-2">
-                    <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray"> </h5>
+                <div class="container-fluid">
+                  <div class="row p-2" v-if="error_addApproveProc">
+                    <div class="col">
+                      <div :class="`alert ${error_addApproveProc ? 'alert-danger' : 'alert-success'}`">{{ message_addApproveProc
+                      }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2 d-flex ">
+                    <div class="col-2">ชื่อการอนุมัติ</div>
+                    <div class="col">
+                      <input type="text" id="Name" class="form-control" style="width: 30rem"
+                        v-model="ApproveData_.Name" />
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col-sm-2">
-                      ลำดับอนุมัติ
+                    <div class="col-2">กิจกรรม</div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4">
+                      <input type="checkbox" id="BranchToCash" value="1" v-model="ApproveData_.BranchToCash"
+                        class="form-check-input" />
+                      <label for="BranchToCash" class="form-check-label">
+                        สาขา-ศูนย์เงินสด
+                      </label>
                     </div>
-                    <div class="col ps-4 d-flex">
-                      &nbsp;<select id="BankTypeNew" class="form-select form-select-sm" style="width:15rem;" v-model="NewOrder.BankTypeNew">
-                        <option selected="selected" value="">ธนาคาร</option>
-                        <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
-                          :selected="data.customerID === BankType">{{
-                              data.customer_name
-                          }}
-                        </option>
-                      </select>
+                    <div class="col-3">
+                      <input type="checkbox" id="CashToCash" value="1" v-model="ApproveData_.CashToCash"
+                        class="form-check-input" />
+                      <label for="CashToCash" class="form-check-label">
+                        ศูนย์เงินสด-ศูนย์เงินสด
+                      </label>
                     </div>
-                    <div class="col">
-                      เลือกผู้ใช้งาน
+                    <div class="col-2">
+                      <input type="checkbox" id="BOTToCash" value="1" v-model="ApproveData_.BOTToCash"
+                        class="form-check-input" />
+                      <label for="BOTToCash" class="form-check-label">
+                        ธปท-ศูนย์เงินสด
+                      </label>
                     </div>
-                    <div class="col">
-                      <select class="form-select form-select-sm" name="OrderCategoryNew" style="width:15rem;"
-                        v-model="NewOrder.OrderCategoryNew" @click="getOrderType()">
-                        <option value="BankBranch">Bank Branch</option>
-                        <option value="BOT">BOT</option>
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
+                    <div class="col-2">
+                      <input type="checkbox" id="BranchToBranch" value="1" v-model="ApproveData_.BranchToBranch"
+                        class="form-check-input" />
+                      <label for="BranchToBranch" class="form-check-label">
+                        สาขา-สาขา
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4">
+                      <input type="checkbox" id="CashToBranch" value="1" v-model="ApproveData_.CashToBranch"
+                        class="form-check-input" />
+                      <label for="CashToBranch" class="form-check-label">
+                        ศูนย์เงินสด-สาขา
+                      </label>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                      <input type="checkbox" id="CashToBOT" value="1" v-model="ApproveData_.CashToBOT"
+                        class="form-check-input" />
+                      <label for="CashToBOT" class="form-check-label">
+                        ศูนย์เงินสด-ธปท
+                      </label>
+                    </div>
+                    <div class="col"></div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4  align-middle">
+                      <a @click.prevent="addItem()"><i class="fa fa-plus-circle fa-1x" aria-hidden="true"
+                          style="cursor: pointer;"></i></a>&nbsp;&nbsp;ตั้งค่ารายการอนุมัติ (เรียงจากบนลงล่าง)
+                    </div>
+                  </div>
+                  <div class="row p-2 ">
+                    <div class="col-12 overflow-scroll">
+                      <table class="table">
+                        <tr v-for="data, index in AddData.Data" :key="data.Id" class="d-flex flex-row p-1 align-middle">
+                          <td><span @click="deleteData(index)" style="cursor: pointer">
+                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>Role:
+                          </td>
+                          <td scope="col" v-html="data.ddlRole_"></td>
+                          <td>
+                            User:
+                          </td>
+                          <td scope="col" v-html="data.ddlUser_"></td>
+                        </tr>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -168,7 +224,140 @@
       </form>
     </div>
   </div>
-
+  <!--<div class="modal fade" id="ModalEditApprovProc">----------Edit Approve Process--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="editApproveProc" enctype="multipart/form-data" id="form2">
+        <div class="modal fade" id="ModalEditApprovProc">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">แก้ไขการกำหนดผู้อนุมัติ
+                  <input type="hidden" id="ApproveDataId" v-model="editApproveData_.Id" />
+                  <input type="hidden" id="Version" v-model="editApproveData_.version" />
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row p-2" v-if="error_editApproveProc">
+                    <div class="col">
+                      <div :class="`alert ${error_editApproveProc ? 'alert-danger' : 'alert-success'}`">{{ message_editApproveProc
+                      }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2 d-flex ">
+                    <div class="col-2">ชื่อการอนุมัติ</div>
+                    <div class="col">
+                      <input type="text" id="edtName" class="form-control" style="width: 30rem"
+                        v-model="editApproveData_.Name" />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-2">กิจกรรม</div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4">
+                      <input type="checkbox" id="edtBranchToCash" v-model="editApproveData_.BranchToCash"
+                        :checked="chekChecked(editApproveData_.BranchToCash)" class="form-check-input" />
+                      <label for="edtBranchToCash" class="form-check-label">
+                        สาขา-ศูนย์เงินสด
+                      </label>
+                    </div>
+                    <div class="col-3">
+                      <input type="checkbox" id="edtCashToCash" v-model="editApproveData_.CashToCash" :checked="chekChecked(editApproveData_.CashToCash)"
+                        class="form-check-input" />
+                      <label for="edtCashToCash" class="form-check-label">
+                        ศูนย์เงินสด-ศูนย์เงินสด
+                      </label>
+                    </div>
+                    <div class="col-2">
+                      <input type="checkbox" id="edtBOTToCash" v-model="editApproveData_.BOTToCash"
+                      :checked="chekChecked(editApproveData_.BOTToCash)" class="form-check-input" />
+                      <label for="edtBOTToCash" class="form-check-label">
+                        ธปท-ศูนย์เงินสด
+                      </label>
+                    </div>
+                    <div class="col-2">
+                      <input type="checkbox" id="edtBranchToBranch"  v-model="editApproveData_.BranchToBranch" :checked="chekChecked(editApproveData_.BranchToBranch)"
+                       class="form-check-input" />
+                      <label for="edtBranchToBranch" class="form-check-label">
+                        สาขา-สาขา
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4">
+                      <input type="checkbox" id="edtCashToBranch" v-model="editApproveData_.CashToBranch" :checked="chekChecked(editApproveData_.CashToBranch)"
+                        class="form-check-input" />
+                      <label for="edtCashToBranch" class="form-check-label">
+                        ศูนย์เงินสด-สาขา
+                      </label>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                      <input type="checkbox" id="edtCashToBOT" v-model="editApproveData_.CashToBOT"
+                      :checked="chekChecked(editApproveData_.CashToBOT)" class="form-check-input" />
+                      <label for="edtCashToBOT" class="form-check-label">
+                        ศูนย์เงินสด-ธปท
+                      </label>
+                    </div>
+                    <div class="col"></div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-4  align-middle">
+                      <a @click.prevent="addEditItem()"><i class="fa fa-plus-circle fa-1x" aria-hidden="true"
+                          style="cursor: pointer;"></i></a>&nbsp;&nbsp;ตั้งค่ารายการอนุมัติ (เรียงจากบนลงล่าง)
+                    </div>
+                  </div>
+                  <div class="row p-2 ">
+                    <div class="col-12 overflow-scroll">
+                      <table class="table">
+                        <tr v-for="data, index in editApproveData_.ApproveDataDet" :key="data.Id"
+                          class="d-flex flex-row p-1 align-middle">
+                          <td><span @click="delete_app_proc_det(index, data.Id)" style="cursor: pointer">
+                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>Role:
+                          </td>
+                          <td scope="col">
+                            <select class='form-select form-select-sm' style="width:15rem;"
+                              v-model.trim="editApproveData_.ApproveDataDet[index].roleid"
+                              v-bind="{ id: 'ddlRoleEdit' + (index + 1) }">
+                              <option v-for="data in Role_.RoleData" :key="data.RoleId" :value="data.RoleId"
+                                :selected="(data.RoleId === editApproveData_.ApproveDataDet[index].roleid)">
+                                {{data.RoleName}}
+                              </option>
+                            </select><input type="hidden" v-bind="{ id: 'ApproveDataDetId' + (index + 1) }" v-model="editApproveData_.ApproveDataDet[index].Id" />
+                          </td>
+                          <td>
+                            User:
+                          </td>
+                          <td scope="col">
+                            <select class='form-select form-select-sm' style="width:15rem;" v-model.trim="editApproveData_.ApproveDataDet[index].userid
+                            " v-bind="{ id: 'ddlUserEdit' + (index + 1) }">
+                              <option v-for="data in User_.UserData" :key="data.id" :value="data.id"
+                                :selected="(data.id === editApproveData_.ApproveDataDet[index].userid)">
+                                {{data.name}}
+                              </option>
+                            </select>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
+                    style="width:4rem; height:2rem;" id="ClosemyModalEidt">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
@@ -184,8 +373,6 @@ import { defineComponent, reactive, ref, computed, watch } from 'vue'
 import TableLite from '../components/TableLite.vue'
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
-// var user_id = localStorage.getItem('user_id')
-// console.log(user_id)
 export default defineComponent({
   name: 'ApproveProcess',
   components: {
@@ -202,11 +389,11 @@ export default defineComponent({
     const file = ref(File | null) //ref('')
     const error = ref(false)
     const checkstatus_send_to_checker = ref(false)
-    const error_addManual = ref(false)
-    const error_editOrder = ref(false)
+    const error_addApproveProc = ref(false)
+    const error_editApproveProc = ref(false)
     const message = ref('')
-    const message_addManual = ref('')
-    const message_editOrder = ref('')
+    const message_addApproveProc = ref('')
+    const message_editApproveProc = ref('')
     const OrderCategory = ref('BankBranch')
     const OrderType = ref('')
     const BankType = ref('')
@@ -220,117 +407,73 @@ export default defineComponent({
     const RoleId = ref(localStorage.getItem('RoleId'))
     const router = useRouter()
     const rowData = reactive([])
-    const NewOrder = reactive({
-      OrderCategoryNew: 'BankBranch',
-      OrderTypeNew: '',
-      BankTypeNew: '',
-      JobDateNew: new Date(),
-      RefNo: '',
-      RemarkNew: '',
-      DataBranchToOrigin: [],
-      DataBranchToDest: [],
-      BranchOrigin: '',
-      BranchDest: ''
-    })
+    const classFlexShow = ref('d-flex flex-row p-1')
+    const classFlexNone = ref('d-none p-1')
+    const modal = ref(null);
     // const NewOrderDet = reactive([])
-    const Id = ref(0)
-    const rowDataEdit = ref([])
-    const OrderDataExisting = reactive({
-      orderId: '',
-      BankType: '',
-      OrderCategory: 'BankBranch',
-      OrderType: '',
-      RefNo: '',
-      JobDate: null,
-      BranchOriginText: '',
-      BranchOriginId: '',
-      BranchDestText: '',
-      BranchDestId: '',
-      DataBranchToOrigin: [],
-      DataBranchToDest: [],
-      Remark: '',
-      OrderDataDet: [],
-      Cashstatus: ''
+    //const Id = ref(0)
+    const AddData = reactive({
+      Id: 0,
+      Data: []
     })
-    const sendFile = async (e) => {
-      // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
-      const target = e.target
-      if (target && target.files) {
-        file.value = target.files[0]
-      }
-      let formData = new FormData()
-      formData.append('file', file.value)
-      formData.append('OrderCategory', OrderCategory.value)
-      formData.append('OrderType', OrderType.value)
-      formData.append('BankType', BankType.value)
-      formData.append('JobDate', moment(JobDate.value).format('YYYY-MM-DD'))
-      formData.append('gfc_cct', gfc_cct.value)
-      formData.append('gfc_cct_code', gfc_cct_code.value)
-      formData.append('user_id', user_id.value)
-      formData.append('CustomerID', CustomerID.value)
-      console.log('sendFile')
-      formData.forEach((element) => console.log(element))
-      try {
-        await axios.post('/upload', formData).then(
-          (res) => {
-            // success callback
-            console.log(res.data)
-            document.getElementById('ClosemyModal').click()
-            // router.push('/listorder')
-            location.reload()
-          },
-          (res) => {
-            // error callback
-            console.log(res.data.message)
-          }
-        )
-        message.value = 'File has been upload'
-        file.value = ''
-        error.value = false
-      } catch (err) {
-        console.log(err)
-        message.value = 'Something went wrong'
-        error.value = true
-      }
-    }
-    const sendApprove = async (e) => {
-      // alert( OrderDataExisting.orderId )
-      if (confirm('คุณต้องการส่งอนุมัติรายการคำสั่ง?')) {
-        const params = {
-          Id: OrderDataExisting.orderId,
-          Type_: 'send_to_check'
-        }
-        try {
-          await axios
-            .get('/update_cashstatus_order', { params })
-            .then(
-              (res) => {
-                // success callback
-                let obj = JSON.parse(JSON.stringify(res.data))
-                console.log(obj[0])
-                // router.push('/listorder')
-                location.reload()
-                // addEditItem
-              },
-              (res) => {
-                // error callback
-                console.log(res.data)
-              }
-            )
-            .finally(() => {
-              //
-            })
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    }
-    const selectFile = (e) => {
-      // file.value = this.$refs.file.files[0]
-      file.value = e.target.files[0]
-      //headline.value.textContent
-      error.value = false
-      message.value = ''
+    // const rowDataEdit = ref([])    
+    const Role_ = reactive({
+      RoleData: [],
+      Role1: null,
+      Role2: null,
+      Role3: null,
+      Role4: null,
+      Role5: null,
+      Role6: null,
+      Role7: null,
+      Role8: null,
+    })
+    const User_ = reactive({
+      UserData: [],
+      User1: null,
+      User2: null,
+      User3: null,
+      User4: null,
+      User5: null,
+      User6: null,
+      User7: null,
+      User8: null,
+    })
+    const ApproveData_ = reactive({
+      Name: '',
+      BranchToCash: '0',
+      CashToCash: '0',
+      CashToBranch: '0',
+      BOTToCash: '0',
+      BranchToBranch: '0',
+      CashToBOT: '0'
+    })
+    const editApproveData_ = reactive({
+      Id: 0,
+      Name: '',
+      BranchToCash: '0',
+      CashToCash: '0',
+      CashToBranch: '0',
+      BOTToCash: '0',
+      BranchToBranch: '0',
+      CashToBOT: '0',
+      version: 0,
+      ApproveDataDet: [],
+    })
+    function openModal() {
+      // // Get the modal element using the ref
+      // const el = modal.value;
+      // // Show the modal with a fade transition
+      // el.classList.add('show');
+      // el.setAttribute('aria-modal', 'true');
+      // el.style.display = 'block';
+      // el.style.opacity = 0;
+      // requestAnimationFrame(() => {
+      //   el.style.transition = 'opacity 0.15s linear';
+      //   el.style.opacity = 1;
+      // });
+      //document.getElementById("openModal_1").click();
+      console.log('aaaa');
     }
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
@@ -379,166 +522,103 @@ export default defineComponent({
      * Get server data request
      */
     const myRequest = async (keyword) => {
-      //const fakeData = [];
       const params = {
         user_id: user_id.value,
         CustomerID: CustomerID.value,
         RoleId: RoleId.value
       }
-      // const res = await axios.get('/orderlist', { params })
-      const res = await axios.get('/approvelist', { params }).then(
+      const res = await axios.get('/approveProcList', { params }).then(
         (res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log('Data_: ', Data_)
-          //Data_
-          // console.log(fakeData)
+          console.log('Data_.value: ',Data_.value)
         },
         (res) => {
-          // error callback
           console.log(res.data)
         }
       )
-      // Data_.value
-      // Data_.value.forEach((item) => {
-      //   console.log("found: ", item)
-      //   console.log("found AutoID: ", item.AutoID)
-      // });
-      //fakeData.push(Data_.value)
-      //console.log('fakeData: ', fakeData)
+      const getrole = await axios.get('/getrole', { params })
+        .then((res) => {
+          Role_.RoleData = res.data
+          console.log(' Role_.RoleData: ', Role_.RoleData)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
+      const getuser = await axios.get('/getuser', { params })
+        .then((res) => {
+          // success callback           
+          User_.UserData = res.data //res.data[0].url_link          
+          console.log('User_.UserData: ', User_.UserData)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
       return await new Promise((resolve, reject) => {
         try {
-          table.isLoading = true
+          table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
           setTimeout(() => {
-            table.isLoading = false
+            table.isLoading = false;
             let newData = Data_.value.filter(
-              (x) =>
-                x.AutoID.toString()
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                x.servicetype.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.branchorigin_name
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                x.branchdest_name
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                formatPrice(x.total_by_branch)
-                  .toString()
-                  .toLowerCase()
-                  .includes(keyword.toLowerCase()) ||
-                x.order_date.toLowerCase().includes(keyword.toLowerCase()) ||
-                x.remark.toLowerCase().includes(keyword.toLowerCase())
-            )
-            resolve(newData)
-          }, 100)
+              (x) => x.ap_name.toString().toLowerCase().includes(keyword.toLowerCase())
+            );
+            resolve(newData);
+          }, 100);
         } catch (error) {
-          console.log('Fetch error', error)
-          reject()
+          console.log("Fetch error", error);
+          reject();
         }
-      })
-    }
+      });
+    }//const myRequest = async (keyword) => {
     // Table config
     const table = reactive({
       isLoading: false,
       columns: [
         {
-          label: 'เลขที่คำสั่ง',
-          field: 'AutoID',
-          width: '10%',
+          label: 'ชื่อรายการคำสั่ง',
+          field: 'ap_name',
+          width: '20%',
           sortable: true,
           isKey: true
         },
         {
           label: 'ประเภทบริการ',
-          field: 'servicetype',
-          width: '5%',
-          sortable: true
-        },
-        {
-          label: 'ต้นทาง',
-          field: 'branchorigin_name',
-          width: '15%',
-          sortable: true
-        },
-        {
-          label: 'ปลายทาง',
-          field: 'branchdest_name',
-          width: '15%',
-          sortable: true
-        },
-        {
-          label: 'ยอดเงิน',
-          field: 'total_by_branch',
-          width: '15%',
-          sortable: true,
+          width: '60%',
           display: function (row) {
-            return formatPrice(row.total_by_branch)
+            //branchtocash,cashtobranch, cashtocash, bottocash, cashtobot, branchtobranch
+            // let checkhave=0
+            let pic_selected = "<i class='fa fa-check' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
+            let pic_unselect = "<i class='fa fa-times' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
+            let data = ''
+            row.branchtocash === '1' ? data += pic_selected + 'สาขา-ศูนย์เงินสด' : data += pic_unselect + 'สาขา-ศูนย์เงินสด'
+            row.cashtobranch === '1' ? data += pic_selected + 'ศูนย์เงินสด-สาขา' : data += pic_unselect + 'ศูนย์เงินสด-สาขา'
+            row.cashtocash === '1' ? data += pic_selected + 'ศูนย์เงินสด-ศูนย์เงินสด' : data += pic_unselect + 'ศูนย์เงินสด-ศูนย์เงินสด'
+            row.bottocash === '1' ? data += pic_selected + 'ธปท-ศูนย์เงินสด' : data += pic_unselect + 'ธปท-ศูนย์เงินสด'
+            row.cashtobot === '1' ? data += pic_selected + 'ศูนย์เงินสด-ธปท' : data += pic_unselect + 'ศูนย์เงินสด-ธปท'
+            row.branchtobranch === '1' ? data += pic_selected + 'สาขา-สาขา' : data += pic_unselect + 'สาขา-สาขา'
+            return (data)
           }
         },
         {
-          label: 'วันปฎิบัติงาน',
-          field: 'order_date',
-          width: '10%',
-          sortable: true,
-          display: function (row) {
-            return dateTime(row.order_date)
-          }
-        },
-        {
-          label: 'อนุมัติโดย',
+          label: 'ดำเนินการ',
           //field: "order_date",
-          width: '10%',
-          sortable: true
-        },
-        {
-          label: 'สถานะคำสั่ง',
-          //field: "order_date",
-          width: '10%',
+          width: '20%',
           sortable: true,
           display: function (row) {
-            let sOutput = ''
-            if (row.cashstatus === '1') {
-              sOutput = 'สร้างรายการคำสั่ง'
-            }
-            if (row.cashstatus === '2') {
-              sOutput = 'รอ Checker อนุมัติ'
-            }
-            if (row.cashstatus === '3') {
-              sOutput = 'รอ Approve1 อนุมัติ'
-            }
-            if (row.cashstatus === '4') {
-              sOutput = 'รอ Approve2 อนุมัติ'
-            }
-            if (row.cashstatus === '5') {
-              sOutput = 'รอ ApproveN อนุมัติ'
-            }
-            sOutput = '<span>' + sOutput + '</span>'
-            return sOutput
-          }
-        },
-        {
-          label: 'หมายเหตุ',
-          field: 'remark',
-          width: '10%',
-          sortable: true
-        },
-        {
-          label: '',
-          //field: "quick",
-          width: '10%',
-          display: function (row) {
+            // let sOutput = 'test'            
             return (
+              // '<button type="button" data-id="' +
+              // row.AutoID +
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
+              // +
               '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-warning is-rows-el reject_order" style="width:5em; height:2rem">Reject</button>' +
+              row.Id +
+              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">ยกเลิก</button>'
+              +
               '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-success is-rows-el approve_order" style="width:6rem; height:2rem">อนุมัติ</button>' +
-              '<button type="button" data-id="' +
-              row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">View</button>'
-            )
+              row.Id +':'+row.approve_setting_id+':'+ row.version +
+              '" class="btn btn-info is-rows-el editapprove_process" style="width:5rem; height:2rem" data-bs-target="#ModalEditApprovProc" data-bs-toggle="modal">แก้ไข</button>'
+            );
           }
         }
       ],
@@ -558,19 +638,6 @@ export default defineComponent({
      */
     watch(
       () => searchTerm.value,
-      // (val) => {
-      //   //Data_.value
-      //   const res = axios.get('/orderlist')
-      //     .then((res) => {
-      //       Data_.value = JSON.parse(JSON.stringify(res.data))
-      //       console.log("Data_: ", Data_)
-      //       //Data_
-      //       // console.log(fakeData)
-      //     }, (res) => {
-      //       // error callback
-      //       console.log(res.data)
-      //     })
-      // },
       (val) => {
         myRequest(val).then((newData) => {
           data.rows = newData
@@ -653,556 +720,67 @@ export default defineComponent({
             }
           })
         }
-        if (element.classList.contains('editorder')) {
-          element.addEventListener('click', async function () {
+        if (element.classList.contains('editapprove_process')) {
+          element.addEventListener('click', async function () { 
+            let value = this.dataset.id.split(':')
             const params = {
-              Id: this.dataset.id
+              Id: value[0]
+              ,version: value[1]
+              ,approve_setting_id: value[2]
+              ,
             }
-            let Id_ = this.dataset.id
+            let Id_ = value[0]
             //console.log( params )
+            //reset---------
+            editApproveData_.Id = 0    // OrderDataExisting.BankType = obj[0].customerID
+            editApproveData_.Name = ''//obj[0].ap_name
+            editApproveData_.BranchToCash = 0//obj[0].branchtocash
+            editApproveData_.CashToCash = 0//obj[0].cashtocash
+            editApproveData_.CashToBranch = 0//obj[0].cashtobranch
+            editApproveData_.BOTToCash = 0//obj[0].bottocash
+            editApproveData_.BranchToBranch = 0//obj[0].branchtobranch
+            editApproveData_.CashToBOT = 0//obj[0].cashtobot
             try {
-              await axios
-                .get('/getcashorder', { params })
-                .then(
-                  (res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log('obj[0], getcashorder: ', obj[0])
-                    OrderDataExisting.orderId = Id_
-                    OrderDataExisting.BankType = obj[0].customerID
-                    OrderDataExisting.OrderCategory = obj[0].order_category
-                    OrderDataExisting.OrderType = obj[0].servicetype
-                    OrderDataExisting.RefNo = obj[0].refno
-                    OrderDataExisting.JobDate = new Date(obj[0].order_date)
-                    // OrderDataExisting.JobDate =  obj[0].order_date
-                    OrderDataExisting.BranchOriginText =
-                      obj[0].branchorigin_name
-                    OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
-                    OrderDataExisting.BranchDestText = obj[0].branchdest_name
-                    OrderDataExisting.BranchDestId = obj[0].branchdest_code
-                    OrderDataExisting.Remark = obj[0].remark
-                    OrderDataExisting.Cashstatus = obj[0].cashstatus
-                    if (obj[0].cashstatus === '1') {
-                      checkstatus_send_to_checker.value = true
-                    } else {
-                      checkstatus_send_to_checker.value = false
-                    }
-                    console.log('obj[0].Cashstatus: ', obj[0].cashstatus)
-                    console.log(
-                      'checkstatus_send_to_checker: ',
-                      checkstatus_send_to_checker.value
-                    )
+              await axios.get('/get_approveProcData', { params })
+                .then((res) => {
+                  // success callback
+                  let obj = JSON.parse(JSON.stringify(res.data))
+                  console.log("get_approveProcData: ", obj[0])
+                  editApproveData_.Id = Id_    // OrderDataExisting.BankType = obj[0].customerID
+                  editApproveData_.Name = obj[0].ap_name
+                  editApproveData_.BranchToCash = obj[0].branchtocash
+                  editApproveData_.CashToCash = obj[0].cashtocash
+                  editApproveData_.CashToBranch = obj[0].cashtobranch
+                  editApproveData_.BOTToCash = obj[0].bottocash
+                  editApproveData_.BranchToBranch = obj[0].branchtobranch
+                  editApproveData_.CashToBOT = obj[0].cashtobot
+                  editApproveData_.version = obj[0].version
+                  editApproveData_.ApproveDataDet = []
+                  //------------------------------------------------
+                  axios.get('/get_approveProcDataDet', { params })
+                    .then((res) => {
+                      // success callback
+                      let obj = JSON.parse( JSON.stringify( res.data ) )
+                      editApproveData_.ApproveDataDet = obj
+                      console.log("get_approveProcDataDet: ", editApproveData_.ApproveDataDet )
+                      AddData.Id = editApproveData_.ApproveDataDet.length
+                    }, (res) => {
+                      // error callback
+                      console.log(res.data)
+                    }).finally(() => {
+                      //
+                    });
+                    console.log( 'editApproveData_: ', editApproveData_ )
 
-                    // console.log('OrderDataExisting.BranchOriginText: ',OrderDataExisting.BranchOriginText)
-                    // console.log('OrderDataExisting.BranchOriginId: ',OrderDataExisting.BranchOriginId)
-                    // console.log('OrderDataExisting.BranchDestText: ',OrderDataExisting.BranchDestText)
-                    // console.log('OrderDataExisting.BranchDestId: ',OrderDataExisting.BranchDestId)
-                    // console.log('editorder OrderDataExisting: ', OrderDataExisting);//OrderDataDet
-                    getBranchAndCashEdit()
-                    OrderDataExisting.OrderDataDet = []
-                    if (obj[0].note_new_1000 > 0) {
-                      //--note new
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1000',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_1000,
-                        Quantity: obj[0].pcs_note_new_1000,
-                        Amount: obj[0].note_new_1000
-                      })
-                    }
-                    if (obj[0].note_new_500 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '500',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_500,
-                        Quantity: obj[0].pcs_note_new_500,
-                        Amount: obj[0].note_new_500
-                      })
-                    }
-                    if (obj[0].note_new_100 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '100',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_100,
-                        Quantity: obj[0].pcs_note_new_100,
-                        Amount: obj[0].note_new_100
-                      })
-                    }
-                    if (obj[0].note_new_50 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '50',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_50,
-                        Quantity: obj[0].pcs_note_new_50,
-                        Amount: obj[0].note_new_50
-                      })
-                    }
-                    if (obj[0].note_new_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_20,
-                        Quantity: obj[0].pcs_note_new_20,
-                        Amount: obj[0].note_new_20
-                      })
-                    }
-                    if (obj[0].note_new_10 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_10,
-                        Quantity: obj[0].pcs_note_new_10,
-                        Amount: obj[0].note_new_10
-                      })
-                    }
-                    if (obj[0].note_fit_1000 > 0) {
-                      //--note fit
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1000',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_1000,
-                        Quantity: obj[0].pcs_note_fit_1000,
-                        Amount: obj[0].note_fit_1000
-                      })
-                    }
-                    if (obj[0].note_fit_500 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '500',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_500,
-                        Quantity: obj[0].pcs_note_fit_500,
-                        Amount: obj[0].note_fit_500
-                      })
-                    }
-                    if (obj[0].note_fit_100 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '100',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_100,
-                        Quantity: obj[0].pcs_note_fit_100,
-                        Amount: obj[0].note_fit_100
-                      })
-                    }
-                    if (obj[0].note_fit_50 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '50',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_50,
-                        Quantity: obj[0].pcs_note_fit_50,
-                        Amount: obj[0].note_fit_50
-                      })
-                    }
-                    if (obj[0].note_fit_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_20,
-                        Quantity: obj[0].pcs_note_fit_20,
-                        Amount: obj[0].note_fit_20
-                      })
-                    }
-                    if (obj[0].note_fit_10 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_10,
-                        Quantity: obj[0].pcs_note_fit_10,
-                        Amount: obj[0].note_fit_10
-                      })
-                    }
-                    if (obj[0].note_unfit_1000 > 0) {
-                      //--note unfit
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1000',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_1000,
-                        Quantity: obj[0].pcs_note_unfit_1000,
-                        Amount: obj[0].note_unfit_1000
-                      })
-                    }
-                    if (obj[0].note_unfit_500 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '500',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_500,
-                        Quantity: obj[0].pcs_note_unfit_500,
-                        Amount: obj[0].note_unfit_500
-                      })
-                    }
-                    if (obj[0].note_unfit_100 > 0) {
-                      console.log({
-                        MoneyType: '100',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_100,
-                        Quantity: obj[0].pcs_note_unfit_100,
-                        Amount: obj[0].note_unfit_100
-                      })
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '100',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_100,
-                        Quantity: obj[0].pcs_note_unfit_100,
-                        Amount: obj[0].note_unfit_100
-                      })
-                    }
-                    if (obj[0].note_unfit_50 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '50',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_50,
-                        Quantity: obj[0].pcs_note_unfit_50,
-                        Amount: obj[0].note_unfit_50
-                      })
-                    }
-                    if (obj[0].note_unfit_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_20,
-                        Quantity: obj[0].pcs_note_unfit_20,
-                        Amount: obj[0].note_unfit_20
-                      })
-                    }
-                    if (obj[0].note_unfit_10 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_10,
-                        Quantity: obj[0].pcs_note_unfit_10,
-                        Amount: obj[0].note_unfit_10
-                      })
-                    }
-                    if (obj[0].note_uncount_1000 > 0) {
-                      //--note uncount
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1000',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_1000,
-                        Quantity: obj[0].pcs_note_uncount_1000,
-                        Amount: obj[0].note_uncount_1000
-                      })
-                    }
-                    if (obj[0].note_uncount_500 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '500',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_500,
-                        Quantity: obj[0].pcs_note_uncount_500,
-                        Amount: obj[0].note_uncount_500
-                      })
-                    }
-                    if (obj[0].note_uncount_100 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '100',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_100,
-                        Quantity: obj[0].pcs_note_uncount_100,
-                        Amount: obj[0].note_uncount_100
-                      })
-                    }
-                    if (obj[0].note_uncount_50 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '50',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_50,
-                        Quantity: obj[0].pcs_note_uncount_50,
-                        Amount: obj[0].note_uncount_50
-                      })
-                    }
-                    if (obj[0].note_uncount_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_20,
-                        Quantity: obj[0].pcs_note_uncount_20,
-                        Amount: obj[0].note_uncount_20
-                      })
-                    }
-                    if (obj[0].note_uncount_10 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_10,
-                        Quantity: obj[0].pcs_note_uncount_10,
-                        Amount: obj[0].note_uncount_10
-                      })
-                    }
-                    if (obj[0].coin_new_10 > 0) {
-                      //--coin new
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_10,
-                        Quantity: obj[0].pcs_coin_new_10,
-                        Amount: obj[0].coin_new_10
-                      })
-                    }
-                    if (obj[0].coin_new_5 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '5',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_5,
-                        Quantity: obj[0].pcs_coin_new_5,
-                        Amount: obj[0].coin_new_5
-                      })
-                    }
-                    if (obj[0].coin_new_2 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '2',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_2,
-                        Quantity: obj[0].pcs_coin_new_2,
-                        Amount: obj[0].coin_new_2
-                      })
-                    }
-                    if (obj[0].coin_new_1 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_1,
-                        Quantity: obj[0].pcs_coin_new_1,
-                        Amount: obj[0].coin_new_1
-                      })
-                    }
-                    if (obj[0].note_new_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_note_new_20,
-                        Quantity: obj[0].pcs_note_new_20,
-                        Amount: obj[0].note_new_20
-                      })
-                    }
-                    if (obj[0].coin_new_05 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.5',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_05,
-                        Quantity: obj[0].pcs_coin_new_05,
-                        Amount: obj[0].coin_new_05
-                      })
-                    }
-                    if (obj[0].coin_new_025 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.25',
-                        QualityMoneyType: 'New',
-                        PackageMoneyType: obj[0].unit_coin_new_025,
-                        Quantity: obj[0].pcs_coin_new_025,
-                        Amount: obj[0].coin_new_025
-                      })
-                    }
-                    if (obj[0].coin_fit_10 > 0) {
-                      //--coin fit
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_10,
-                        Quantity: obj[0].pcs_coin_fit_10,
-                        Amount: obj[0].coin_fit_10
-                      })
-                    }
-                    //console.log('if (obj[0].coin_fit_5 > 0) {')
-                    if (obj[0].coin_fit_5 > 0) {
-                      //console.log('obj[0].coin_fit_5: ',obj[0].coin_fit_5)
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '5',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_5,
-                        Quantity: obj[0].pcs_coin_fit_5,
-                        Amount: obj[0].coin_fit_5
-                      })
-                    }
-                    if (obj[0].coin_fit_2 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '2',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_2,
-                        Quantity: obj[0].pcs_coin_fit_2,
-                        Amount: obj[0].coin_fit_2
-                      })
-                    }
-                    if (obj[0].coin_fit_1 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_1,
-                        Quantity: obj[0].pcs_coin_fit_1,
-                        Amount: obj[0].coin_fit_1
-                      })
-                    }
-                    if (obj[0].note_fit_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_note_fit_20,
-                        Quantity: obj[0].pcs_note_fit_20,
-                        Amount: obj[0].note_fit_20
-                      })
-                    }
-                    if (obj[0].coin_fit_05 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.5',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_05,
-                        Quantity: obj[0].pcs_coin_fit_05,
-                        Amount: obj[0].coin_fit_05
-                      })
-                    }
-                    if (obj[0].coin_fit_025 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.25',
-                        QualityMoneyType: 'Fit',
-                        PackageMoneyType: obj[0].unit_coin_fit_025,
-                        Quantity: obj[0].pcs_coin_fit_025,
-                        Amount: obj[0].coin_fit_025
-                      })
-                    }
-                    if (obj[0].coin_unfit_10 > 0) {
-                      //--coin unfit
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_10,
-                        Quantity: obj[0].pcs_coin_unfit_10,
-                        Amount: obj[0].coin_unfit_10
-                      })
-                    }
-                    if (obj[0].coin_unfit_5 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '5',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_5,
-                        Quantity: obj[0].pcs_coin_unfit_5,
-                        Amount: obj[0].coin_unfit_5
-                      })
-                    }
-                    if (obj[0].coin_unfit_2 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '2',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_2,
-                        Quantity: obj[0].pcs_coin_unfit_2,
-                        Amount: obj[0].coin_unfit_2
-                      })
-                    }
-                    if (obj[0].coin_unfit_1 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_1,
-                        Quantity: obj[0].pcs_coin_unfit_1,
-                        Amount: obj[0].coin_unfit_1
-                      })
-                    }
-                    if (obj[0].note_unfit_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_note_unfit_20,
-                        Quantity: obj[0].pcs_note_unfit_20,
-                        Amount: obj[0].note_unfit_20
-                      })
-                    }
-                    if (obj[0].coin_unfit_05 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.5',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_05,
-                        Quantity: obj[0].pcs_coin_unfit_05,
-                        Amount: obj[0].coin_unfit_05
-                      })
-                    }
-                    if (obj[0].coin_unfit_025 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.25',
-                        QualityMoneyType: 'Unfit',
-                        PackageMoneyType: obj[0].unit_coin_unfit_025,
-                        Quantity: obj[0].pcs_coin_unfit_025,
-                        Amount: obj[0].coin_unfit_025
-                      })
-                    }
-                    if (obj[0].coin_uncount_10 > 0) {
-                      //--coin uncount
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '10',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_10,
-                        Quantity: obj[0].pcs_coin_uncount_10,
-                        Amount: obj[0].coin_uncount_10
-                      })
-                    }
-                    if (obj[0].coin_uncount_5 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '5',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_5,
-                        Quantity: obj[0].pcs_coin_uncount_5,
-                        Amount: obj[0].coin_uncount_5
-                      })
-                    }
-                    if (obj[0].coin_uncount_2 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '2',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_2,
-                        Quantity: obj[0].pcs_coin_uncount_2,
-                        Amount: obj[0].coin_uncount_2
-                      })
-                    }
-                    if (obj[0].coin_uncount_1 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '1',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_1,
-                        Quantity: obj[0].pcs_coin_uncount_1,
-                        Amount: obj[0].coin_uncount_1
-                      })
-                    }
-                    if (obj[0].note_uncount_20 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '20',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_note_uncount_20,
-                        Quantity: obj[0].pcs_note_uncount_20,
-                        Amount: obj[0].note_uncount_20
-                      })
-                    }
-                    if (obj[0].coin_uncount_05 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.5',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_05,
-                        Quantity: obj[0].pcs_coin_uncount_05,
-                        Amount: obj[0].coin_uncount_05
-                      })
-                    }
-                    if (obj[0].coin_uncount_025 > 0) {
-                      OrderDataExisting.OrderDataDet.push({
-                        MoneyType: '0.25',
-                        QualityMoneyType: 'Uncount',
-                        PackageMoneyType: obj[0].unit_coin_uncount_025,
-                        Quantity: obj[0].pcs_coin_uncount_025,
-                        Amount: obj[0].coin_uncount_025
-                      })
-                    }
-                    // console.log(OrderDataExisting.OrderDataDet[1].MoneyType)
-                    Id.value = OrderDataExisting.OrderDataDet.length
-                    console.log(
-                      'OrderDataExisting.OrderDataDet.length: ' +
-                      OrderDataExisting.OrderDataDet.length
-                    )
-                    // addEditItem
-                  },
-                  (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }
-                )
-                .finally(() => {
+                }, (res) => {
+                  // error callback
+                  console.log(res.data)
+                }).finally(() => {
                   //
-                })
+                });
               // onMounted(getBranchAndCashEdit)
-            } catch (err) {
+            }
+            catch (err) {
               console.log(err)
             }
           })
@@ -1269,55 +847,35 @@ export default defineComponent({
             ddltype === 'BranchOrigin'
               ? (OrderDataExisting.DataBranchToOrigin = res.data)
               : (OrderDataExisting.DataBranchToDest = res.data)
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
           },
           (res) => {
-            // error callback
             console.log(res.data.message)
           }
         )
       }
     }
-    const addManualOrder = async () => {
+    const addApproveProc = async () => {
       const formData = new FormData()
-      formData.append('OrderCategoryNew', NewOrder.OrderCategoryNew)
-      formData.append('OrderTypeNew', NewOrder.OrderTypeNew)
-      formData.append('BankTypeNew', NewOrder.BankTypeNew)
-      formData.append('JobDateNew', NewOrder.JobDateNew)
-      formData.append('RefNo', NewOrder.RefNo)
-      formData.append('RemarkNew', NewOrder.RemarkNew)
-      formData.append('BranchOrigin', NewOrder.BranchOrigin.branch_name)
-      formData.append('BranchDest', NewOrder.BranchDest.branch_name)
-      formData.append('BranchOrigin_code', NewOrder.BranchOrigin.branch_id)
-      formData.append('BranchDest_code', NewOrder.BranchDest.branch_id)
-      formData.append('AllRowsDet', Id.value)
+      formData.append('ap_name', ApproveData_.Name)
+      formData.append('BranchToCash', ApproveData_.BranchToCash  === true ? '1' : '0')
+      formData.append('CashToCash', ApproveData_.CashToCash === true ? '1' : '0')
+      formData.append('BOTToCash', ApproveData_.BOTToCash === true ? '1' : '0')
+      formData.append('BranchToBranch', ApproveData_.BranchToBranch === true ? '1' : '0')
+      formData.append('CashToBranch', ApproveData_.CashToBranch === true ? '1' : '0')
+      formData.append('CashToBOT', ApproveData_.CashToBOT === true ? '1' : '0')
+      formData.append('AllRowsDet', AddData.Id)
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
-      for (var index = 0; index < Id.value; index++) {
-        if (document.getElementById('ddlMoneyType' + (index + 1))) {
-          formData.append(
-            'ddlMoneyType' + (index + 1),
-            document.getElementById('ddlMoneyType' + (index + 1)).value
-          )
-          formData.append(
-            'ddlQualityMoneyType' + (index + 1),
-            document.getElementById('ddlQualityMoneyType' + (index + 1)).value
-          )
-          formData.append(
-            'ddlPackageMoneyType' + (index + 1),
-            document.getElementById('ddlPackageMoneyType' + (index + 1)).value
-          )
-          formData.append(
-            'tbQuantity' + (index + 1),
-            document.getElementById('tbQuantity' + (index + 1)).value
-          )
-          formData.append(
-            'tbAmount' + (index + 1),
-            document.getElementById('tbAmount' + (index + 1)).value
-          )
-          // Id_++
+      for (var index = 0; index < AddData.Id; index++) {
+        if (document.getElementById('Role_' + (index + 1))) {
+          let Role = document.getElementById('Role_' + (index + 1));
+          formData.append('RoleId_' + (index + 1), Role.value)
+          formData.append('RoleName_' + (index + 1), Role.options[Role.selectedIndex].text)
+          //------------------------------------------------------------
+          let User = document.getElementById('User_' + (index + 1));
+          formData.append('UserId_' + (index + 1), User.value)
+          formData.append('UserName_' + (index + 1), User.options[User.selectedIndex].text)
         }
       }
       // this.showmyModalNew = true
@@ -1325,85 +883,36 @@ export default defineComponent({
       formData.forEach((value, key) => (object[key] = value))
       var json = JSON.stringify(object)
       console.log('add data')
-      console.log(json)
-      try {
+      console.log('json:',json)
+      try
+       {
         await axios
-          .post('/manual_add_order', json)
+          .post('/add_approveProc', json)
           .then(
             (res) => {
               // success callback
-              console.log(res.data)
-              // this.$refs.ClosemyModalNew.click();
-              // document.getElementById('ClosemyModalNew').click();//************************** */
+              console.log('add_approveProc')
+              console.log('console.log(res.data): ', res.data)
             },
             (res) => {
               // error callback
               console.log(res.data.message)
-              message_addManual.value = res.data.message
+              message_addApproveProc.value = res.data.message
             }
           )
           .finally(() => {
             // router.push('/listorder')
             location.reload()
+            //document.getElementById('ClosemyModalNew').click();            
+            // table.rows = Data_;
           })
-        error_addManual.value = false
-      } catch (err) {
+          error_addApproveProc.value = false
+      } 
+      catch (err) 
+      {
         console.log(err)
-        message_addManual.value = 'Something went wrong: ' + err
-        error_addManual.value = true
-      }
-    }
-    const getBranchAndCash = () => {
-      NewOrder.DataBranchToOrigin = []
-      NewOrder.DataBranchToDest = []
-      if (NewOrder.OrderTypeNew === 'Withdraw') {
-        getBranchOrCashCen('cashtobranch', 'BranchOrigin')
-        getBranchOrCashCen('branchtocash', 'BranchDest')
-      }
-      if (NewOrder.OrderTypeNew === 'Deposit') {
-        getBranchOrCashCen('branchtocash', 'BranchOrigin')
-        getBranchOrCashCen('cashtobranch', 'BranchDest')
-      }
-    }
-    const getBranchOrCashCen = async (servicetype, ddltype) => {
-      if (servicetype === 'branchtocash') {
-        const params = {
-          CustomerID: CustomerID.value
-        }
-        await axios.get('/getbranchdata', { params }).then(
-          (res) => {
-            // success callback
-            ddltype === 'BranchOrigin'
-              ? (NewOrder.DataBranchToOrigin = res.data)
-              : (NewOrder.DataBranchToDest = res.data)
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
-          },
-          (res) => {
-            // error callback
-            console.log(res.data.message)
-          }
-        )
-      }
-      //--------------------------------------------
-      if (servicetype === 'cashtobranch') {
-        const params = {
-          CustomerID: CustomerID.value
-        }
-        await axios.get('/getcashcenterdata', { params }).then(
-          (res) => {
-            // success callback
-            ddltype === 'BranchOrigin'
-              ? (NewOrder.DataBranchToOrigin = res.data)
-              : (NewOrder.DataBranchToDest = res.data)
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
-          },
-          (res) => {
-            // error callback
-            console.log(res.data.message)
-          }
-        )
+        message_addApproveProc.value = 'Something went wrong: ' + err
+        error_addApproveProc.value = true
       }
     }
     const calamount_orderEdit = (value) => {
@@ -1503,87 +1012,6 @@ export default defineComponent({
       // };
       // NewOrderDet.push(my_object)
     }
-    const addEditItem = () => {
-      Id.value++
-      let ddlMoneyTypeEdit = ''
-      ddlMoneyTypeEdit =
-        "<select class='form-select form-select-sm text-right' id='ddlMoneyTypeEdit" +
-        Id.value +
-        "'>"
-      ddlMoneyTypeEdit += "<option value='1000'>1,000</option>"
-      ddlMoneyTypeEdit += "<option value='500'>500</option>"
-      ddlMoneyTypeEdit += "<option value='100'>100</option>"
-      ddlMoneyTypeEdit += "<option value='20'>20</option>"
-      ddlMoneyTypeEdit += "<option value='10'>10</option>"
-      ddlMoneyTypeEdit += "<option value='5'>5</option>"
-      ddlMoneyTypeEdit += "<option value='2'>2</option>"
-      ddlMoneyTypeEdit += "<option value='1'>1</option>"
-      ddlMoneyTypeEdit += "<option value='0.5'>0.50</option>"
-      ddlMoneyTypeEdit += '</select>'
-      let ddlQualityMoneyTypeEdit = ''
-      ddlQualityMoneyTypeEdit =
-        "<select class='form-select form-select-sm' id='ddlQualityMoneyTypeEdit" +
-        Id.value +
-        "'>"
-      ddlQualityMoneyTypeEdit += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Fit'>ดี</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyTypeEdit += "<option value='Uncount'>รอคัดนับ</option>"
-      ddlQualityMoneyTypeEdit += '</select>'
-      let ddlPackageMoneyTypeEdit = ''
-      ddlPackageMoneyTypeEdit =
-        "<select class='form-select form-select-sm' id='ddlPackageMoneyTypeEdit" +
-        Id.value +
-        "'>"
-      ddlPackageMoneyTypeEdit += "<option value='Bundle'>มัด</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Piece'>ฉบับ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Coin'>เหรียญ</option>"
-      ddlPackageMoneyTypeEdit += "<option value='Pack'>แพ็ค</option>"
-      ddlPackageMoneyTypeEdit += '</select>'
-      let tbQuantityEdit = ''
-      tbQuantityEdit =
-        "<input type='text' id='tbQuantityEdit" +
-        Id.value +
-        "' class='form-control text-right' style='width:10rem;'>"
-      let tbAmount = ''
-      tbAmount =
-        "<input type='text' id='tbAmount" +
-        Id.value +
-        "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
-      let my_object = {
-        Id: Id.value,
-        ddlMoneyType_: ddlMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlQualityMoneyType_: ddlQualityMoneyTypeEdit,
-        ddlPackageMoneyType_: ddlPackageMoneyTypeEdit,
-        tbQuantity_: tbQuantityEdit,
-        tbAmount_: tbAmount
-      }
-      if (rowDataEdit.value.length > 1) {
-        if (
-          !isNaN(
-            document.getElementById('tbQuantityEdit' + (Id.value - 1)).value
-          ) &&
-          document.getElementById('tbQuantityEdit' + (Id.value - 1)).value !=
-          '' &&
-          !!document.getElementById('tbQuantityEdit' + (Id.value - 1)).value
-        ) {
-          document.getElementById('tbQuantityEdit' + (Id.value - 1)).value =
-            formatPrice_noFixed(
-              parseFloat(
-                document
-                  .getElementById('tbQuantityEdit' + (Id.value - 1))
-                  .value.replaceAll(',', '')
-              )
-            )
-        }
-      }
-      // if (rowDataEdit.value.length > 1) {
-      //   //document.getElementById("tbQuantityEdit" + (Id - 1)).value = this.formatPrice_noFixed(parseFloat(document.getElementById("tbQuantityEdit" + (Id - 1)).value))
-      // }
-      rowDataEdit.value.push(my_object)
-      console.log(rowDataEdit)
-    }
     const updateCheckedRows = (rowsKey) => {
       console.log('rowsKey: ', rowsKey)
     }
@@ -1592,127 +1020,132 @@ export default defineComponent({
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
     const addItem = () => {
-      Id.value++
-      let ddlMoneyType = ''
-      ddlMoneyType =
-        "<select class='form-select form-select-sm text-right' id='ddlMoneyType" +
-        Id.value +
-        "'>"
-      ddlMoneyType += "<option value='1000'>1,000</option>"
-      ddlMoneyType += "<option value='500'>500</option>"
-      ddlMoneyType += "<option value='100'>100</option>"
-      ddlMoneyType += "<option value='20'>20</option>"
-      ddlMoneyType += "<option value='10'>10</option>"
-      ddlMoneyType += "<option value='5'>5</option>"
-      ddlMoneyType += "<option value='2'>2</option>"
-      ddlMoneyType += "<option value='1'>1</option>"
-      ddlMoneyType += "<option value='0.5'>0.50</option>"
-      ddlMoneyType += '</select>'
-      let ddlQualityMoneyType = ''
-      ddlQualityMoneyType =
-        "<select class='form-select form-select-sm' id='ddlQualityMoneyType" +
-        Id.value +
-        "'>"
-      ddlQualityMoneyType += "<option value='New'>ใหม่</option>"
-      ddlQualityMoneyType += "<option value='Fit'>ดี</option>"
-      ddlQualityMoneyType += "<option value='Unfit'>เสีย</option>"
-      ddlQualityMoneyType += "<option value='Uncount'>รอคัดนับ</option>"
-      ddlQualityMoneyType += '</select>'
-      let ddlPackageMoneyType = ''
-      ddlPackageMoneyType =
-        "<select class='form-select form-select-sm' id='ddlPackageMoneyType" +
-        Id.value +
-        "'>"
-      ddlPackageMoneyType += "<option value='Bundle'>มัด</option>"
-      ddlPackageMoneyType += "<option value='Piece'>ฉบับ</option>"
-      ddlPackageMoneyType += "<option value='Coin'>เหรียญ</option>"
-      ddlPackageMoneyType += "<option value='Pack'>แพ็ค</option>"
-      ddlPackageMoneyType += '</select>'
-      let tbQuantity = ''
-      tbQuantity =
-        "<input type='text' id='tbQuantity" +
-        Id.value +
-        "' class='form-control text-right' style='width:10rem;'>"
-      let tbAmount = ''
-      tbAmount =
-        "<input type='text' id='tbAmount" +
-        Id.value +
-        "' class='form-control text-right' style='width:10rem;' readonly='readonly'>"
+      AddData.Id++
+      let ddlRole = ''
+      ddlRole = '<select class="form-select form-select-sm" id="Role_' + AddData.Id + '" style="width:15rem;">'
+      Role_.RoleData.forEach((value) => ddlRole += '<option value="' + value.RoleId + '">' + value.RoleName + '</option>')
+      ddlRole += '</select>'
+      let ddlUser = ''
+      ddlUser = '<select class="form-select form-select-sm" id="User_' + AddData.Id + '" style="width:15rem;">'
+      User_.UserData.forEach((value) => ddlUser += '<option value="' + value.id + '">' + value.name + '</option>')
+      ddlUser += '</select>'
       let my_object = {
-        Id: Id.value,
-        ddlMoneyType_: ddlMoneyType,
-        ddlQualityMoneyType_: ddlQualityMoneyType,
-        ddlQualityMoneyType_: ddlQualityMoneyType,
-        ddlPackageMoneyType_: ddlPackageMoneyType,
-        tbQuantity_: tbQuantity,
-        tbAmount_: tbAmount
+        Id: AddData.Id,
+        ddlRole_: ddlRole,
+        ddlUser_: ddlUser
       }
-      if (rowData.length > 1) {
-        if (
-          !isNaN(
-            document.getElementById('tbQuantity' + (Id.value - 1)).value
-          ) &&
-          document.getElementById('tbQuantity' + (Id.value - 1)).value != '' &&
-          !!document.getElementById('tbQuantity' + (Id.value - 1)).value
-        ) {
-          document.getElementById('tbQuantity' + (Id.value - 1)).value =
-            formatPrice_noFixed(
-              parseFloat(
-                document
-                  .getElementById('tbQuantity' + (Id.value - 1))
-                  .value.replaceAll(',', '')
-              )
-            )
-        }
-      }
-      rowData.push(my_object)
+      AddData.Data.push(my_object)
     }
+    const addEditItem = () => {
+      AddData.Id++
+      let ddlRole = ''
+      ddlRole = '<select class="form-select form-select-sm" id="Role_' + AddData.Id + '" style="width:15rem;">'
+      Role_.RoleData.forEach((value) => ddlRole += '<option value="' + value.RoleId + '">' + value.RoleName + '</option>')
+      ddlRole += '</select>'
+      let ddlUser = ''
+      ddlUser = '<select class="form-select form-select-sm" id="User_' + AddData.Id + '" style="width:15rem;">'
+      User_.UserData.forEach((value) => ddlUser += '<option value="' + value.id + '">' + value.name + '</option>')
+      ddlUser += '</select>'
+      let my_object = {
+        Id: AddData.Id,
+        ddlRole_: ddlRole,
+        ddlUser_: ddlUser
+      }
+      AddData.Data.push(my_object)
+    }    
     const deleteData = (index) => {
       console.log(index)
-      rowData.splice(index, 1)
+      AddData.Data.splice(index, 1)
     }
-    const editOrder = async () => {
+    const delete_app_proc_det = async (index,Id) => { 
+      if (confirm("คุณต้องการยกเลิกรายการอนุมัติ?")) {               
+        console.log('index: ',index)
+        console.log('Id: ',Id)
+        
+        const params = { Id: Id, user_id : user_id.value }
+              try {
+                await axios.get('/delete_app_proc_det', { params })
+                  .then((res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log(obj[0])
+                    // router.push('/listorder')
+                    //location.reload()
+                    // addEditItem
+                    editApproveData_.ApproveDataDet.splice(index, 1)
+                    AddData.Id--
+                  }, (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }).finally(() => {
+                    //
+                  });
+              }
+              catch (err) {
+                console.log(err)
+              }
+      }
+
+    }    
+    const chekChecked = (value) => {
+      let output = false
+      if (value === "1" )
+      {
+        output=true
+      }
+      else
+      {
+        output=false
+      }   
+      return output   
+    }
+    const chekSelecteValue = (value) => {
+      let output = false
+      if (value === "1" )
+      {
+        output=true
+      }      
+      else if(value === "0")
+      {
+        output=false
+      }
+      else if(value === true)
+      {
+        output=true
+      }
+      else if(value === false)
+      {
+        output=false
+      }      
+      return output   
+    }    
+    const editApproveProc = async () => {
+      console.log('editApproveData_.CashToCash  === true : ',(editApproveData_.CashToCash  === true) )
+      console.log('editApproveData_.CashToCash : ',(editApproveData_.CashToCash) )
       const formData = new FormData()
-      formData.append('orderId', OrderDataExisting.orderId)
-      formData.append('OrderCategory', OrderDataExisting.OrderCategory)
-      formData.append('OrderType', OrderDataExisting.OrderType)
-      formData.append('BankType', OrderDataExisting.BankType)
-      formData.append('JobDate', OrderDataExisting.JobDate)
-      formData.append('RefNo', OrderDataExisting.RefNo)
-      formData.append('RemarkNew', OrderDataExisting.Remark)
-      //formData.append('BranchOrigin', OrderDataExisting.BranchOrigin.branch_name)
-      formData.append('BranchOrigin', OrderDataExisting.BranchOriginText)
-      formData.append('BranchOrigin_code', OrderDataExisting.BranchOriginId)
-      formData.append('BranchDest', OrderDataExisting.BranchDestText)
-      formData.append('BranchDest_code', OrderDataExisting.BranchDestId)
-      formData.append('AllRowsDet', Id.value)
+      formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
-      for (var index = 0; index < Id.value; index++) {
-        if (document.getElementById('ddlMoneyTypeEdit' + (index + 1))) {
-          formData.append(
-            'ddlMoneyType' + (index + 1),
-            document.getElementById('ddlMoneyTypeEdit' + (index + 1)).value
-          )
-          formData.append(
-            'ddlQualityMoneyType' + (index + 1),
-            document.getElementById('ddlQualityMoneyTypeEdit' + (index + 1))
-              .value
-          )
-          formData.append(
-            'ddlPackageMoneyType' + (index + 1),
-            document.getElementById('ddlPackageMoneyTypeEdit' + (index + 1))
-              .value
-          )
-          formData.append(
-            'tbQuantity' + (index + 1),
-            document.getElementById('tbQuantityEdit' + (index + 1)).value
-          )
-          formData.append(
-            'tbAmount' + (index + 1),
-            document.getElementById('tbAmountEdit' + (index + 1)).value
-          )
-          // Id_++
+      formData.append('Id', editApproveData_.Id)
+      formData.append('ap_name', editApproveData_.Name)
+      formData.append('branchtocash',chekSelecteValue( editApproveData_.BranchToCash ) === true ? '1' : '0')
+      formData.append('cashtocash', chekSelecteValue( editApproveData_.CashToCash ) === true ? '1' : '0')
+      formData.append('bottocash', chekSelecteValue( editApproveData_.BOTToCash ) === true ? '1' : '0')
+      formData.append('branchtobranch', chekSelecteValue( editApproveData_.BranchToBranch ) === true ? '1' : '0')
+      formData.append('cashtobranch', chekSelecteValue( editApproveData_.CashToBranch ) === true ? '1' : '0')
+      formData.append('cashtobot', chekSelecteValue( editApproveData_.CashToBOT ) === true ? '1' : '0')
+      formData.append('AllRowsDet', AddData.Id)
+      for (var index = 0; index < AddData.Id; index++) { 
+        formData.append('ApproveProcDetId' + (index + 1), document.getElementById('ApproveDataDetId' + (index + 1)).value)
+        if (document.getElementById('ddlRoleEdit' + (index + 1))) {
+          let Role = document.getElementById('ddlRoleEdit' + (index + 1));
+          formData.append('ddlRoleEditId_' + (index + 1), Role.value)
+          formData.append('ddlRoleEditName_' + (index + 1), Role.options[Role.selectedIndex].text)
+        }
+        if (document.getElementById('ddlUserEdit' + (index + 1))) {
+          let User = document.getElementById('ddlUserEdit' + (index + 1));
+          formData.append('ddlUserEditId_' + (index + 1), User.value)
+          formData.append('ddlUserEditName_' + (index + 1), User.options[User.selectedIndex].text)
         }
       }
       // this.showmyModalNew = true
@@ -1720,10 +1153,10 @@ export default defineComponent({
       // console.log('edit data')
       formData.forEach((value, key) => (object[key] = value))
       var json = JSON.stringify(object)
-      console.log(json)
+      console.log('json: ',json)      
       try {
         await axios
-          .post('/edit_order', json)
+          .post('/edit_approveproc', json)
           .then(
             (res) => {
               // success callback
@@ -1733,45 +1166,46 @@ export default defineComponent({
             },
             (res) => {
               // error callback
-              error_editOrder.value = false
+              error_editApproveProc.value = false
               console.log(res.message)
-              message_editOrder.value = res.message
+              message_editApproveProc.value = res.message
             }
           )
           .finally(() => {
             //router.push('/listorder')
             location.reload()
           })
-        message_editOrder.value = 'Edit Done'
+        message_editApproveProc.value = 'Edit Done'
       } catch (err) {
         console.log(err)
-        message_editOrder.value = 'Something went wrong: ' + err
-        error_editOrder.value = true
+        message_editApproveProc.value = 'Something went wrong: ' + err
+        error_editApproveProc.value = true
       }
     }
-    return {
+    return { 
+      modal,
+      addEditItem,
+      openModal,
       searchTerm,
+      chekChecked,
       table,
       sidebarWidth,
       Data_,
       updateCheckedRows,
       tableLoadingFinish,
-      OrderDataExisting,
       getBranchAndCashEdit,
-      addEditItem,
-      editOrder,
+      // addEditItem,
+      // editOrder,
       formatPrice,
       router,
       format_date,
-      sendFile,
-      selectFile,
       file,
       error,
-      error_addManual,
       message,
-      message_addManual,
-      message_editOrder,
-      error_editOrder,
+      message_addApproveProc,
+      message_editApproveProc,
+      error_editApproveProc,
+      error_addApproveProc,
       OrderCategory,
       OrderType,
       BankType,
@@ -1785,16 +1219,21 @@ export default defineComponent({
       formatPrice_noFixed,
       addItem,
       deleteData,
-      addManualOrder,
-      NewOrder,
-      getBranchAndCash,
-      getBranchOrCashCen,
+      addApproveProc,
       calamount,
       rowData,
-      Id,
-      rowDataEdit,
+      // Id,
+      // rowDataEdit,
       calamount_orderEdit,
-      sendApprove,
+      Role_,
+      User_,
+      ApproveData_,
+      classFlexShow,
+      classFlexNone,
+      editApproveData_,
+      AddData,
+      editApproveProc,
+      delete_app_proc_det,
       checkstatus_send_to_checker //,NewOrderDet
     }
   }
@@ -1809,6 +1248,11 @@ export default defineComponent({
   border-color: #eaeded;
   vertical-align: middle;
 }
+
+/* .horizontal-scrollable>.row {
+  overflow-x: auto;
+  white-space: nowrap;
+} */
 
 /* #formFile::before {
     content: "Pick file";

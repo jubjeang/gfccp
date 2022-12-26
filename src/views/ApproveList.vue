@@ -420,7 +420,8 @@ export default defineComponent({
       const params = {
         user_id: user_id.value,
         CustomerID: CustomerID.value,
-        RoleId: RoleId.value
+        RoleId: RoleId.value,
+        approve_setting_id: localStorage.getItem('approve_setting_id')
       };
       // const res = await axios.get('/orderlist', { params })
       const res = await axios.get('/approvelist', { params })
@@ -433,13 +434,17 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-      // Data_.value
-      // Data_.value.forEach((item) => {
-      //   console.log("found: ", item)
-      //   console.log("found AutoID: ", item.AutoID)
-      // });
-      //fakeData.push(Data_.value)
-      //console.log('fakeData: ', fakeData)
+        // const res2 = await axios.get('/approvelist', { params })
+        // .then((res) => {
+        //   Data_.value = JSON.parse(JSON.stringify(res.data))
+        //   console.log("Data_: ", Data_)
+        //   //Data_
+        //   // console.log(fakeData)
+        // }, (res) => {
+        //   // error callback
+        //   console.log(res.data)
+        // })
+
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -529,19 +534,19 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             let sOutput = ''
-            if (row.cashstatus === '1') {
+            if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
             }
-            if (row.cashstatus === '2') {
+            if (row.cashstatus === 1) {
               sOutput = 'รอ Checker อนุมัติ'
             }
-            if (row.cashstatus === '3') {
+            if (row.cashstatus === 2) {
               sOutput = 'รอ Approve1 อนุมัติ'
             }
-            if (row.cashstatus === '4') {
+            if (row.cashstatus === 3) {
               sOutput = 'รอ Approve2 อนุมัติ'
             }
-            if (row.cashstatus === '5') {
+            if (row.cashstatus === 4) {
               sOutput = 'รอ ApproveN อนุมัติ'
             } 
             sOutput = '<span>' + sOutput + '</span>'
@@ -654,7 +659,8 @@ export default defineComponent({
             if (confirm("คุณต้องการอนุมัติรายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
-                Type_: RoleId.value
+                Type_: RoleId.value,
+                user_id: user_id.value
               };
               try {
                 await axios.get('/update_cashstatus_order', { params })
@@ -679,7 +685,6 @@ export default defineComponent({
 
             }
           });
-
         }
         if (element.classList.contains("editorder")) {
           element.addEventListener("click", async function () {
@@ -707,7 +712,7 @@ export default defineComponent({
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if(obj[0].cashstatus==='1')
+                  if(obj[0].cashstatus === null )
                   {
                     checkstatus_send_to_checker.value=true
                   }

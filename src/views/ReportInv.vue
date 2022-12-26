@@ -173,14 +173,7 @@ export default defineComponent({
       let year = null//date__.getFullYear();
       // if (date_) {
       date__ = moment(date_).format('DD/MM/YYYY')
-      // console.log('date__: ' + date__)
-      // console.log('moment: ' + moment(date_).format('DD-MM-YYYY') )
-      // day = moment(date_).format('DD');//date__.getDate();
-      // month = moment(date_).format('MM')//date__.getMonth() + 1;
-      // year = moment(date_).format('YYYY')//date__.getFullYear();
       return date__;
-      //return `${day}/${month}/${year}`;
-      // return `${year}-${month}-${day}`;
     }
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -208,7 +201,7 @@ export default defineComponent({
             table.isLoading = false;
             // table.totalRecordCount = 20;              
           }, 600)
-          table.rows = Data_;
+          table.rows = Data_;///*********************************************get new data async */
           table.isLoading = true
           //location.reload()
           //Data_

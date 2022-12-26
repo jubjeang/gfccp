@@ -101,12 +101,12 @@ export default {
         </li>        
       </ul>
     </transition>
-    <SidebarLink to="" icon="fa fa-check-square" class="nav-link align-middle" @click="toggleVisible3">
+    <SidebarLink to="" icon="fa fa-check-square" class="nav-link align-middle" @click="toggleVisible3"  v-show="RoleId === '7'">
       กระบวนการอนุมัติ</SidebarLink>
       <transition name="fade">
         <ul class=" nav flex-column ms-1" id="submenu3" v-show="isVisible3">
         <li class="w-100">
-          <SidebarLink to="/approveprocess" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu3">
+          <SidebarLink to="/approveprocess" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu3"  v-show="RoleId === '7'">
             ตั้งค่ารายการอนุมัติ
           </SidebarLink>          
         </li>
@@ -153,11 +153,9 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 .sidebar h1 {
   height: 2.5em;
 }
-
 .collapse-icon {
   position: absolute;
   bottom: 0;
@@ -165,7 +163,6 @@ export default {
   color: rgba(255, 255, 255, 0.7);
   transition: 0.2s linear;
 }
-
 .rotate-180 {
   transform: rotate(180deg);
   transition: 0.2s linear;
