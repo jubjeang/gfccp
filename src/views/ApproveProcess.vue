@@ -725,8 +725,8 @@ export default defineComponent({
             let value = this.dataset.id.split(':')
             const params = {
               Id: value[0]
-              ,version: value[1]
-              ,approve_setting_id: value[2]
+              ,version: value[2] 
+              ,approve_setting_id: value[1]
               ,
             }
             let Id_ = value[0]
