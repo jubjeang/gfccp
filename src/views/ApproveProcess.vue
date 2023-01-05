@@ -141,28 +141,28 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4">
-                      <input type="checkbox" id="BranchToCash" value="1" v-model="ApproveData_.BranchToCash"
+                      <input type="checkbox" id="BranchToCash" value="1" v-model="ApproveData_.BranchToCash" :disabled="isDisabled(ActitySelectd.branchtocash)"
                         class="form-check-input" />
                       <label for="BranchToCash" class="form-check-label">
                         สาขา-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-3">
-                      <input type="checkbox" id="CashToCash" value="1" v-model="ApproveData_.CashToCash"
+                      <input type="checkbox" id="CashToCash" value="1" v-model="ApproveData_.CashToCash" :disabled="isDisabled(ActitySelectd.cashtocash)"
                         class="form-check-input" />
                       <label for="CashToCash" class="form-check-label">
                         ศูนย์เงินสด-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
-                      <input type="checkbox" id="BOTToCash" value="1" v-model="ApproveData_.BOTToCash"
+                      <input type="checkbox" id="BOTToCash" value="1" v-model="ApproveData_.BOTToCash" :disabled="isDisabled(ActitySelectd.bottocash)"
                         class="form-check-input" />
                       <label for="BOTToCash" class="form-check-label">
                         ธปท-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
-                      <input type="checkbox" id="BranchToBranch" value="1" v-model="ApproveData_.BranchToBranch"
+                      <input type="checkbox" id="BranchToBranch" value="1" v-model="ApproveData_.BranchToBranch" :disabled="isDisabled(ActitySelectd.branchtobranch)"
                         class="form-check-input" />
                       <label for="BranchToBranch" class="form-check-label">
                         สาขา-สาขา
@@ -171,7 +171,7 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4">
-                      <input type="checkbox" id="CashToBranch" value="1" v-model="ApproveData_.CashToBranch"
+                      <input type="checkbox" id="CashToBranch" value="1" v-model="ApproveData_.CashToBranch" :disabled="isDisabled(ActitySelectd.cashtobranch)"
                         class="form-check-input" />
                       <label for="CashToBranch" class="form-check-label">
                         ศูนย์เงินสด-สาขา
@@ -179,7 +179,7 @@
                     </div>
                     <div class="col-2"></div>
                     <div class="col-4">
-                      <input type="checkbox" id="CashToBOT" value="1" v-model="ApproveData_.CashToBOT"
+                      <input type="checkbox" id="CashToBOT" value="1" v-model="ApproveData_.CashToBOT" :disabled="isDisabled(ActitySelectd.cashtobot)"
                         class="form-check-input" />
                       <label for="CashToBOT" class="form-check-label">
                         ศูนย์เงินสด-ธปท
@@ -334,8 +334,8 @@
                           <td scope="col">
                             <select class='form-select form-select-sm' style="width:15rem;" v-model.trim="editApproveData_.ApproveDataDet[index].userid
                             " v-bind="{ id: 'ddlUserEdit' + (index + 1) }">
-                              <option v-for="data in User_.UserData" :key="data.id" :value="data.id"
-                                :selected="(data.id === editApproveData_.ApproveDataDet[index].userid)">
+                              <option v-for="data in User_Edit.UserData" :key="data.id" :value="data.id"
+                                :selected="(data.id.trim === editApproveData_.ApproveDataDet[index].userid.trim)">
                                 {{data.name}}
                               </option>
                             </select>
@@ -439,6 +439,17 @@ export default defineComponent({
       User7: null,
       User8: null,
     })
+    const User_Edit = reactive({
+      UserData: [],
+      User1: null,
+      User2: null,
+      User3: null,
+      User4: null,
+      User5: null,
+      User6: null,
+      User7: null,
+      User8: null,
+    })    
     const ApproveData_ = reactive({
       Name: '',
       BranchToCash: '0',
@@ -460,20 +471,56 @@ export default defineComponent({
       version: 0,
       ApproveDataDet: [],
     })
-    function openModal() {
+    const ActitySelectd = reactive({
+      branchtocash: 0,
+      cashtocash: 0,
+      bottocash: 0,
+      branchtobranch: 0,
+      cashtobranch: 0,
+      cashtobot: 0,
+    })    
+    const openModal = async() => {
       // // Get the modal element using the ref
-      // const el = modal.value;
-      // // Show the modal with a fade transition
-      // el.classList.add('show');
-      // el.setAttribute('aria-modal', 'true');
-      // el.style.display = 'block';
-      // el.style.opacity = 0;
-      // requestAnimationFrame(() => {
-      //   el.style.transition = 'opacity 0.15s linear';
-      //   el.style.opacity = 1;
-      // });
       //document.getElementById("openModal_1").click();
-      console.log('aaaa');
+      ApproveData_.Name=''
+      ApproveData_.BranchToCash='0'
+      ApproveData_.CashToCash='0'
+      ApproveData_.CashToBranch='0'
+      ApproveData_.BOTToCash='0'
+      ApproveData_.BranchToBranch='0'
+      ApproveData_.CashToBOT='0'
+      AddData.Id = 0
+      AddData.Data = []
+      console.log('openModal')
+      const params = {
+              user_id: user_id.value
+             ,customerID: CustomerID.value             
+      }
+      const getActitySelectd = await axios.get('/getActitySelectd', { params })
+      .then((res) => { 
+        //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+        let output = null
+        output = res.data.output.split(':')
+        ActitySelectd.branchtocash = output[0]
+        ActitySelectd.cashtocash = output[1]
+        ActitySelectd.bottocash = output[2]
+        ActitySelectd.branchtobranch = output[3]
+        ActitySelectd.cashtobranch = output[4]
+        ActitySelectd.cashtobot = output[5]
+        console.log('res.data: ', res.data.output)
+      }, (res) => {
+        // error callback
+        console.log( res.data.message )
+        console.log( 'console.log( res.data.message ): ',console.log( res.data.message ) )
+        // ActitySelectd.branchtobranch
+      });   
+
+    }
+    const isDisabled =(value)=>{
+      let output = null
+      value === '1' ? output = true : output = false
+      console.log('value ',value)
+      return output
     }
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
@@ -553,6 +600,15 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
+      const getuserEdit = await axios.get('/getuserEdit', { params })
+      .then((res) => {
+        // success callback           
+        User_Edit.UserData = res.data //res.data[0].url_link          
+        console.log('User_Edit.UserData: ', User_Edit.UserData)
+      }, (res) => {
+        // error callback
+        console.log(res.data.message)
+      });        
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -588,15 +644,22 @@ export default defineComponent({
             //branchtocash,cashtobranch, cashtocash, bottocash, cashtobot, branchtobranch
             // let checkhave=0
             let pic_selected = "<i class='fa fa-check' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
-            let pic_unselect = "<i class='fa fa-times' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
-            let data = ''
-            row.branchtocash === '1' ? data += pic_selected + 'สาขา-ศูนย์เงินสด' : data += pic_unselect + 'สาขา-ศูนย์เงินสด'
-            row.cashtobranch === '1' ? data += pic_selected + 'ศูนย์เงินสด-สาขา' : data += pic_unselect + 'ศูนย์เงินสด-สาขา'
-            row.cashtocash === '1' ? data += pic_selected + 'ศูนย์เงินสด-ศูนย์เงินสด' : data += pic_unselect + 'ศูนย์เงินสด-ศูนย์เงินสด'
-            row.bottocash === '1' ? data += pic_selected + 'ธปท-ศูนย์เงินสด' : data += pic_unselect + 'ธปท-ศูนย์เงินสด'
-            row.cashtobot === '1' ? data += pic_selected + 'ศูนย์เงินสด-ธปท' : data += pic_unselect + 'ศูนย์เงินสด-ธปท'
-            row.branchtobranch === '1' ? data += pic_selected + 'สาขา-สาขา' : data += pic_unselect + 'สาขา-สาขา'
-            return (data)
+            //let pic_unselect = "<i class='fa fa-times' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
+            let data = '';
+            // row.branchtocash === '1' ? data += pic_selected + 'สาขา-ศูนย์เงินสด' : data += pic_unselect + 'สาขา-ศูนย์เงินสด'
+            // row.cashtobranch === '1' ? data += pic_selected + 'ศูนย์เงินสด-สาขา' : data += pic_unselect + 'ศูนย์เงินสด-สาขา'
+            // row.cashtocash === '1' ? data += pic_selected + 'ศูนย์เงินสด-ศูนย์เงินสด' : data += pic_unselect + 'ศูนย์เงินสด-ศูนย์เงินสด'
+            // row.bottocash === '1' ? data += pic_selected + 'ธปท-ศูนย์เงินสด' : data += pic_unselect + 'ธปท-ศูนย์เงินสด'
+            // row.cashtobot === '1' ? data += pic_selected + 'ศูนย์เงินสด-ธปท' : data += pic_unselect + 'ศูนย์เงินสด-ธปท'
+            // row.branchtobranch === '1' ? data += pic_selected + 'สาขา-สาขา' : data += pic_unselect + 'สาขา-สาขา'
+            //-------------------------
+            row.branchtocash === '1' && ( data += 'สาขา-ศูนย์เงินสด&nbsp;|&nbsp; ' )
+            row.cashtobranch === '1' && ( data += 'ศูนย์เงินสด-สาขา&nbsp;|&nbsp;' )
+            row.cashtocash === '1' && ( data += 'ศูนย์เงินสด-ศูนย์เงินสด&nbsp;|&nbsp;' )
+            row.bottocash === '1' && ( data += 'ธปท-ศูนย์เงินสด&nbsp;|&nbsp;' )
+            row.cashtobot === '1' && ( data += 'ศูนย์เงินสด-ธปท&nbsp;|&nbsp;' )
+            row.branchtobranch === '1' && ( data += 'สาขา-สาขา&nbsp;|&nbsp;' )
+            return ( data.substr(0, (data.length-1)-12 ) )
           }
         },
         {
@@ -1183,7 +1246,10 @@ export default defineComponent({
       }
     }
     return { 
+      ActitySelectd,
+      isDisabled,
       modal,
+      User_Edit,
       addEditItem,
       openModal,
       searchTerm,

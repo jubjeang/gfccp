@@ -115,7 +115,7 @@ export default {
         var object = {}
         formData.forEach((value, key) => object[key] = value)
         var json = JSON.stringify(object)
-        console.log(json)
+        console.log('json: ',json)
         try {
           await axios.post('/checkUser', json)
             .then((res) => {

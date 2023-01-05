@@ -797,7 +797,6 @@ export default defineComponent({
       //       console.log(res.data.message)
       //     });
       // }
-
     }
     const getBranchAndCashEdit = () => {
       OrderDataExisting.DataBranchToOrigin = []
@@ -2091,7 +2090,7 @@ export default defineComponent({
         await axios.post('/edit_order', json)
           .then((res) => {
             // success callback
-            console.log(res.data)
+            console.log( res.data )
             // this.$refs.ClosemyModalNew.click();
             document.getElementById("ClosemyModalEidt").click();
           }, (res) => {
