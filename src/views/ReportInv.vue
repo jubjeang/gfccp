@@ -182,10 +182,11 @@ export default defineComponent({
     });
     let Data_ = ref([]);//[]
     const getData = async () => {
-      // console.log('DownloadReports')
+      console.log('CustomerID.value: ',CustomerID.value)
       const params = {
         CCT_Data: Criteria.CCT_Data,
-        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
+        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
+        customerID: CustomerID.value
       };
       //alert( params.CCT_Data+" : "+params.JobDate);
       const res = await axios.get('/getdownloadreports', { params })
@@ -196,7 +197,6 @@ export default defineComponent({
           console.log('Data_.value[0].jobdate : ', Data_.value[0].jobdate)
           // table.isLoading = true;
           // table.rows = Data_
-
           setTimeout(() => {
             table.isLoading = false;
             // table.totalRecordCount = 20;              
@@ -208,22 +208,22 @@ export default defineComponent({
           // console.log(fakeData)
         }, (res) => {
           // error callback
-          console.log(res.data)
+          console.log(res.data.message)
         })
     }
     //-------for download templete
-    const DownloadReports = async () => {
-      const params = {
-        CCT_Data: Criteria.CCT_Data,
-        JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
-      };
-      const res = await axios.get('/getdownloadreports', { params })
-        .then((res) => {
-          console.log("res.data: ", res.data)
-        }, (res) => {
-          console.log(res.data)
-        })
-    }
+    // const DownloadReports = async () => {
+    //   const params = {
+    //     CCT_Data: Criteria.CCT_Data,
+    //     JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
+    //   };
+    //   const res = await axios.get('/getdownloadreports', { params })
+    //     .then((res) => {
+    //       console.log("res.data: ", res.data)
+    //     }, (res) => {
+    //       console.log(res.data)
+    //     })
+    // }
     /**
      * Get server data request
      */
@@ -304,12 +304,20 @@ export default defineComponent({
           width: "10%",
           isKey: true,
           display: function (row) {
-            return (
+            if(row.files.length > 0)
+              {
+                return (               
               '<button  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</button>&nbsp;' +
-              '|&nbsp;<button data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</button>'
+              '|&nbsp;<button data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</button>'            
               // '<a  target="blank" data-id="' + row.jobdate + '" class="text-decoration-none text-gray fs-12 is-rows-el download_execel" style="cursor: pointer">Excel</a>&nbsp;' +
               // '|&nbsp;<a data-id="' + row.jobdate + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el download_csv" style="cursor: pointer">CVS</a>'
             );
+              }
+              else
+              {
+                return ('')
+              }
+
           },
         },
       ],
@@ -343,13 +351,12 @@ export default defineComponent({
             // console.log(this.dataset.id + " name-btn click!!")            
             let formData = new FormData()
             formData.append('CCT_Data', Criteria.CCT_Data)
-            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
+            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))           
+            //customerID: CustomerID.value
             formData.append('responseType', 'blob')
             formData.append('data_', this.dataset.id)
-
+            formData.append('customerID', CustomerID.value)
             //formData.forEach(element => console.log(element))
-
-
            // {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }
             var object = {}
             formData.forEach((value, key) => object[key] = value)
@@ -383,6 +390,7 @@ export default defineComponent({
             formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
             formData.append('responseType', 'blob')
             formData.append('data_', this.dataset.id)
+            formData.append('customerID', CustomerID.value)
             //formData.forEach(element => console.log(element))
             var object = {}
             formData.forEach((value, key) => object[key] = value)
@@ -408,8 +416,6 @@ export default defineComponent({
               )
               document.body.appendChild(link)
               link.click()
-
-
             }); // Please catch me!
           });
         }
@@ -439,7 +445,8 @@ export default defineComponent({
       //, DownloadLink_
       , formatPrice, router, format_date, file, error, error_addManual
       , getData, formatdate_show, formatPrice_noFixed, DownloadLink
-      , message, message_addManual, message_editOrder, error_editOrder, DownloadReports
+      , message, message_addManual, message_editOrder, error_editOrder
+      //, DownloadReports
       , OrderCategory, OrderType, BankType, JobDate, Criteria
       , user_id, department_id, position_id, CustomerID, gfc_cct
       , rowData, Id, rowDataEdit, checkstatus_send_to_checker//,NewOrderDet

@@ -14,13 +14,15 @@ export default {
     const isVisible = ref(props.probs_isVisible)
     const isVisible2 = ref(props.probs_isVisible2)
     const isVisible3 = ref(props.probs_isVisible3)
+    const approve_level = ref(localStorage.getItem('approve_level'))
     const RoleId = ref(localStorage.getItem('RoleId'))
+    
     // const department_id = ref(localStorage.getItem('department_id'))
     // const position_id = ref(localStorage.getItem('position_id'))
     // const CustomerID = ref(localStorage.getItem('CustomerID'))
     // const gfc_cct = ref(localStorage.getItem('gfc_cct'))
     // const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
-    console.log( RoleId.value )
+    console.log( approve_level.value )
 
     const router = useRouter() 
     const toggleVisible =()=>{
@@ -35,7 +37,7 @@ export default {
     const gotoMainPage =()=>{
       router.push('/main')
     }
-    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,isVisible3,router,toggleVisible,toggleVisible2,toggleVisible3,gotoMainPage,RoleId }
+    return { collapsed, toggleSidebar, sidebarWidth,isVisible,isVisible2,isVisible3,router,toggleVisible,toggleVisible2,toggleVisible3,gotoMainPage,approve_level,RoleId }
    },
 }
 </script>
@@ -58,7 +60,7 @@ export default {
     <transition name="fade">
       <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
         <li class="w-100">
-          <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId === '1'">
+          <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="approve_level === '1'">
             รายการคำสั่ง</SidebarLink>
           <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
@@ -68,7 +70,7 @@ export default {
         </a> -->
         </li>
         <li>
-          <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="RoleId !== '1' ">รายการอนุมัติ
+          <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="approve_level !== '1' ">รายการอนุมัติ
           </SidebarLink>
         </li>                
       </ul>

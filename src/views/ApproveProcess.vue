@@ -197,14 +197,14 @@
                     <div class="col-12 overflow-scroll">
                       <table class="table">
                         <tr v-for="data, index in AddData.Data" :key="data.Id" class="d-flex flex-row p-1 align-middle">
-                          <td><span @click="deleteData(index)" style="cursor: pointer">
+                          <td class="col-1"><span @click="deleteData(index)" style="cursor: pointer">
                               <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>Role:
                           </td>
-                          <td scope="col" v-html="data.ddlRole_"></td>
-                          <td>
-                            User:
+                          <td class="col-4" style="display: flex; align-items: top; justify-content: top;" scope="col" v-html="data.ddlRole_"></td>
+                          <td class="col-1">
+                            ชื่อผู้ใช้:
                           </td>
-                          <td scope="col" v-html="data.ddlUser_"></td>
+                          <td scope="col" class="col-4" v-html="data.ddlUser_"></td>
                         </tr>
                       </table>
                     </div>
@@ -1085,7 +1085,7 @@ export default defineComponent({
     const addItem = () => {
       AddData.Id++
       let ddlRole = ''
-      ddlRole = '<select class="form-select form-select-sm" id="Role_' + AddData.Id + '" style="width:15rem;">'
+      ddlRole = AddData.Id + '&nbsp;&nbsp;<select class="form-select form-select-sm" id="Role_' + AddData.Id + '" style="width:15rem;">'
       Role_.RoleData.forEach((value) => ddlRole += '<option value="' + value.RoleId + '">' + value.RoleName + '</option>')
       ddlRole += '</select>'
       let ddlUser = ''
@@ -1119,6 +1119,7 @@ export default defineComponent({
     const deleteData = (index) => {
       console.log(index)
       AddData.Data.splice(index, 1)
+      AddData.Id--
     }
     const delete_app_proc_det = async (index,Id) => { 
       if (confirm("คุณต้องการยกเลิกรายการอนุมัติ?")) {               

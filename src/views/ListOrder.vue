@@ -28,7 +28,7 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label>SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -39,6 +39,125 @@
     </div>
     <!-- </div> -->
   </div>
+  <!--<div class="modal fade" id="ModalAdvSearch">--------ModalAdvSearch--->
+    <div class="container py-2">
+    <div class="py-2">
+      <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
+        <div class="modal fade" id="ModalAdvSearch">
+          <div class="modal-dialog  modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Advance Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">Advance Search</h5>
+                    </div>
+                  </div>
+                  <!-- <div class="row p-2" v-if="message_addManual"> -->
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual
+                      }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2 pe-0">
+                      เลขที่รายการ
+                    </div>
+                    <div class="col-sm-2 ps-0 d-flex">
+                      <input type="text" id="adv_order_no" class="form-control" style="width:10rem;" v-model="AdvSearch.order_no">
+                    </div>
+                    <div class="col-sm-2">
+                      รหัสสาขา
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;" v-model="AdvSearch.branch_code">
+                    </div>
+                    <div class="col-sm-2">
+                      ศูนย์เงินสด
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="adv_cct" style="width:10rem;"      
+                        v-model="AdvSearch.cct">
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2  pe-0">
+                      วันที่ปฏิบัติงาน
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control"
+                        style="width:10rem;" input-format="dd/MM/yyyy" />
+                    </div>
+                    <div class="col-sm-2">
+                      วันสร้างคำสั่ง
+                    </div>
+                    <div class="col-sm-2">
+                      <datepicker v-model="AdvSearch.order_date" id="adv_order_date" class="form-control"
+                        style="width:10rem;" input-format="dd/MM/yyyy" />
+                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                    </div>
+                    <div class="col-sm-2">
+                      ประเภทคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;" 
+                        v-model="AdvSearch.order_type">
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">
+                      สถานะคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"      
+                        v-model="AdvSearch.order_status">
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-2">
+                      ผู้อนุมัติ
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" id="adv_approver" class="form-control" style="width:10rem;" v-model="AdvSearch.approver">
+                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                    </div>
+                    <div class="col-sm-2">
+                      ผู้สร้างคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <input type="text" id="adv_creator" class="form-control" style="width:10rem;" v-model="AdvSearch.creator">
+                    </div>
+                  </div>                  
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">ค้นหา</button><button
+                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
+                    style="width:4rem; height:2rem;" id="CloseModalAdvSearch">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>  
   <!--<div class="modal fade" id="myModal">-----------Upload File---->
   <div class="container py-2">
     <div class="py-2">
@@ -367,7 +486,6 @@
                       &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
                         v-model="OrderDataExisting.BankType">
                         <!--OrderDataExisting.BankType = obj[0].customerID-->
-
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
                           :selected="data.customerID === OrderDataExisting.BankType">{{
                               data.customer_name
@@ -386,6 +504,7 @@
                       <select class="form-select form-select-sm" name="OrderCategoryEdit" style="width:15rem;"
                         v-model="OrderDataExisting.OrderCategory">
                         <option value="BankBranch">Bank Branch</option>
+                        <option value="BOT">BOT</option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
@@ -604,6 +723,17 @@ export default defineComponent({
     const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
     const router = useRouter()
     const rowData = reactive([])
+    const AdvSearch = reactive({
+      order_no: "",
+      branch_code:"",
+      cct:"",
+      jobdate: new Date(),
+      order_date: new Date(),
+      order_type:"",
+      order_status:"",
+      approver:"",
+      creator:""
+    })
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
       OrderTypeNew: "",
@@ -618,6 +748,14 @@ export default defineComponent({
       BankTypeData: [],
     })
     const Id = ref(0)
+    const ActitySelectd = reactive({
+      branchtocash: 0,
+      cashtocash: 0,
+      bottocash: 0,
+      branchtobranch: 0,
+      cashtobranch: 0,
+      cashtobot: 0,
+    })
     // const rowDataEdit = ref([])
     // const NewOrderDet = reactive([])
     const OrderDataExisting = reactive({
@@ -671,10 +809,9 @@ export default defineComponent({
               console.log( 'NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest )
               //Withdraw
               document.getElementById("BranchDest").disabled = false
-              // document.getElementById("BranchOrigin").removeEventListener('click','getBranchForCash');
+              
             }            
-            // console.log(NewOrder.DataBranchToOrigin)
-            // console.log(NewOrder.DataBranchToDest)
+            
           }, (res) => {
             // error callback
             console.log(res.data)
@@ -702,7 +839,6 @@ export default defineComponent({
         }
       }
 
-      //document.getElementById("BranchDest").disabled = true
     }
     const getOrderType = async (e) => {
       getBranchAndCash()
@@ -711,34 +847,72 @@ export default defineComponent({
       NewOrder.DataBranchToOrigin = []
       NewOrder.DataBranchToDest = []
       console.log("NewOrder.OrderCategoryNew: ", NewOrder.OrderCategoryNew)
-      if (NewOrder.OrderTypeNew === "Withdraw") {
+      console.log("NewOrder.OrderTypeNew: ", NewOrder.OrderTypeNew)
+      console.log("ActitySelectd.branchtocash: ", ActitySelectd.branchtocash)      
+      if (NewOrder.OrderTypeNew === "Withdraw")//------------------Withdraw
+      {
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-          getBranchOrCashCen('bot', 'BranchOrigin')
-          getBranchOrCashCen('cct', 'BranchDest')
-          document.getElementById("BranchOrigin").disabled = false
-          document.getElementById("BranchDest").disabled = false
-        }
+          if(ActitySelectd.bottocash==='0'){
+              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
+              document.getElementById("OrderTypeNew").value = ""
+              NewOrder.OrderTypeNew = "";
+            }
+            else{
+              getBranchOrCashCen('bot', 'BranchOrigin','Add')
+              getBranchOrCashCen('cct', 'BranchDest','Add')
+              document.getElementById("BranchOrigin").disabled = false
+              document.getElementById("BranchDest").disabled = false
+            }
+        }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
-          getBranchOrCashCen('cashtobranch', 'BranchOrigin')
-          document.getElementById("BranchOrigin").disabled = false
-          document.getElementById("BranchDest").disabled = true
+            if(ActitySelectd.cashtobranch==='0')
+            {
+              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
+              document.getElementById("OrderTypeNew").value = ""
+              NewOrder.OrderTypeNew = "";
+            }
+            else
+            {
+              getBranchOrCashCen('cashtobranch', 'BranchOrigin','Add')
+              document.getElementById("BranchOrigin").disabled = false
+              document.getElementById("BranchDest").disabled = true
+            }
         }
       }
-      if (NewOrder.OrderTypeNew === "Deposit") {
+      if (NewOrder.OrderTypeNew === "Deposit") {//------------------Deposit
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-          getBranchOrCashCen('cct', 'BranchOrigin')
-          getBranchOrCashCen('bot', 'BranchDest')
-          document.getElementById("BranchOrigin").disabled = false
-          document.getElementById("BranchDest").disabled = false
+            if(ActitySelectd.cashtobot==='0'){
+
+              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
+              document.getElementById("OrderTypeNew").value = ""
+              NewOrder.OrderTypeNew = "";
+            }
+            else{
+              getBranchOrCashCen('cct', 'BranchOrigin','Add')
+              getBranchOrCashCen('bot', 'BranchDest','Add')
+              document.getElementById("BranchOrigin").disabled = false
+              document.getElementById("BranchDest").disabled = false
+            }
+        }//------------------End BOT
+        if (NewOrder.OrderCategoryNew === "BankBranch") { 
+            if(ActitySelectd.branchtocash==='0'){ 
+              alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
+              document.getElementById("OrderTypeNew").value = ""
+              NewOrder.OrderTypeNew = "";
+            }
+            else{
+              getBranchOrCashCen('cashtobranch', 'BranchDest','Add')
+              document.getElementById("BranchOrigin").disabled = true
+              document.getElementById("BranchDest").disabled = false
+            }                    
         }
-        if (NewOrder.OrderCategoryNew === "BankBranch") {
-          getBranchOrCashCen('cashtobranch', 'BranchDest')
-          document.getElementById("BranchOrigin").disabled = true
-          document.getElementById("BranchDest").disabled = false          
-        }
+      }
+      if (NewOrder.OrderTypeNew === "") {
+        document.getElementById("BranchOrigin").disabled = false
+        document.getElementById("BranchDest").disabled = false  
       }
     }
-    const getBranchOrCashCen = async (servicetype, ddltype) => { 
+    const getBranchOrCashCen = async (servicetype, ddltype,gettype) => { 
       let type_ =''
       type_ = NewOrder.OrderCategoryNew
       const params = {
@@ -746,13 +920,23 @@ export default defineComponent({
         user_id: user_id.value,
         type_: type_
       };
+
       if ( (servicetype === 'cct') || (servicetype === 'cashtobranch') ) {
         await axios.get('/getcashcenterdata', { params })
           .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
+            // success callback 
+            if( gettype === 'Add' )
+            {
+              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data 
+              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+            }
+            if( gettype === 'Edit' )
+            {
+              ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
+            }   
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -762,10 +946,19 @@ export default defineComponent({
       if (servicetype === 'bot') {
         await axios.get('/getbotbranch', { params })
           .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
+            // success callback  
+            if( gettype === 'Add' )
+            {
+              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+            }
+            if( gettype === 'Edit' )
+            {
+              ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data 
+              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
+            }      
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -775,40 +968,51 @@ export default defineComponent({
       if (servicetype === 'branchtocash') {
         await axios.get('/getbranchdata', { params })
           .then((res) => {
-            // success callback           
-            ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-            console.log(NewOrder.DataBranchToOrigin)
-            console.log(NewOrder.DataBranchToDest)
+            // success callback    
+            if( gettype === 'Add' )
+            {
+              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+            }
+            if( gettype === 'Edit' )
+            {
+              ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
+            }
           }, (res) => {
             // error callback
             console.log(res.data.message)
           });
       }     
       //--------------------------------------------
-      // if (servicetype === 'cashtobranch') {
-      //   await axios.get('/getcashcenterdata', { params })
-      //     .then((res) => {
-      //       // success callback
-      //       ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-      //       console.log(NewOrder.DataBranchToOrigin)
-      //       console.log(NewOrder.DataBranchToDest)
-      //     }, (res) => {
-      //       // error callback
-      //       console.log(res.data.message)
-      //     });
-      // }
     }
     const getBranchAndCashEdit = () => {
       OrderDataExisting.DataBranchToOrigin = []
       OrderDataExisting.DataBranchToDest = []
-      if (OrderDataExisting.OrderType === "Withdraw") {
-        getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-        getBranchOrCashCenEdit('branchtocash', 'BranchDest')
+      if (OrderDataExisting.OrderCategory === 'BankBranch')
+      {
+          if (OrderDataExisting.OrderType === "Withdraw") {
+            getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
+            getBranchOrCashCenEdit('branchtocash', 'BranchDest')            
+          }
+          if (OrderDataExisting.OrderType === "Deposit") {
+            getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
+            getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
+          }
       }
-      if (OrderDataExisting.OrderType === "Deposit") {
-        getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-        getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-      }
+      if (OrderDataExisting.OrderCategory === 'BOT')
+      {
+        if (OrderDataExisting.OrderType === "Withdraw") { 
+              getBranchOrCashCen('bot', 'BranchOrigin','Edit')
+              getBranchOrCashCen('cct', 'BranchDest','Edit')
+          }
+          if (OrderDataExisting.OrderType === "Deposit") { 
+              getBranchOrCashCen('cct', 'BranchOrigin','Edit')
+              getBranchOrCashCen('bot', 'BranchDest','Edit')            
+          }
+      }      
     }
     const getBranchOrCashCenEdit = async (servicetype, ddltype) => { 
       let type_ =''
@@ -821,9 +1025,7 @@ export default defineComponent({
       if (servicetype === 'branchtocash') {
         // const params = {
         //   CustomerID: CustomerID.value
-        // };
-
-        
+        // };        
         await axios.get('/getbranchdata', { params })
           .then((res) => {
             // success callback           
@@ -1010,8 +1212,15 @@ export default defineComponent({
       //const fakeData = [];      
       const params = {
         user_id: user_id.value,
-        CustomerID: CustomerID.value
+        CustomerID: CustomerID.value,
+        customerID: CustomerID.value,
+        approve_setting_id: localStorage.getItem('approve_setting_id'),
+        approve_setting_version: localStorage.getItem('approve_setting_version')
       };
+      // const params2 = {
+      //   approve_setting_id: localStorage.getItem('approve_setting_id'),
+      //   approve_setting_version: localStorage.getItem('approve_setting_version')
+      //   };
       const res = await axios.get('/orderlist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
@@ -1027,7 +1236,6 @@ export default defineComponent({
         user_id: user_id.value
       };
       console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
-      // await axios.get('/getbranchdata', { params })
       await axios.get('/getbanktypedata', { params })
         .then((res) => {
           // success callback     
@@ -1052,7 +1260,26 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-
+        console.log('approve_setting_id: ',localStorage.getItem('approve_setting_id'))
+        console.log('approve_setting_version: ',localStorage.getItem('approve_setting_version'))
+        const getactivity_authen = await axios.get('/getactivity_authen', { params })
+      .then((res) => { 
+        //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+        let output = null
+        output = res.data
+        ActitySelectd.branchtocash = output.branchtocash
+        ActitySelectd.cashtocash = output.cashtocash
+        ActitySelectd.bottocash = output.bottocash
+        ActitySelectd.branchtobranch = output.branchtobranch
+        ActitySelectd.cashtobranch = output.cashtobranch
+        ActitySelectd.cashtobot = output.cashtobot
+        console.log('ActitySelectd.cashtobot: ', ActitySelectd.cashtobot)
+      }, (res) => {
+        // error callback
+        console.log( res.data.message )
+        console.log( 'console.log( res.data.message ): ',console.log( res.data.message ) )
+        // ActitySelectd.branchtobranch
+      }); 
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1327,6 +1554,7 @@ export default defineComponent({
                   else {
                     checkstatus_send_to_checker.value = false
                   }
+                  console.log("OrderDataExisting.OrderCategory: ", obj[0].order_category)
                   console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
                   console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)                  
                   getBranchAndCashEdit()
@@ -1806,7 +2034,6 @@ export default defineComponent({
       const params = {
         user_id: user_id.value
       };
-      // await axios.get('/getbranchdata', { params })
       await axios.get('/getbanktypedata', { params })
         .then((res) => {
           // success callback       
@@ -1837,6 +2064,7 @@ export default defineComponent({
       formData.append('roleid', 0)
       formData.append('CustomerID', CustomerID.value)
       formData.append('approve_setting_id', localStorage.getItem('approve_setting_id') )
+      formData.append('approve_setting_version', localStorage.getItem('approve_setting_version') )      
       for (var index = 0; index < Id.value; index++) {
         if (document.getElementById("ddlMoneyType" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
@@ -2111,6 +2339,7 @@ export default defineComponent({
       }
     }
     return {
+      AdvSearch,ActitySelectd,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
       , OrderDataExisting, getBranchAndCashEdit, DownloadLink_
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
