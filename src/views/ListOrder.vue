@@ -15,7 +15,7 @@
       <div class="col d-flex justify-content-end">
         <!-- <a :href="DownloadLink" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
           <h4>ตัวอย่างไฟล์อัพโหลด</h4> -->
-          <a @click="DownloadLink_" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
+        <a @click="DownloadLink_" target="blank" class="text-decoration-none text-gray fs-5" style="cursor: pointer">
           <h4>ตัวอย่างไฟล์อัพโหลด</h4>
         </a>&nbsp;<h4>|
         </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
@@ -28,7 +28,8 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance
+              Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -40,9 +41,9 @@
     <!-- </div> -->
   </div>
   <!--<div class="modal fade" id="ModalAdvSearch">--------ModalAdvSearch--->
-    <div class="container py-2">
+  <div class="container py-2">
     <div class="py-2">
-      <form @submit.prevent="addManualOrder" enctype="multipart/form-data" id="form1">
+      <form id="form3">
         <div class="modal fade" id="ModalAdvSearch">
           <div class="modal-dialog  modal-xl">
             <div class="modal-content">
@@ -60,7 +61,8 @@
                   <!-- <div class="row p-2" v-if="message_addManual"> -->
                   <div class="row p-2" v-if="message_addManual">
                     <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
+                        message_addManual
                       }}</div>
                     </div>
                   </div>
@@ -69,23 +71,27 @@
                       เลขที่รายการ
                     </div>
                     <div class="col-sm-2 ps-0 d-flex">
-                      <input type="text" id="adv_order_no" class="form-control" style="width:10rem;" v-model="AdvSearch.order_no">
+                      <input type="text" id="adv_order_no" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.order_no">
                     </div>
                     <div class="col-sm-2">
                       รหัสสาขา
                     </div>
                     <div class="col-sm-2">
-                      <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;" v-model="AdvSearch.branch_code">
+                      <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.branch_code">
                     </div>
                     <div class="col-sm-2">
                       ศูนย์เงินสด
                     </div>
                     <div class="col-sm-2 ps-0">
-                      <select class="form-select form-select-sm" id="adv_cct" style="width:10rem;"      
+                      <select class="form-select form-select-sm" id="BranchOrigin" style="width:10rem;"
                         v-model="AdvSearch.cct">
-                        <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option v-for="data in AdvSearch.DataBranchToOrigin" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                            data.branch_name
+                          }}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -94,8 +100,8 @@
                       วันที่ปฏิบัติงาน
                     </div>
                     <div class="col-sm-2 ps-0">
-                      <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control"
-                        style="width:10rem;" input-format="dd/MM/yyyy" />
+                      <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control" style="width:10rem;"
+                        input-format="dd/MM/yyyy" />
                     </div>
                     <div class="col-sm-2">
                       วันสร้างคำสั่ง
@@ -109,7 +115,7 @@
                       ประเภทคำสั่ง
                     </div>
                     <div class="col-sm-2 ps-0">
-                      <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;" 
+                      <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;"
                         v-model="AdvSearch.order_type">
                         <option value="">กรุณาเลือก</option>
                         <option value="Withdraw">ถอน</option>
@@ -122,34 +128,36 @@
                       สถานะคำสั่ง
                     </div>
                     <div class="col-sm-2 ps-0">
-                      <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"      
+                      <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"
                         v-model="AdvSearch.order_status">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="wait">รออนุมัติ</option>
+                        <option value="aprove">อนุมัติ</option>
                       </select>
                     </div>
                     <div class="col-sm-2">
                       ผู้อนุมัติ
                     </div>
                     <div class="col-sm-2">
-                      <input type="text" id="adv_approver" class="form-control" style="width:10rem;" v-model="AdvSearch.approver">
+                      <input type="text" id="adv_approver" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.approver">
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                     <div class="col-sm-2">
                       ผู้สร้างคำสั่ง
                     </div>
                     <div class="col-sm-2 ps-0">
-                      <input type="text" id="adv_creator" class="form-control" style="width:10rem;" v-model="AdvSearch.creator">
+                      <input type="text" id="adv_creator" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.creator">
                     </div>
-                  </div>                  
+                  </div>
                 </div>
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width:4rem; height:2rem;">ค้นหา</button><button
-                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="CloseModalAdvSearch"
-                    style="width:4rem; height:2rem;" id="CloseModalAdvSearch">ยกเลิก</button>
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;" @click="AdvSearch_"
+                    type="button">ค้นหา</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
+                    ref="CloseModalAdvSearch" style="width:4rem; height:2rem;" id="CloseModalAdvSearch">ยกเลิก</button>
                 </div>
               </div>
             </div>
@@ -157,7 +165,7 @@
         </div>
       </form>
     </div>
-  </div>  
+  </div>
   <!--<div class="modal fade" id="myModal">-----------Upload File---->
   <div class="container py-2">
     <div class="py-2">
@@ -210,7 +218,7 @@
                         <option selected="selected" value="">ธนาคาร</option>
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
                           :selected="data.customerID === BankType">{{
-                              data.customer_name
+                            data.customer_name
                           }}
                         </option>
                         <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
@@ -269,8 +277,7 @@
               <div class="modal-footer pt-0 justify-content-right">
                 <div class="align-top pt-1 d-flex justify-content-right">
                   <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button>
-                  <button
-                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModal"
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModal"
                     style="width:4rem; height:2rem;" id="ClosemyModal">ยกเลิก</button>
                 </div>
               </div>
@@ -300,7 +307,8 @@
                   </div>
                   <div class="row p-2" v-if="message_addManual">
                     <div class="col">
-                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{ message_addManual
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
+                        message_addManual
                       }}</div>
                     </div>
                   </div>
@@ -315,7 +323,7 @@
                         <option selected="selected" value="">ธนาคาร</option>
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
                           :selected="data.customerID === BankType">{{
-                              data.customer_name
+                            data.customer_name
                           }}
                         </option>
                       </select>
@@ -366,15 +374,20 @@
                       ต้นทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin"
+                      <!-- <multiselect v-model="selectedValue" :options="options" :searchable="false"
+                        :clear-on-select="true" @input="updateValue" /> -->
+                      <!-- <Multiselect v-model="selectedOption" label="name" :searchable="true" :option="NewOrder.DataBranchToOrigin"
+                                  class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin" style="width:15rem; height: 2rem;"
+                        @click="getBranchForCash(NewOrder.BranchOrigin, 'BranchDest')" /> -->
+                      <!-- <select class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin"
                         style="width:15rem;" v-model="NewOrder.BranchOrigin"
                         @click="getBranchForCash(NewOrder.BranchOrigin, 'BranchDest')">
                         <option v-for="data in NewOrder.DataBranchToOrigin" :key="data.branch_id"
-                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                              data.branch_name
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{ 
+                            data.branch_name
                           }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                     <div class="col">
                       ปลายทาง
@@ -384,7 +397,7 @@
                         v-model="NewOrder.BranchDest" @click="getBranchForCash(NewOrder.BranchDest, 'BranchOrigin')">
                         <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
-                              data.branch_name
+                            data.branch_name
                           }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
@@ -488,7 +501,7 @@
                         <!--OrderDataExisting.BankType = obj[0].customerID-->
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
                           :selected="data.customerID === OrderDataExisting.BankType">{{
-                              data.customer_name
+                            data.customer_name
                           }}
                         </option>
                         <!-- <option selected="selected" value="">ธนาคาร</option> 
@@ -546,7 +559,7 @@
                         v-model="OrderDataExisting.BranchOriginId">
                         <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
                           :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchOriginId">{{
-                              data.branch_name
+                            data.branch_name
                           }}
                         </option>
                       </select>
@@ -559,7 +572,7 @@
                         v-model="OrderDataExisting.BranchDestId">
                         <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
                           :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchDestId">{{
-                              data.branch_name
+                            data.branch_name
                           }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
@@ -695,6 +708,7 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
+
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
@@ -725,14 +739,16 @@ export default defineComponent({
     const rowData = reactive([])
     const AdvSearch = reactive({
       order_no: "",
-      branch_code:"",
-      cct:"",
-      jobdate: new Date(),
-      order_date: new Date(),
-      order_type:"",
-      order_status:"",
-      approver:"",
-      creator:""
+      branch_code: "",
+      cct: "",
+      jobdate: "",
+      order_date: "",
+      //order_date: new Date(),
+      order_type: "",
+      order_status: "",
+      approver: "",
+      creator: "",
+      DataBranchToOrigin: []
     })
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
@@ -776,65 +792,62 @@ export default defineComponent({
       Cashstatus: "",
       BankTypeData: [],
     });
-    const DownloadLink_ = async () =>{
-       await axios({ 
+    const DownloadLink_ = async () => {
+      await axios({
         url: "http://localhost:4000/img/template.zip",
         method: "GET",
-        responseType:"blob"
-      }).then((res)=>{
+        responseType: "blob"
+      }).then((res) => {
         let fileurl = window.URL.createObjectURL(new Blob([res.data]))
         let filelink = document.createElement('a')
         filelink.href = fileurl
-        filelink.setAttribute('download','template.zip')
+        filelink.setAttribute('download', 'template.zip')
         document.body.appendChild(filelink)
         filelink.click()
       })
     }
-    const getBranchForCash = async (value,ddltype) => { 
-      console.log('value: ',value.branch_name,'branch: ',ddltype)
+    const getBranchForCash = async (value, ddltype) => {
+      console.log('value: ', value.branch_name, 'branch: ', ddltype)
       const params = {
         CustomerID: CustomerID.value,
         CCT: value.branch_name,
         user_id: user_id.value
       };
-      if(NewOrder.OrderCategoryNew !=="BOT")
-      {
-        if (NewOrder.OrderTypeNew === "Withdraw") { 
+      if (NewOrder.OrderCategoryNew !== "BOT") {
+        if (NewOrder.OrderTypeNew === "Withdraw") {
           await axios.get('/getbranchforcash', { params })
-          .then((res) => {
-            // success callback           
-            if( ddltype === 'BranchDest' )
-            { 
-              NewOrder.DataBranchToDest = res.data
-              console.log( 'NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest )
-              //Withdraw
-              document.getElementById("BranchDest").disabled = false
-              
-            }            
-            
-          }, (res) => {
-            // error callback
-            console.log(res.data)
-          });
+            .then((res) => {
+              // success callback           
+              if (ddltype === 'BranchDest') {
+                NewOrder.DataBranchToDest = res.data
+                console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
+                //Withdraw
+                document.getElementById("BranchDest").disabled = false
+
+              }
+
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            });
 
         }
-        if (NewOrder.OrderTypeNew === "Deposit") { 
+        if (NewOrder.OrderTypeNew === "Deposit") {
           await axios.get('/getbranchforcash', { params })
-          .then((res) => {
-            // success callback           
-            if( ddltype === 'BranchOrigin' )
-            {
-              NewOrder.DataBranchToOrigin = res.data
-              console.log( 'NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin )
-              document.getElementById("BranchOrigin").disabled = false
-              // document.getElementById("BranchDest").removeEventListener('click','getBranchForCash');
-            } 
-            // console.log(NewOrder.DataBranchToOrigin)
-            // console.log(NewOrder.DataBranchToDest)
-          }, (res) => {
-            // error callback
-            console.log(res.data)
-          });
+            .then((res) => {
+              // success callback           
+              if (ddltype === 'BranchOrigin') {
+                NewOrder.DataBranchToOrigin = res.data
+                console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)
+                document.getElementById("BranchOrigin").disabled = false
+                // document.getElementById("BranchDest").removeEventListener('click','getBranchForCash');
+              }
+              // console.log(NewOrder.DataBranchToOrigin)
+              // console.log(NewOrder.DataBranchToDest)
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            });
 
         }
       }
@@ -848,72 +861,70 @@ export default defineComponent({
       NewOrder.DataBranchToDest = []
       console.log("NewOrder.OrderCategoryNew: ", NewOrder.OrderCategoryNew)
       console.log("NewOrder.OrderTypeNew: ", NewOrder.OrderTypeNew)
-      console.log("ActitySelectd.branchtocash: ", ActitySelectd.branchtocash)      
+      console.log("ActitySelectd.branchtocash: ", ActitySelectd.branchtocash)
       if (NewOrder.OrderTypeNew === "Withdraw")//------------------Withdraw
       {
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-          if(ActitySelectd.bottocash==='0'){
-              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
-              document.getElementById("OrderTypeNew").value = ""
-              NewOrder.OrderTypeNew = "";
-            }
-            else{
-              getBranchOrCashCen('bot', 'BranchOrigin','Add')
-              getBranchOrCashCen('cct', 'BranchDest','Add')
-              document.getElementById("BranchOrigin").disabled = false
-              document.getElementById("BranchDest").disabled = false
-            }
+          if (ActitySelectd.bottocash === '0') {
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
+            document.getElementById("OrderTypeNew").value = ""
+            NewOrder.OrderTypeNew = "";
+          }
+          else {
+            getBranchOrCashCen('bot', 'BranchOrigin', 'Add')
+            getBranchOrCashCen('cct', 'BranchDest', 'Add')
+            document.getElementById("BranchOrigin").disabled = false
+            document.getElementById("BranchDest").disabled = false
+          }
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
-            if(ActitySelectd.cashtobranch==='0')
-            {
-              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
-              document.getElementById("OrderTypeNew").value = ""
-              NewOrder.OrderTypeNew = "";
-            }
-            else
-            {
-              getBranchOrCashCen('cashtobranch', 'BranchOrigin','Add')
-              document.getElementById("BranchOrigin").disabled = false
-              document.getElementById("BranchDest").disabled = true
-            }
+          if (ActitySelectd.cashtobranch === '0') {
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
+            document.getElementById("OrderTypeNew").value = ""
+            NewOrder.OrderTypeNew = "";
+          }
+          else {
+            getBranchOrCashCen('cashtobranch', 'BranchOrigin', 'Add')
+            document.getElementById("BranchOrigin").disabled = false
+            document.getElementById("BranchDest").disabled = true
+          }
         }
       }
       if (NewOrder.OrderTypeNew === "Deposit") {//------------------Deposit
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
-            if(ActitySelectd.cashtobot==='0'){
+          if (ActitySelectd.cashtobot === '0') {
 
-              alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
-              document.getElementById("OrderTypeNew").value = ""
-              NewOrder.OrderTypeNew = "";
-            }
-            else{
-              getBranchOrCashCen('cct', 'BranchOrigin','Add')
-              getBranchOrCashCen('bot', 'BranchDest','Add')
-              document.getElementById("BranchOrigin").disabled = false
-              document.getElementById("BranchDest").disabled = false
-            }
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
+            document.getElementById("OrderTypeNew").value = ""
+            NewOrder.OrderTypeNew = "";
+          }
+          else {
+            getBranchOrCashCen('cct', 'BranchOrigin', 'Add')
+            getBranchOrCashCen('bot', 'BranchDest', 'Add')
+            document.getElementById("BranchOrigin").disabled = false
+            document.getElementById("BranchDest").disabled = false
+          }
         }//------------------End BOT
-        if (NewOrder.OrderCategoryNew === "BankBranch") { 
-            if(ActitySelectd.branchtocash==='0'){ 
-              alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
-              document.getElementById("OrderTypeNew").value = ""
-              NewOrder.OrderTypeNew = "";
-            }
-            else{
-              getBranchOrCashCen('cashtobranch', 'BranchDest','Add')
-              document.getElementById("BranchOrigin").disabled = true
-              document.getElementById("BranchDest").disabled = false
-            }                    
+        if (NewOrder.OrderCategoryNew === "BankBranch") {
+          if (ActitySelectd.branchtocash === '0') {
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
+            document.getElementById("OrderTypeNew").value = ""
+            NewOrder.OrderTypeNew = "";
+          }
+          else {
+            getBranchOrCashCen('cashtobranch', 'BranchDest', 'Add')
+            document.getElementById("BranchOrigin").disabled = true
+            document.getElementById("BranchDest").disabled = false
+          }
         }
       }
       if (NewOrder.OrderTypeNew === "") {
         document.getElementById("BranchOrigin").disabled = false
-        document.getElementById("BranchDest").disabled = false  
+        document.getElementById("BranchDest").disabled = false
       }
     }
-    const getBranchOrCashCen = async (servicetype, ddltype,gettype) => { 
-      let type_ =''
+    const getBranchOrCashCen = async (servicetype, ddltype, gettype) => {
+      let type_ = ''
       type_ = NewOrder.OrderCategoryNew
       const params = {
         CustomerID: CustomerID.value,
@@ -921,22 +932,20 @@ export default defineComponent({
         type_: type_
       };
 
-      if ( (servicetype === 'cct') || (servicetype === 'cashtobranch') ) {
+      if ((servicetype === 'cct') || (servicetype === 'cashtobranch')) {
         await axios.get('/getcashcenterdata', { params })
           .then((res) => {
             // success callback 
-            if( gettype === 'Add' )
-            {
-              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data 
-              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
-              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+            if (gettype === 'Add') {
+              ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+              console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
             }
-            if( gettype === 'Edit' )
-            {
+            if (gettype === 'Edit') {
               ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
-              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
-            }   
+              console.log('OrderDataExisting.DataBranchToOrigin: ', OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ', OrderDataExisting.DataBranchToDest)
+            }
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -947,18 +956,16 @@ export default defineComponent({
         await axios.get('/getbotbranch', { params })
           .then((res) => {
             // success callback  
-            if( gettype === 'Add' )
-            {
+            if (gettype === 'Add') {
               ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
-              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+              console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
             }
-            if( gettype === 'Edit' )
-            {
-              ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data 
-              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
-              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
-            }      
+            if (gettype === 'Edit') {
+              ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
+              console.log('OrderDataExisting.DataBranchToOrigin: ', OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ', OrderDataExisting.DataBranchToDest)
+            }
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -969,53 +976,49 @@ export default defineComponent({
         await axios.get('/getbranchdata', { params })
           .then((res) => {
             // success callback    
-            if( gettype === 'Add' )
-            {
+            if (gettype === 'Add') {
               ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-              console.log('NewOrder.DataBranchToOrigin: ',NewOrder.DataBranchToOrigin)
-              console.log('NewOrder.DataBranchToDest: ',NewOrder.DataBranchToDest)
+              console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)
+              console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
             }
-            if( gettype === 'Edit' )
-            {
+            if (gettype === 'Edit') {
               ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-              console.log('OrderDataExisting.DataBranchToOrigin: ',OrderDataExisting.DataBranchToOrigin)
-              console.log('OrderDataExisting.DataBranchToDest: ',OrderDataExisting.DataBranchToDest)
+              console.log('OrderDataExisting.DataBranchToOrigin: ', OrderDataExisting.DataBranchToOrigin)
+              console.log('OrderDataExisting.DataBranchToDest: ', OrderDataExisting.DataBranchToDest)
             }
           }, (res) => {
             // error callback
             console.log(res.data.message)
           });
-      }     
+      }
       //--------------------------------------------
     }
     const getBranchAndCashEdit = () => {
       OrderDataExisting.DataBranchToOrigin = []
       OrderDataExisting.DataBranchToDest = []
-      if (OrderDataExisting.OrderCategory === 'BankBranch')
-      {
-          if (OrderDataExisting.OrderType === "Withdraw") {
-            getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
-            getBranchOrCashCenEdit('branchtocash', 'BranchDest')            
-          }
-          if (OrderDataExisting.OrderType === "Deposit") {
-            getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
-            getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
-          }
+      if (OrderDataExisting.OrderCategory === 'BankBranch') {
+        if (OrderDataExisting.OrderType === "Withdraw") {
+          getBranchOrCashCenEdit('cashtobranch', 'BranchOrigin')
+          getBranchOrCashCenEdit('branchtocash', 'BranchDest')
+        }
+        if (OrderDataExisting.OrderType === "Deposit") {
+          getBranchOrCashCenEdit('branchtocash', 'BranchOrigin')
+          getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
+        }
       }
-      if (OrderDataExisting.OrderCategory === 'BOT')
-      {
-        if (OrderDataExisting.OrderType === "Withdraw") { 
-              getBranchOrCashCen('bot', 'BranchOrigin','Edit')
-              getBranchOrCashCen('cct', 'BranchDest','Edit')
-          }
-          if (OrderDataExisting.OrderType === "Deposit") { 
-              getBranchOrCashCen('cct', 'BranchOrigin','Edit')
-              getBranchOrCashCen('bot', 'BranchDest','Edit')            
-          }
-      }      
+      if (OrderDataExisting.OrderCategory === 'BOT') {
+        if (OrderDataExisting.OrderType === "Withdraw") {
+          getBranchOrCashCen('bot', 'BranchOrigin', 'Edit')
+          getBranchOrCashCen('cct', 'BranchDest', 'Edit')
+        }
+        if (OrderDataExisting.OrderType === "Deposit") {
+          getBranchOrCashCen('cct', 'BranchOrigin', 'Edit')
+          getBranchOrCashCen('bot', 'BranchDest', 'Edit')
+        }
+      }
     }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => { 
-      let type_ =''
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
+      let type_ = ''
       type_ = NewOrder.OrderCategoryNew
       const params = {
         CustomerID: CustomerID.value,
@@ -1070,8 +1073,8 @@ export default defineComponent({
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
-      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id') )
-      formData.append( 'roleid', 0 )
+      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id'))
+      formData.append('roleid', 0)
       console.log('sendFile')
       formData.forEach(element => console.log(element))
       try {
@@ -1105,7 +1108,7 @@ export default defineComponent({
           user_id: user_id.value
 
         };
-        console.log('params: ',params)
+        console.log('params: ', params)
         try {
           await axios.get('/update_cashstatus_order', { params })
             .then((res) => {
@@ -1134,19 +1137,7 @@ export default defineComponent({
       error.value = false
       message.value = ""
     }
-    //onMounted(async () => {
-    // const res = await axios.get('/orderlist')
-    //   .then((res) => {
-    //     Data_.value = JSON.parse(JSON.stringify(res.data))
-    //     console.log("Data_: ",Data_)
-    //     //Data_
-    //     // console.log(fakeData)
-    //   }, (res) => {
-    //     // error callback
-    //     console.log(res.data)
-    //   })
-    //file.value =  ref_file.value.        
-    //})    
+
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -1208,7 +1199,7 @@ export default defineComponent({
     /**
      * Get server data request
      */
-    const myRequest = async ( keyword ) => {
+    const myRequest = async (keyword) => {
       //const fakeData = [];      
       const params = {
         user_id: user_id.value,
@@ -1231,6 +1222,14 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
+      await axios.get('/getcashcenterdata', { params })
+        .then((res) => {
+          // success callback
+          AdvSearch.DataBranchToOrigin = res.data
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
       //-------------get banktypedata
       const params_banktypedata = {
         user_id: user_id.value
@@ -1260,26 +1259,26 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-        console.log('approve_setting_id: ',localStorage.getItem('approve_setting_id'))
-        console.log('approve_setting_version: ',localStorage.getItem('approve_setting_version'))
-        const getactivity_authen = await axios.get('/getactivity_authen', { params })
-      .then((res) => { 
-        //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
-        let output = null
-        output = res.data
-        ActitySelectd.branchtocash = output.branchtocash
-        ActitySelectd.cashtocash = output.cashtocash
-        ActitySelectd.bottocash = output.bottocash
-        ActitySelectd.branchtobranch = output.branchtobranch
-        ActitySelectd.cashtobranch = output.cashtobranch
-        ActitySelectd.cashtobot = output.cashtobot
-        console.log('ActitySelectd.cashtobot: ', ActitySelectd.cashtobot)
-      }, (res) => {
-        // error callback
-        console.log( res.data.message )
-        console.log( 'console.log( res.data.message ): ',console.log( res.data.message ) )
-        // ActitySelectd.branchtobranch
-      }); 
+      console.log('approve_setting_id: ', localStorage.getItem('approve_setting_id'))
+      console.log('approve_setting_version: ', localStorage.getItem('approve_setting_version'))
+      const getactivity_authen = await axios.get('/getactivity_authen', { params })
+        .then((res) => {
+          //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+          let output = null
+          output = res.data
+          ActitySelectd.branchtocash = output.branchtocash
+          ActitySelectd.cashtocash = output.cashtocash
+          ActitySelectd.bottocash = output.bottocash
+          ActitySelectd.branchtobranch = output.branchtobranch
+          ActitySelectd.cashtobranch = output.cashtobranch
+          ActitySelectd.cashtobot = output.cashtobot
+          console.log('ActitySelectd.cashtobot: ', ActitySelectd.cashtobot)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1450,7 +1449,7 @@ export default defineComponent({
         });
       }
     );
-    const tableLoadingFinish = ( elements ) => {
+    const tableLoadingFinish = (elements) => {
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
         if (element.classList.contains("name-btn")) {
@@ -1556,7 +1555,7 @@ export default defineComponent({
                   }
                   console.log("OrderDataExisting.OrderCategory: ", obj[0].order_category)
                   console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)                  
+                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -2019,6 +2018,57 @@ export default defineComponent({
         // }
       });
     };
+    const AdvSearch_ = () => {
+      //searchdata.value = Data_.value
+      searchdata.value = Data_.value.filter(item => {
+        let cctname
+        let jobdate
+        (AdvSearch.cct !== null) && (AdvSearch.cct !== "") ? cctname = AdvSearch.cct.branch_name.toLowerCase() : cctname = ""
+        AdvSearch.jobdate !== '' ? jobdate = (moment(AdvSearch.jobdate).format('YYYY-MM-DD')).replace("-", "").replace("-", "") : jobdate = ''
+
+        return (
+          (!AdvSearch.order_no || item.order_no === Number(AdvSearch.order_no)) &&
+          (!AdvSearch.branch_code || item.branchorigin_code.toLowerCase().includes(AdvSearch.branch_code.toString().toLowerCase())) &&
+          (!AdvSearch.branch_code || item.branchdest_code.toLowerCase().includes(AdvSearch.branch_code.toString().toLowerCase())) &&
+          (!AdvSearch.cct || item.branchorigin_name.toLowerCase().includes(cctname)) &&
+          (!AdvSearch.cct || item.branchdest_name.toLowerCase().includes(cctname)) &&
+          (!AdvSearch.jobdate || item.order_date === jobdate) &&
+          (!AdvSearch.order_date || item.order_date === AdvSearch.order_date) &&
+          (!AdvSearch.order_type || item.servicetype.toLowerCase().includes(AdvSearch.order_type.toLowerCase())) &&
+          (!AdvSearch.order_status || item.input_type.toLowerCase().includes(AdvSearch.order_status.toLowerCase()))
+        );
+      });
+      data.rows = searchdata.value
+      document.getElementById('CloseModalAdvSearch').click();//************************** */
+      //------------------------------------------------
+      // searchdata.value =  computed(() => {
+      //   return Data_.value.filter(item => {
+      //     return (
+      //       ( !AdvSearch.order_no || item.order_no ===  Number( AdvSearch.order_no )  ) && 
+      //       ( !AdvSearch.branch_code || item.branchorigin_code.toLowerCase().includes( AdvSearch.branch_code.toLowerCase() ) ) && 
+      //       ( !AdvSearch.cct || item.branchorigin_name.toLowerCase().includes( AdvSearch.cct.toLowerCase() ) ) && 
+      //       ( !AdvSearch.cct || item.branchorigin_name.toLowerCase().includes( AdvSearch.cct.toLowerCase() ) ) && 
+      //       ( !AdvSearch.jobdate || item.order_date === AdvSearch.jobdate ) && 
+      //       ( !AdvSearch.order_date || item.order_date === AdvSearch.order_date ) && 
+      //       ( !AdvSearch.order_type || item.servicetype.toLowerCase().includes( AdvSearch.order_type.toLowerCase() ) ) && 
+      //       ( !AdvSearch.order_status || item.input_type.toLowerCase().includes( AdvSearch.order_status.toLowerCase() ) )       
+      //     );
+      //   });
+      // });
+      // data.rows = searchdata.value
+      // document.getElementById('CloseModalAdvSearch').click();//************************** */
+      //-------------------------------------------------------------------------------------------------------------
+      // console.log('typeof data: ', typeof (data))
+      // document.getElementById('CloseModalAdvSearch').click();//************************** */
+      // if (AdvSearch.order_no !== null && AdvSearch.order_no !== "") {
+      //   searchdata.value = Data_.value.filter(item => item.AutoID == AdvSearch.order_no) 
+      //   console.log('data: ', searchdata.value)
+      //   data.rows = searchdata.value         
+      // }
+      // else {
+      //   data.rows = newData;
+      // }
+    }
     // Get data on first rendering
     myRequest("").then((newData) => {
       data.rows = newData;
@@ -2063,8 +2113,8 @@ export default defineComponent({
       formData.append('user_id', user_id.value)
       formData.append('roleid', 0)
       formData.append('CustomerID', CustomerID.value)
-      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id') )
-      formData.append('approve_setting_version', localStorage.getItem('approve_setting_version') )      
+      formData.append('approve_setting_id', localStorage.getItem('approve_setting_id'))
+      formData.append('approve_setting_version', localStorage.getItem('approve_setting_version'))
       for (var index = 0; index < Id.value; index++) {
         if (document.getElementById("ddlMoneyType" + (index + 1))) {
           formData.append('ddlMoneyType' + (index + 1), document.getElementById("ddlMoneyType" + (index + 1)).value)
@@ -2080,7 +2130,7 @@ export default defineComponent({
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
       console.log('add data')
-      console.log('json: ',json)
+      console.log('json: ', json)
       try {
         await axios.post('/manual_add_order', json)
           .then((res) => {
@@ -2318,7 +2368,7 @@ export default defineComponent({
         await axios.post('/edit_order', json)
           .then((res) => {
             // success callback
-            console.log( res.data )
+            console.log(res.data)
             // this.$refs.ClosemyModalNew.click();
             document.getElementById("ClosemyModalEidt").click();
           }, (res) => {
@@ -2339,21 +2389,22 @@ export default defineComponent({
       }
     }
     return {
-      AdvSearch,ActitySelectd,
+       AdvSearch_, AdvSearch, ActitySelectd,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
       , OrderDataExisting, getBranchAndCashEdit, DownloadLink_
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
       , OrderCategory, OrderType, BankType, JobDate, getBranchForCash
       , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder, DownloadLink
       , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id
-      //, rowDataEdit
-      , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData//,NewOrderDet
+      , calamount_orderEdit, sendApprove, checkstatus_send_to_checker, getBankTypeData//,NewOrderDet, rowDataEdit
     }
   },
 })
 </script>
 <style scoped lang="css">
 @import '../assets/css/style.css';
+
+
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
   background-color: #5D6D7E;
   border-color: #EAEDED;

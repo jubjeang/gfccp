@@ -2,7 +2,6 @@
   <Header />
   <Sidebar :probs_isVisible=false :probs_isVisible2=true :probs_isVisible3=false />
   <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">
-    <!-- <div class="container p-0" style="width: 200rem"> -->
     <div class="row p-1" style="width: 100%">
       <div class="col text-left">&nbsp;</div>
     </div>
@@ -32,7 +31,7 @@
           <option selected="selected" value="">ศูนย์เงินสด</option>
           <option v-for="data in Criteria.CCT_DataSource" :key="data.gfc_cct" :value="data.gfc_cct"
             :selected="data.gfc_cct === Criteria.CCT_Data">{{
-                data.gfc_cct
+              data.gfc_cct
             }}
           </option>
         </select>
@@ -56,7 +55,8 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label>SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance
+              Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -65,8 +65,74 @@
         </table-lite>
       </div>
     </div>
-    <!-- </div> -->
+    <!--<div class="modal fade" id="ModalAdvSearch">--------ModalAdvSearch--->
+    <div class="container py-2">
+      <div class="py-2">
+        <form id="form3">
+          <div class="modal fade" id="ModalAdvSearch">
+            <div class="modal-dialog  modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Advance Search</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="container">
+                    <div class="row p-2">
+                      <div class="col ps-4 d-flex">
+                        <h5 class="ps-1 text-gray">Advance Search</h5>
+                      </div>
+                    </div>
+                    <!-- <div class="row p-2" v-if="message_addManual"> -->
+                    <div class="row p-2" v-if="message_addManual">
+                      <div class="col">
+                        <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
+                          message_addManual
+                        }}</div>
+                      </div>
+                    </div>
+                    <div class="row p-2">
+                      <div class="col-sm-2 pe-0">
+                        วันที่ปฏิบัติงาน
+                      </div>
+                      <div class="col-sm-2 ps-0">
+                        <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control"
+                          style="width:10rem;" input-format="dd/MM/yyyy" />
+                      </div>
+                      <div class="col-sm-2">
+                        ศูนย์เงินสด
+                      </div>
+                      <div class="col-sm-2 ps-0">
+                        <select class="form-select form-select-sm" id="BranchOrigin" style="width:10rem;"
+                          v-model="AdvSearch.cct">
+                          <option v-for="data in AdvSearch.DataBranchToOrigin" :key="data.branch_id"
+                            v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                              data.branch_name
+                            }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer pt-0 justify-content-center">
+                  <div class="align-top pt-1 d-flex justify-content-center">
+                    <button class="btn btn-primary" style="width:4rem; height:2rem;" @click="AdvSearch_"
+                      type="button">ค้นหา</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
+                      ref="CloseModalAdvSearch" style="width:4rem; height:2rem;"
+                      id="CloseModalAdvSearch">ยกเลิก</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--End <div class="modal fade" id="ModalAdvSearch">--------End ModalAdvSearch--->
+    <!-- <div :style="{ 'margin-left': sidebarWidth }" class="row ps-4">  -->
   </div>
+  <Loading v-if="loading" />
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
@@ -79,12 +145,13 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
-import FileSaver from 'file-saver'
+import { FileSaver } from 'file-saver'
+import Loading from "../components/Loading.vue";
 // Vue.prototype.axios = axios;
 
 export default defineComponent({
   name: 'ReportInv',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, FileSaver },
+  components: { Loading, TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, FileSaver },
   setup() {
     //upload data
     const file = ref(File | null)//ref('')
@@ -105,8 +172,25 @@ export default defineComponent({
     const position_id = ref(localStorage.getItem('position_id'))
     const CustomerID = ref(localStorage.getItem('CustomerID'))
     const gfc_cct = ref(localStorage.getItem('gfc_cct'))
+    const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
+    const RoleId = ref(localStorage.getItem('RoleId'))
     const router = useRouter()
+    const searchdata = ref([]);
+    const loading = ref(false)
     const rowData = reactive([])
+    const AdvSearch = reactive({
+      order_no: "",
+      branch_code: "",
+      cct: "",
+      jobdate: "",
+      order_date: "",
+      //order_date: new Date(),
+      order_type: "",
+      order_status: "",
+      approver: "",
+      creator: "",
+      DataBranchToOrigin: []
+    })
     const Criteria = reactive({
       CCT_Data: "",
       JobDate: new Date(),
@@ -182,48 +266,31 @@ export default defineComponent({
     });
     let Data_ = ref([]);//[]
     const getData = async () => {
-      console.log('CustomerID.value: ',CustomerID.value)
+      console.log('CustomerID.value: ', CustomerID.value)
       const params = {
         CCT_Data: Criteria.CCT_Data,
         JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
         customerID: CustomerID.value
       };
-      //alert( params.CCT_Data+" : "+params.JobDate);
+      loading.value = true;
       const res = await axios.get('/getdownloadreports', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("res.data: ", res.data)
           console.log('Data_', Data_)
           console.log('Data_.value[0].jobdate : ', Data_.value[0].jobdate)
-          // table.isLoading = true;
-          // table.rows = Data_
           setTimeout(() => {
             table.isLoading = false;
             // table.totalRecordCount = 20;              
-          }, 600)
-          table.rows = Data_;///*********************************************get new data async */
+          }, 500)
+          loading.value = false;
+          data.rows = Data_.value;///*********************************************get new data async */
           table.isLoading = true
-          //location.reload()
-          //Data_
-          // console.log(fakeData)
         }, (res) => {
           // error callback
           console.log(res.data.message)
         })
     }
-    //-------for download templete
-    // const DownloadReports = async () => {
-    //   const params = {
-    //     CCT_Data: Criteria.CCT_Data,
-    //     JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD')
-    //   };
-    //   const res = await axios.get('/getdownloadreports', { params })
-    //     .then((res) => {
-    //       console.log("res.data: ", res.data)
-    //     }, (res) => {
-    //       console.log(res.data)
-    //     })
-    // }
     /**
      * Get server data request
      */
@@ -234,7 +301,11 @@ export default defineComponent({
         CCT_Data: Criteria.CCT_Data,
         JobDate: moment(Criteria.JobDate).format('YYYY-MM-DD'),
         user_id: user_id.value,
-        CustomerID: CustomerID.value
+        CustomerID: CustomerID.value,
+        customerID: CustomerID.value,
+        RoleId: RoleId.value,
+        approve_setting_id: localStorage.getItem('approve_setting_id'),
+        approve_setting_version: localStorage.getItem('approve_setting_version')
       };
       const res = await axios.get('/getcct_data', { params })
         .then((res) => {
@@ -245,6 +316,14 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
+      await axios.get('/getcashcenterdata', { params })
+        .then((res) => {
+          // success callback
+          AdvSearch.DataBranchToOrigin = res.data
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -304,19 +383,17 @@ export default defineComponent({
           width: "10%",
           isKey: true,
           display: function (row) {
-            if(row.files.length > 0)
-              {
-                return (               
-              '<button  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</button>&nbsp;' +
-              '|&nbsp;<button data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</button>'            
-              // '<a  target="blank" data-id="' + row.jobdate + '" class="text-decoration-none text-gray fs-12 is-rows-el download_execel" style="cursor: pointer">Excel</a>&nbsp;' +
-              // '|&nbsp;<a data-id="' + row.jobdate + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el download_csv" style="cursor: pointer">CVS</a>'
-            );
-              }
-              else
-              {
-                return ('')
-              }
+            if (row.files.length > 0) {
+              return (
+                '<button  target="blank" data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-excel" style="cursor: pointer">Excel</button>&nbsp;' +
+                '|&nbsp;<button data-id="' + row.jobdate + ':' + row.cctname + ':' + row.typeofreport + ':' + row.files[0].file1 + ':' + row.files[1].file2 + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el name-btn-download-csv" style="cursor: pointer">CSV</button>'
+                // '<a  target="blank" data-id="' + row.jobdate + '" class="text-decoration-none text-gray fs-12 is-rows-el download_execel" style="cursor: pointer">Excel</a>&nbsp;' +
+                // '|&nbsp;<a data-id="' + row.jobdate + '" target="blank" class="text-decoration-none text-gray fs-12 is-rows-el download_csv" style="cursor: pointer">CVS</a>'
+              );
+            }
+            else {
+              return ('')
+            }
 
           },
         },
@@ -351,23 +428,22 @@ export default defineComponent({
             // console.log(this.dataset.id + " name-btn click!!")            
             let formData = new FormData()
             formData.append('CCT_Data', Criteria.CCT_Data)
-            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))           
+            formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
             //customerID: CustomerID.value
             formData.append('responseType', 'blob')
             formData.append('data_', this.dataset.id)
             formData.append('customerID', CustomerID.value)
             //formData.forEach(element => console.log(element))
-           // {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }
+            // {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }
             var object = {}
             formData.forEach((value, key) => object[key] = value)
             var json = JSON.stringify(object)
-            console.log(json)
-
+            //console.log('json: ',json)
             let data_ = this.dataset.id.split(':')
-            await axios.post('/generateCSV', json, {responseType: 'json',charset: 'utf-8', responseEncodig: 'utf-8' }).then(function (response) {
-              console.log('response.data: ',response.data)
+            await axios.post('/generateCSV', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
+              console.log('response.data: ', response.data)
               //var csvContent = "ทดสอบ\n";
-              const url = URL.createObjectURL( new Blob([response.data], { type: "data:text/csv;charset=utf-8" }) )
+              const url = URL.createObjectURL(new Blob([response.data], { type: 'text/csv; charset=Windows-874' }))
               //const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csv;charset=utf-8,' + encodeURIComponent(response.data) })
               //const url = URL.createObjectURL(new Blob([response.data]), { type: 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent) })
               const link = document.createElement('a')
@@ -383,32 +459,23 @@ export default defineComponent({
           });
         }
         if (element.classList.contains("name-btn-download-excel")) {
-          element.addEventListener("click", async function () {  
+          element.addEventListener("click", async function () {
             // console.log(this.dataset.id + " name-btn click!!")            
             let formData = new FormData()
             formData.append('CCT_Data', Criteria.CCT_Data)
             formData.append('JobDate', moment(Criteria.JobDate).format('YYYY-MM-DD'))
+            //customerID: CustomerID.value
             formData.append('responseType', 'blob')
             formData.append('data_', this.dataset.id)
             formData.append('customerID', CustomerID.value)
-            //formData.forEach(element => console.log(element))
             var object = {}
             formData.forEach((value, key) => object[key] = value)
             var json = JSON.stringify(object)
-            console.log(json)
+            //console.log('json: ',json)
             let data_ = this.dataset.id.split(':')
-            await axios.post('/generateXLS', json).then(function (response) {
-    //           let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    // const fileName = `file.xlsx`;
-    // let file = new File([blob], fileName);
-    // let fileUrl = URL.createObjectURL(file);
-//https://www.appsloveworld.com/nodejs/100/520/how-to-download-excel-files-generated-by-node-nodeangular
-              console.log('response.data: ',response.data)              
-              const url = URL.createObjectURL(new Blob([response.data], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        }), { type: 'application/vnd.ms-excel;charset=utf-8;' })
+            await axios.post('/generateXLS', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
+              const url = URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.ms-excel;charset=Windows-874' }))
               const link = document.createElement('a')
-              // link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(response.data));
               link.href = url
               link.setAttribute(
                 'download',
@@ -417,11 +484,29 @@ export default defineComponent({
               document.body.appendChild(link)
               link.click()
             }); // Please catch me!
-          });
+          });//element.addEventListener("click", async function () {  
         }
 
       });
     };
+    //advance search
+    const AdvSearch_ = () => {
+      searchdata.value = Data_.value
+      let cctname
+      let jobdate
+      (AdvSearch.cct !== null) && (AdvSearch.cct !== "") ? cctname = AdvSearch.cct.branch_name.toLowerCase() : cctname = ""
+      AdvSearch.jobdate !== '' ? jobdate = (moment(AdvSearch.jobdate).format('YYYY-MM-DD')).replace("-", "").replace("-", "") : jobdate = ''
+      let searchdata_ = searchdata.value.filter(
+        (x) =>
+          x.cctname.toLowerCase().includes(cctname) ||
+          x.jobdate.replace("-", "").replace("-", "") === jobdate
+      );
+      //data.rows = null
+      console.log('searchdata_: ', searchdata_)
+      console.log('Data_.value : ', Data_.value)
+      data.rows = searchdata_
+      document.getElementById('CloseModalAdvSearch').click();//************************** */
+    }
     // Get data on first rendering
     myRequest("").then((newData) => {
       data.rows = newData;
@@ -441,7 +526,7 @@ export default defineComponent({
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
     return {
-      searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
+      AdvSearch, AdvSearch_, loading, searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       //, DownloadLink_
       , formatPrice, router, format_date, file, error, error_addManual
       , getData, formatdate_show, formatPrice_noFixed, DownloadLink

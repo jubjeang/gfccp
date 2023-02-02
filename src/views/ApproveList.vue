@@ -27,7 +27,8 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label>SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance
+              Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -37,6 +38,132 @@
       </div>
     </div>
     <!-- </div> -->
+  </div>
+  <!--<div class="modal fade" id="ModalAdvSearch">--------ModalAdvSearch--->
+  <div class="container py-2">
+    <div class="py-2">
+      <form id="form3">
+        <div class="modal fade" id="ModalAdvSearch">
+          <div class="modal-dialog  modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Advance Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row p-2">
+                    <div class="col ps-4 d-flex">
+                      <h5 class="ps-1 text-gray">Advance Search</h5>
+                    </div>
+                  </div>
+                  <!-- <div class="row p-2" v-if="message_addManual"> -->
+                  <div class="row p-2" v-if="message_addManual">
+                    <div class="col">
+                      <div :class="`alert ${error_addManual ? 'alert-danger' : 'alert-success'}`">{{
+                        message_addManual
+                      }}</div>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2 pe-0">
+                      เลขที่รายการ
+                    </div>
+                    <div class="col-sm-2 ps-0 d-flex">
+                      <input type="text" id="adv_order_no" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.order_no">
+                    </div>
+                    <div class="col-sm-2">
+                      รหัสสาขา
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.branch_code">
+                    </div>
+                    <div class="col-sm-2">
+                      ศูนย์เงินสด
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="BranchOrigin" style="width:10rem;"
+                        v-model="AdvSearch.cct">
+                        <option v-for="data in AdvSearch.DataBranchToOrigin" :key="data.branch_id"
+                          v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
+                            data.branch_name
+                          }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2  pe-0">
+                      วันที่ปฏิบัติงาน
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control" style="width:10rem;"
+                        input-format="dd/MM/yyyy" />
+                    </div>
+                    <div class="col-sm-2">
+                      วันสร้างคำสั่ง
+                    </div>
+                    <div class="col-sm-2">
+                      <datepicker v-model="AdvSearch.order_date" id="adv_order_date" class="form-control"
+                        style="width:10rem;" input-format="dd/MM/yyyy" />
+                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                    </div>
+                    <div class="col-sm-2">
+                      ประเภทคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;"
+                        v-model="AdvSearch.order_type">
+                        <option value="">กรุณาเลือก</option>
+                        <option value="Withdraw">ถอน</option>
+                        <option value="Deposit">ฝาก</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <div class="col-sm-2">
+                      สถานะคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"
+                        v-model="AdvSearch.order_status">
+                        <option value="">กรุณาเลือก</option>
+                        <option value="wait">รออนุมัติ</option>
+                        <option value="aprove">อนุมัติ</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-2">
+                      ผู้อนุมัติ
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="text" id="adv_approver" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.approver">
+                      <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
+                    </div>
+                    <div class="col-sm-2">
+                      ผู้สร้างคำสั่ง
+                    </div>
+                    <div class="col-sm-2 ps-0">
+                      <input type="text" id="adv_creator" class="form-control" style="width:10rem;"
+                        v-model="AdvSearch.creator">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer pt-0 justify-content-center">
+                <div class="align-top pt-1 d-flex justify-content-center">
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;" @click="AdvSearch_"
+                    type="button">ค้นหา</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset"
+                    ref="CloseModalAdvSearch" style="width:4rem; height:2rem;" id="CloseModalAdvSearch">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
   <!--<div class="modal fade" id="ModalEditOrder">---->
   <div class="container py-2">
@@ -71,7 +198,7 @@
                         <!--OrderDataExisting.BankType = obj[0].customerID-->
                         <option v-for="data in NewOrder.BankTypeData" :key="data.customerID" :value="data.customerID"
                           :selected="data.customerID === OrderDataExisting.BankType">{{
-                              data.customer_name
+                            data.customer_name
                           }}
                         </option>
                         <!-- <option selected="selected" value="">ธนาคาร</option> 
@@ -119,7 +246,7 @@
                     </div>
                     <div class="col">
                       <datepicker v-model="OrderDataExisting.JobDate"
-                        :value="formatdate_show( new Date(OrderDataExisting.JobDate) )" id="JobDateEdit"
+                        :value="formatdate_show(new Date(OrderDataExisting.JobDate))" id="JobDateEdit"
                         class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
                     </div>
                   </div>
@@ -131,8 +258,9 @@
                       <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchOriginId">
                         <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
-                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchOriginId">{{
-                          data.branch_name }}
+                          :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchOriginId">{{
+                            data.branch_name
+                          }}
                         </option>
                       </select>
                     </div>
@@ -143,8 +271,9 @@
                       <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchDestId">
                         <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
-                          :value="data.branch_id" :selected="data.branch_id===OrderDataExisting.BranchDestId">{{
-                          data.branch_name }}
+                          :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchDestId">{{
+                            data.branch_name
+                          }}
                         </option>
                         <!-- <option value="BankBranch">Bank Branch</option> -->
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
@@ -188,9 +317,9 @@
                               <i class="fa fa-minus-square align-middle" aria-hidden="true"></i></span>&nbsp;|&nbsp;
                             <span @click.prevent="addEditItem()" class="text-decoration-none text-gray fs-7" style="cursor: pointer"><i class="fa fa-plus-circle align-middle"></i></span> -->
                           </td>
-                          <td scope="col" @click="calamount_orderEdit(index+1)" @keyup="calamount_orderEdit(index+1)">
+                          <td scope="col" @click="calamount_orderEdit(index + 1)" @keyup="calamount_orderEdit(index + 1)">
                             <select class="form-select form-select-sm text-right"
-                              v-bind="{ id: 'ddlMoneyTypeEdit'+(index+1)}"
+                              v-bind="{ id: 'ddlMoneyTypeEdit' + (index + 1) }"
                               v-model="OrderDataExisting.OrderDataDet[index].MoneyType">
                               <option value='1000'>1,000</option>
                               <option value='500'>500</option>
@@ -205,7 +334,7 @@
                           </td>
                           <td scope="col">
                             <select class='form-select form-select-sm'
-                              v-bind="{ id: 'ddlQualityMoneyTypeEdit'+(index+1)}"
+                              v-bind="{ id: 'ddlQualityMoneyTypeEdit' + (index + 1) }"
                               v-model="OrderDataExisting.OrderDataDet[index].QualityMoneyType">
                               <option value='New'>ใหม่</option>
                               <option value='Fit'>ดี</option>
@@ -216,8 +345,8 @@
                           <td scope="col">
                             <select class='form-select form-select-sm'
                               v-model="OrderDataExisting.OrderDataDet[index].PackageMoneyType"
-                              v-bind="{ id: 'ddlPackageMoneyTypeEdit'+(index+1)}" @click="calamount_orderEdit(index+1)"
-                              @keyup="calamount_orderEdit(index+1)">
+                              v-bind="{ id: 'ddlPackageMoneyTypeEdit' + (index + 1) }" @click="calamount_orderEdit(index + 1)"
+                              @keyup="calamount_orderEdit(index + 1)">
                               <option value='Bundle'>มัด</option>
                               <option value='Piece'>ฉบับ</option>
                               <option value='Coin'>เหรียญ</option>
@@ -232,14 +361,14 @@
                           </td> -->
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbQuantityEdit'+(index+1) ,value: formatPrice_noFixed(OrderDataExisting.OrderDataDet[index].Quantity)}"
+                              v-bind="{ id: 'tbQuantityEdit' + (index + 1), value: formatPrice_noFixed(OrderDataExisting.OrderDataDet[index].Quantity) }"
                               v-model="OrderDataExisting.OrderDataDet[index].Quantity" class='form-control text-right'
-                              style='width:10rem;' @change="calamount_orderEdit(index+1)"
-                              @keyup="calamount_orderEdit(index+1)" @keypress="calamount_orderEdit(index+1)">
+                              style='width:10rem;' @change="calamount_orderEdit(index + 1)"
+                              @keyup="calamount_orderEdit(index + 1)" @keypress="calamount_orderEdit(index + 1)">
                           </td>
                           <td scope="col">
                             <input type='text'
-                              v-bind="{ id: 'tbAmountEdit'+(index+1),value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount)}"
+                              v-bind="{ id: 'tbAmountEdit' + (index + 1), value: formatPrice(OrderDataExisting.OrderDataDet[index].Amount) }"
                               v-model="OrderDataExisting.OrderDataDet[index].Amount" class='form-control text-right'
                               style='width:10rem;' readonly='readonly' />
                           </td>
@@ -251,9 +380,12 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width:4rem; height:2rem;" v-show="checkstatus_send_to_checker">บันทึก</button>
-                  <button class="btn btn-primary" style="width:6rem; height:2rem;" @click.prevent="sendApprove" v-show="checkstatus_send_to_checker">ส่งอนุมัติ</button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt" id="ClosemyModalEidt" style="width:4rem; height:2rem;">ยกเลิก</button>
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;"
+                    v-show="checkstatus_send_to_checker">บันทึก</button>
+                  <button class="btn btn-primary" style="width:6rem; height:2rem;" @click.prevent="sendApprove"
+                    v-show="checkstatus_send_to_checker">ส่งอนุมัติ</button>
+                  <button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
+                    id="ClosemyModalEidt" style="width:4rem; height:2rem;">ยกเลิก</button>
                 </div>
               </div>
             </div>
@@ -301,6 +433,19 @@ export default defineComponent({
     const RoleId = ref(localStorage.getItem('RoleId'))
     const router = useRouter()
     const rowData = reactive([])
+    const AdvSearch = reactive({
+      order_no: "",
+      branch_code: "",
+      cct: "",
+      jobdate: "",
+      order_date: "",
+      //order_date: new Date(),
+      order_type: "",
+      order_status: "",
+      approver: "",
+      creator: "",
+      DataBranchToOrigin: []
+    })
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
       OrderTypeNew: "",
@@ -314,6 +459,7 @@ export default defineComponent({
       BranchDest: "",
     })
     // const NewOrderDet = reactive([])
+    const searchdata = ref([]);
     const Id = ref(0)
     const rowDataEdit = ref([])
     const OrderDataExisting = reactive({
@@ -331,35 +477,35 @@ export default defineComponent({
       DataBranchToDest: [],
       Remark: "",
       OrderDataDet: [],
-      Cashstatus:"",
+      Cashstatus: "",
     });
-    const sendApprove = async (e)=>{
+    const sendApprove = async (e) => {
       // alert( OrderDataExisting.orderId )
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง?")) {
-              const params = {
-                Id: OrderDataExisting.orderId,
-                Type_: 'send_to_check'
-              };
-              try {
-                await axios.get('/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse( JSON.stringify(res.data) )
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-              }
-              catch (err) {
-                console.log(err)
-              }
-            }
+        const params = {
+          Id: OrderDataExisting.orderId,
+          Type_: 'send_to_check'
+        };
+        try {
+          await axios.get('/update_cashstatus_order', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+              console.log(obj[0])
+              // router.push('/listorder')
+              location.reload()
+              // addEditItem
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
     }
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
@@ -403,8 +549,8 @@ export default defineComponent({
       let month = null//date__.getMonth() + 1;
       let year = null//date__.getFullYear();
       // if (date_) {
-      date__ = moment(date_).format('DD/MM/YYYY')      
-      return date__;      
+      date__ = moment(date_).format('DD/MM/YYYY')
+      return date__;
     }
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -420,10 +566,13 @@ export default defineComponent({
       const params = {
         user_id: user_id.value,
         CustomerID: CustomerID.value,
+        customerID: CustomerID.value,
         RoleId: RoleId.value,
-        approve_setting_id: localStorage.getItem('approve_setting_id')
+        approve_setting_id: localStorage.getItem('approve_setting_id'),
+        approve_setting_version: localStorage.getItem('approve_setting_version')
       };
       // const res = await axios.get('/orderlist', { params })
+
       const res = await axios.get('/approvelist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
@@ -434,17 +583,14 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-        // const res2 = await axios.get('/approvelist', { params })
-        // .then((res) => {
-        //   Data_.value = JSON.parse(JSON.stringify(res.data))
-        //   console.log("Data_: ", Data_)
-        //   //Data_
-        //   // console.log(fakeData)
-        // }, (res) => {
-        //   // error callback
-        //   console.log(res.data)
-        // })
-
+      await axios.get('/getcashcenterdata', { params })
+        .then((res) => {
+          // success callback
+          AdvSearch.DataBranchToOrigin = res.data
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -458,7 +604,7 @@ export default defineComponent({
                 x.branchorigin_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.branchdest_name.toLowerCase().includes(keyword.toLowerCase()) ||
                 formatPrice(x.total_by_branch).toString().toLowerCase().includes(keyword.toLowerCase()) ||
-                x.order_date.toLowerCase().includes(keyword.toLowerCase()) || 
+                x.order_date.toLowerCase().includes(keyword.toLowerCase()) ||
                 x.remark.toLowerCase().includes(keyword.toLowerCase())
             );
             resolve(newData);
@@ -548,7 +694,7 @@ export default defineComponent({
             }
             if (row.cashstatus === 4) {
               sOutput = 'รอ ApproveN อนุมัติ'
-            } 
+            }
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
           },
@@ -712,16 +858,14 @@ export default defineComponent({
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if(obj[0].cashstatus === null )
-                  {
-                    checkstatus_send_to_checker.value=true
+                  if (obj[0].cashstatus === null) {
+                    checkstatus_send_to_checker.value = true
                   }
-                  else
-                  {
-                    checkstatus_send_to_checker.value=false
+                  else {
+                    checkstatus_send_to_checker.value = false
                   }
                   console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)                  
+                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
@@ -1183,6 +1327,25 @@ export default defineComponent({
         // }
       });
     };
+    //advance search
+    const AdvSearch_ = () => {
+      //searchdata.value = Data_.value
+      searchdata.value = Data_.value.filter(item => {
+        return (
+          (!AdvSearch.order_no || item.order_no === Number(AdvSearch.order_no)) &&
+          (!AdvSearch.branch_code || item.branchorigin_code.toLowerCase().includes(AdvSearch.branch_code.toString().toLowerCase())) &&
+          (!AdvSearch.branch_code || item.branchdest_code.toLowerCase().includes(AdvSearch.branch_code.toString().toLowerCase())) &&
+          (!AdvSearch.cct || item.branchorigin_name.toLowerCase().includes(AdvSearch.cct.toString().toLowerCase())) &&
+          (!AdvSearch.cct || item.branchdest_name.toLowerCase().includes(AdvSearch.cct.toString().toLowerCase())) &&
+          (!AdvSearch.jobdate || item.order_date === AdvSearch.jobdate) &&
+          (!AdvSearch.order_date || item.order_date === AdvSearch.order_date) &&
+          (!AdvSearch.order_type || item.servicetype.toLowerCase().includes(AdvSearch.order_type.toLowerCase())) &&
+          (!AdvSearch.order_status || item.input_type.toLowerCase().includes(AdvSearch.order_status.toLowerCase()))
+        );
+      });
+      data.rows = searchdata.value
+      document.getElementById('CloseModalAdvSearch').click();//************************** */
+    }
     // Get data on first rendering
     myRequest("").then((newData) => {
       data.rows = newData;
@@ -1553,7 +1716,7 @@ export default defineComponent({
             // success callback
             console.log(res.data)
             // this.$refs.ClosemyModalNew.click();
-            document.getElementById("ClosemyModalEidt").click();            
+            document.getElementById("ClosemyModalEidt").click();
           }, (res) => {
             // error callback
             error_editOrder.value = false
@@ -1572,11 +1735,12 @@ export default defineComponent({
       }
     }
     return {
+      AdvSearch, AdvSearch_,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       , OrderDataExisting, getBranchAndCashEdit, addEditItem
       , editOrder, formatPrice, router, format_date, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate
       , user_id, department_id, position_id, CustomerID, gfc_cct, formatdate_show, formatPrice_noFixed, addItem, deleteData, addManualOrder, NewOrder
-      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit, sendApprove,checkstatus_send_to_checker//,NewOrderDet
+      , getBranchAndCash, getBranchOrCashCen, calamount, rowData, Id, rowDataEdit, calamount_orderEdit, sendApprove, checkstatus_send_to_checker//,NewOrderDet
     }
   },
 })

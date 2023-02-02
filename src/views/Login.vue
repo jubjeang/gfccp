@@ -74,26 +74,38 @@
       <!-- Copyright -->
     </div>
   </section>
+  <Loading v-if="loading" />  
 </template>
 <script>
 // import * as site from '../assets/js/site.js';
 // import * as bundle from '../assets/js/bootstrap.bundle.min.js';
-import { ref } from "vue";
+// import { ref } from "vue";
 import axios from 'axios'
+import Loading from "../components/Loading.vue";
 export default {
   name: 'Login',
+  components: {Loading},
   data() {
     return {
       jobid: '',
       password: '',
       jobid_: '15133',
-      password_: '111111'
+      password_: '111111',
+      loading : false
     }
   },
   methods: {
-    async login(e) {
-      e.preventDefault()
+    async login(e) { 
+      console.log('this.loading: ',this.loading)
+      this.loading = true
+      // setTimeout(() => { 
+      //   console.log('this.loading: ',this.loading)
+      // }, 1000)
+
+       setTimeout(() => {
+        e.preventDefault()
       if (this.jobid !== "" && this.password === "") {
+        this.loading = false
         alert('กรุณากรอกชื่อผู้ใช้')
         this.$refs.password.focus();
         // localStorage.setItem('user_id', this.jobid_)
@@ -101,10 +113,12 @@ export default {
         // this.$router.push('/main')
       }
       else if (this.jobid === "" && this.password !== "") {
+        this.loading = false
         alert('กรุณากรอกรหัสผ่าน');
         this.$refs.jobid.focus();
       }
       else if (this.jobid === "" && this.password === "") {
+        this.loading = false
         alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
         this.$refs.jobid.focus();
       }
@@ -117,29 +131,38 @@ export default {
         var json = JSON.stringify(object)
         console.log('json: ',json)
         try {
-          await axios.post('/checkUser', json)
+           axios.post('/checkUser', json)
             .then((res) => {
               // success callback
               // let userdata = JSON.stringify( res.data )
-              let userdata = res.data
-              console.log(userdata)
-              console.log(userdata[0].name)
-              localStorage.setItem('user_id', userdata[0].id)
-              localStorage.setItem('user_name', userdata[0].name)
-              localStorage.setItem('department_id', userdata[0].department_id)
-              localStorage.setItem('position_id', userdata[0].position_id)
-              localStorage.setItem('CustomerID', userdata[0].CustomerID)
-              localStorage.setItem('RoleId', userdata[0].RoleId)
-              localStorage.setItem('branchbaseid', userdata[0].branchbaseid)
-              localStorage.setItem('gfc_cct', userdata[0].gfc_cct)
-              localStorage.setItem('gfc_cct_code', userdata[0].gfc_cct_code)
-              localStorage.setItem('ApproveID', userdata[0].ApproveID)
-              localStorage.setItem('approve_setting_id', userdata[0].approve_setting_id)
-              localStorage.setItem('approve_setting_version', userdata[0].approve_version)
-              localStorage.setItem('approve_level', userdata[0].approve_level)
-              this.$router.push('/main')
+              try { 
+                let userdata = res.data
+                console.log(userdata)
+                console.log(userdata[0].name)
+                localStorage.setItem('user_id', userdata[0].id)
+                localStorage.setItem('user_name', userdata[0].name)
+                localStorage.setItem('department_id', userdata[0].department_id)
+                localStorage.setItem('position_id', userdata[0].position_id)
+                localStorage.setItem('CustomerID', userdata[0].CustomerID)
+                localStorage.setItem('RoleId', userdata[0].RoleId)
+                localStorage.setItem('branchbaseid', userdata[0].branchbaseid)
+                localStorage.setItem('gfc_cct', userdata[0].gfc_cct)
+                localStorage.setItem('gfc_cct_code', userdata[0].gfc_cct_code)
+                localStorage.setItem('ApproveID', userdata[0].ApproveID)
+                localStorage.setItem('approve_setting_id', userdata[0].approve_setting_id)
+                localStorage.setItem('approve_setting_version', userdata[0].approve_version)
+                localStorage.setItem('approve_level', userdata[0].approve_level)
+                this.$router.push('/main')
+              }
+              catch (err) { 
+                this.loading = false
+                console.log(err)
+                alert("มีข้อผิดพลาด: " + err )
+
+              }
             }, (res) => {
               // error callback
+              this.loading = false
               console.log( JSON.stringify( res.data ) )
               alert( res.data )
             });
@@ -147,7 +170,8 @@ export default {
           //this.file = ""
           //this.error = false
         }
-        catch (err) {
+        catch (err) { 
+          this.loading = false
           console.log(err)
           alert("มีข้อผิดพลาด: " + err )
           //this.message = "Something went wrong"
@@ -156,7 +180,9 @@ export default {
       }
       else {
         alert('กรอกชื่อผู้ใช้/รหัสผ่าน ผิดพลาด')
-      }
+      }                  
+      }, 500)
+
     },
   },
   mounted() {
