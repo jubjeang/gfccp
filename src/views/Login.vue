@@ -137,7 +137,7 @@ export default {
               // let userdata = JSON.stringify( res.data )
               try { 
                 let userdata = res.data
-                console.log(userdata)
+                console.log('userdata: ',userdata)
                 console.log(userdata[0].name)
                 localStorage.setItem('user_id', userdata[0].id)
                 localStorage.setItem('user_name', userdata[0].name)

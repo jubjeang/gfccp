@@ -374,11 +374,11 @@
                       ต้นทาง
                     </div>
                     <div class="col">
-                      <!-- <multiselect v-model="selectedValue" :options="options" :searchable="false"
-                        :clear-on-select="true" @input="updateValue" /> -->
-                      <!-- <Multiselect v-model="selectedOption" label="name" :searchable="true" :option="NewOrder.DataBranchToOrigin"
-                                  class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin" style="width:15rem; height: 2rem;"
-                        @click="getBranchForCash(NewOrder.BranchOrigin, 'BranchDest')" /> -->
+                      <VueMultiselect name="BranchOrigin" id="BranchOrigin" :options="NewOrder.DataBranchToOrigin" class="form-select form-select-sm p-0" label="branch_name" :style="{ width: '15rem'
+                      , height: '0.5rem'}" :disabled="VueMultiselect_.BranchOriginBG_Color === 'ffffff' ? false : true"
+                       v-model="NewOrder.BranchOrigin" :select-label="null" :allow-empty="true" :close-on-select="true"
+                       @select="getBranchForCash($event, 'BranchDest')" :value="branch_name" track-by="branch_name">
+                      </VueMultiselect>
                       <!-- <select class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin"
                         style="width:15rem;" v-model="NewOrder.BranchOrigin"
                         @click="getBranchForCash(NewOrder.BranchOrigin, 'BranchDest')">
@@ -393,16 +393,19 @@
                       ปลายทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchDest" id="BranchDest" style="width:15rem;"
+                      <VueMultiselect name="BranchDest" id="BranchDest" :options="NewOrder.DataBranchToDest" class="form-select form-select-sm p-0" label="branch_name" :style="{ width: '15rem'
+                      ,height: '0.5rem' }" :disabled="VueMultiselect_.BranchDestBG_Color === 'ffffff' ? false : true"
+                       v-model="NewOrder.BranchDest" :select-label="null" :allow-empty="true" :close-on-select="true"
+                       @select="getBranchForCash($event, 'BranchOrigin')" :value="branch_name" track-by="branch_name">
+                      </VueMultiselect>
+                      <!-- <select class="form-select form-select-sm" name="BranchDest" id="BranchDest" style="width:15rem;"
                         v-model="NewOrder.BranchDest" @click="getBranchForCash(NewOrder.BranchDest, 'BranchOrigin')">
                         <option v-for="data in NewOrder.DataBranchToDest" :key="data.branch_id"
                           v-bind:value="{ branch_id: data.branch_id, branch_name: data.branch_name }">{{
                             data.branch_name
                           }}
-                        </option>
-                        <!-- <option value="BankBranch">Bank Branch</option> -->
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
+                        </option>                        
+                      </select> -->
                     </div>
                   </div>
                   <div class="row p-2">
@@ -555,29 +558,34 @@
                       ต้นทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
+                      <VueMultiselect name="BranchOriginEdit" id="BranchOriginEdit" :options="OrderDataExisting.DataBranchToOrigin" class="form-select form-select-sm p-0" label="branch_name" :style="{ width: '15rem'
+                      , height: '0.5rem'}" v-model="OrderDataExisting.BranchOriginSelectd" :select-label="null" :allow-empty="true" :close-on-select="true" 
+                       :value="branch_name" track-by="branch_name">
+                      </VueMultiselect>
+                      <!-- <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchOriginId">
                         <option v-for="data in OrderDataExisting.DataBranchToOrigin" :key="data.branch_id"
                           :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchOriginId">{{
                             data.branch_name
                           }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                     <div class="col">
                       ปลายทาง
                     </div>
                     <div class="col">
-                      <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
+                      <VueMultiselect name="BranchDestEdit" id="BranchDestEdit" :options="OrderDataExisting.DataBranchToDest" class="form-select form-select-sm p-0" label="branch_name" :style="{ width: '15rem'
+                      ,height: '0.5rem' }" v-model="OrderDataExisting.BranchDestSelectd" :select-label="null" :allow-empty="true" :close-on-select="true"  :value="branch_id" track-by="branch_name">                      
+                      </VueMultiselect>
+                      <!-- <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchDestId">
                         <option v-for="data in OrderDataExisting.DataBranchToDest" :key="data.branch_id"
                           :value="data.branch_id" :selected="data.branch_id === OrderDataExisting.BranchDestId">{{
                             data.branch_name
                           }}
-                        </option>
-                        <!-- <option value="BankBranch">Bank Branch</option> -->
-                        <!-- <option value="ForexCounting">Forex Counting</option> -->
-                      </select>
+                        </option>                        
+                      </select> -->
                     </div>
                   </div>
                   <div class="row p-2">
@@ -708,12 +716,13 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
+import VueMultiselect from 'vue-multiselect'
 
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
   name: 'ListOrder',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
+  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, VueMultiselect },
   setup() {
     //upload data
     const file = ref(File | null)//ref('')
@@ -750,6 +759,10 @@ export default defineComponent({
       creator: "",
       DataBranchToOrigin: []
     })
+    const VueMultiselect_ = reactive({
+      BranchOriginBG_Color:"",
+      BranchDestBG_Color: ""
+    })
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
       OrderTypeNew: "",
@@ -773,7 +786,8 @@ export default defineComponent({
       cashtobot: 0,
     })
     // const rowDataEdit = ref([])
-    // const NewOrderDet = reactive([])
+    const options = ['list', 'of', 'options'];
+    const selected = ref(null);
     const OrderDataExisting = reactive({
       orderId: "",
       BankType: "",
@@ -785,6 +799,8 @@ export default defineComponent({
       BranchOriginId: "",
       BranchDestText: "",
       BranchDestId: "",
+      BranchOriginSelectd:[],
+      BranchDestSelectd:[],
       DataBranchToOrigin: [],
       DataBranchToDest: [],
       Remark: "",
@@ -807,7 +823,15 @@ export default defineComponent({
       })
     }
     const getBranchForCash = async (value, ddltype) => {
-      console.log('value: ', value.branch_name, 'branch: ', ddltype)
+      console.log('getBranchForCash value: ', value.branch_name, 'branch: ', ddltype,'value: ',value)
+      if(ddltype==="BranchDest")
+      {
+        NewOrder.BranchOrigin = value
+      }
+      if(ddltype==="BranchOrigin")
+      {
+        NewOrder.BranchDest = value
+      }
       const params = {
         CustomerID: CustomerID.value,
         CCT: value.branch_name,
@@ -821,16 +845,13 @@ export default defineComponent({
               if (ddltype === 'BranchDest') {
                 NewOrder.DataBranchToDest = res.data
                 console.log('NewOrder.DataBranchToDest: ', NewOrder.DataBranchToDest)
-                //Withdraw
-                document.getElementById("BranchDest").disabled = false
-
+                //Withdraw                
+                VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
               }
-
             }, (res) => {
               // error callback
               console.log(res.data)
-            });
-
+            })
         }
         if (NewOrder.OrderTypeNew === "Deposit") {
           await axios.get('/getbranchforcash', { params })
@@ -838,20 +859,15 @@ export default defineComponent({
               // success callback           
               if (ddltype === 'BranchOrigin') {
                 NewOrder.DataBranchToOrigin = res.data
-                console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)
-                document.getElementById("BranchOrigin").disabled = false
-                // document.getElementById("BranchDest").removeEventListener('click','getBranchForCash');
-              }
-              // console.log(NewOrder.DataBranchToOrigin)
-              // console.log(NewOrder.DataBranchToDest)
+                console.log('NewOrder.DataBranchToOrigin: ', NewOrder.DataBranchToOrigin)                
+                VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7         
+              }              
             }, (res) => {
               // error callback
               console.log(res.data)
             });
-
         }
       }
-
     }
     const getOrderType = async (e) => {
       getBranchAndCash()
@@ -873,8 +889,11 @@ export default defineComponent({
           else {
             getBranchOrCashCen('bot', 'BranchOrigin', 'Add')
             getBranchOrCashCen('cct', 'BranchDest', 'Add')
-            document.getElementById("BranchOrigin").disabled = false
+            document.getElementById("BranchOrigin").disabled = true
             document.getElementById("BranchDest").disabled = false
+            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
+            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
+            
           }
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
@@ -887,6 +906,8 @@ export default defineComponent({
             getBranchOrCashCen('cashtobranch', 'BranchOrigin', 'Add')
             document.getElementById("BranchOrigin").disabled = false
             document.getElementById("BranchDest").disabled = true
+            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
+            VueMultiselect_.BranchDestBG_Color = "A9B7C7"//A9B7C7
           }
         }
       }
@@ -903,6 +924,8 @@ export default defineComponent({
             getBranchOrCashCen('bot', 'BranchDest', 'Add')
             document.getElementById("BranchOrigin").disabled = false
             document.getElementById("BranchDest").disabled = false
+            VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
+            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
           }
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
@@ -915,12 +938,16 @@ export default defineComponent({
             getBranchOrCashCen('cashtobranch', 'BranchDest', 'Add')
             document.getElementById("BranchOrigin").disabled = true
             document.getElementById("BranchDest").disabled = false
+            VueMultiselect_.BranchOriginBG_Color = "A9B7C7"//A9B7C7
+            VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
           }
         }
       }
       if (NewOrder.OrderTypeNew === "") {
         document.getElementById("BranchOrigin").disabled = false
         document.getElementById("BranchDest").disabled = false
+        VueMultiselect_.BranchOriginBG_Color = "ffffff"//A9B7C7
+        VueMultiselect_.BranchDestBG_Color = "ffffff"//A9B7C7
       }
     }
     const getBranchOrCashCen = async (servicetype, ddltype, gettype) => {
@@ -1019,22 +1046,17 @@ export default defineComponent({
     }
     const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
       let type_ = ''
-      type_ = NewOrder.OrderCategoryNew
+      type_ = OrderDataExisting.OrderCategory//NewOrder.OrderCategoryNew
       const params = {
         CustomerID: CustomerID.value,
         user_id: user_id.value,
         type_: type_
       };
       if (servicetype === 'branchtocash') {
-        // const params = {
-        //   CustomerID: CustomerID.value
-        // };        
-        await axios.get('/getbranchdata', { params })
+         await axios.get('/getbranchdata', { params })
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1048,9 +1070,7 @@ export default defineComponent({
         await axios.get('/getcashcenterdata', { params })
           .then((res) => {
             // success callback
-            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
+            ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data            
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1261,24 +1281,24 @@ export default defineComponent({
         });
       console.log('approve_setting_id: ', localStorage.getItem('approve_setting_id'))
       console.log('approve_setting_version: ', localStorage.getItem('approve_setting_version'))
-      const getactivity_authen = await axios.get('/getactivity_authen', { params })
-        .then((res) => {
-          //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
-          let output = null
-          output = res.data
-          ActitySelectd.branchtocash = output.branchtocash
-          ActitySelectd.cashtocash = output.cashtocash
-          ActitySelectd.bottocash = output.bottocash
-          ActitySelectd.branchtobranch = output.branchtobranch
-          ActitySelectd.cashtobranch = output.cashtobranch
-          ActitySelectd.cashtobot = output.cashtobot
-          console.log('ActitySelectd.cashtobot: ', ActitySelectd.cashtobot)
-        }, (res) => {
-          // error callback
-          console.log(res.data.message)
-          console.log('console.log( res.data.message ): ', console.log(res.data.message))
-          // ActitySelectd.branchtobranch
-        });
+      // const getactivity_authen = await axios.get('/getactivity_authen', { params })
+      //   .then((res) => {
+      //     //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+      //     let output = null
+      //     output = res.data
+      //     ActitySelectd.branchtocash = output.branchtocash
+      //     ActitySelectd.cashtocash = output.cashtocash
+      //     ActitySelectd.bottocash = output.bottocash
+      //     ActitySelectd.branchtobranch = output.branchtobranch
+      //     ActitySelectd.cashtobranch = output.cashtobranch
+      //     ActitySelectd.cashtobot = output.cashtobot
+      //     console.log('ActitySelectd.cashtobot: ', ActitySelectd.cashtobot)
+      //   }, (res) => {
+      //     // error callback
+      //     console.log(res.data.message)
+      //     console.log('console.log( res.data.message ): ', console.log(res.data.message))
+      //     // ActitySelectd.branchtobranch
+      //   });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1545,6 +1565,8 @@ export default defineComponent({
                   OrderDataExisting.BranchOriginId = obj[0].branchorigin_code
                   OrderDataExisting.BranchDestText = obj[0].branchdest_name
                   OrderDataExisting.BranchDestId = obj[0].branchdest_code
+                  OrderDataExisting.BranchDestSelectd = [{branch_id: obj[0].branchdest_code, branch_name: obj[0].branchdest_name}]
+                  OrderDataExisting.BranchOriginSelectd = [{branch_id: obj[0].branchorigin_code, branch_name: obj[0].branchorigin_name}]
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
                   if (obj[0].cashstatus === 0) {
@@ -1553,10 +1575,8 @@ export default defineComponent({
                   else {
                     checkstatus_send_to_checker.value = false
                   }
-                  console.log("OrderDataExisting.OrderCategory: ", obj[0].order_category)
-                  console.log("obj[0].Cashstatus: ", obj[0].cashstatus)
-                  console.log("checkstatus_send_to_checker: ", checkstatus_send_to_checker.value)
-                  getBranchAndCashEdit()
+                  console.log("OrderDataExisting: ", OrderDataExisting)
+                                   getBranchAndCashEdit()
                   OrderDataExisting.OrderDataDet = []
                   if (obj[0].note_new_1000 > 0)//--note new
                   {
@@ -2332,6 +2352,7 @@ export default defineComponent({
       rowData.splice(index, 1)
     }
     const editOrder = async () => {
+
       const formData = new FormData()
       formData.append('orderId', OrderDataExisting.orderId)
       formData.append('OrderCategory', OrderDataExisting.OrderCategory)
@@ -2341,10 +2362,10 @@ export default defineComponent({
       formData.append('RefNo', OrderDataExisting.RefNo)
       formData.append('RemarkNew', OrderDataExisting.Remark)
       //formData.append('BranchOrigin', OrderDataExisting.BranchOrigin.branch_name)
-      formData.append('BranchOrigin', OrderDataExisting.BranchOriginText)
-      formData.append('BranchOrigin_code', OrderDataExisting.BranchOriginId)
-      formData.append('BranchDest', OrderDataExisting.BranchDestText)
-      formData.append('BranchDest_code', OrderDataExisting.BranchDestId)
+      formData.append('BranchOrigin', OrderDataExisting.BranchOriginSelectd[0].branch_name)
+      formData.append('BranchOrigin_code', OrderDataExisting.BranchOriginSelectd[0].branch_id)//
+      formData.append('BranchDest', OrderDataExisting.BranchDestSelectd[0].branch_name)
+      formData.append('BranchDest_code', OrderDataExisting.BranchDestSelectd[0].branch_id)
       formData.append('AllRowsDet', Id.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
@@ -2389,7 +2410,7 @@ export default defineComponent({
       }
     }
     return {
-       AdvSearch_, AdvSearch, ActitySelectd,
+      VueMultiselect_,selected, options, AdvSearch_, AdvSearch, ActitySelectd,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
       , OrderDataExisting, getBranchAndCashEdit, DownloadLink_
       , editOrder, formatPrice, router, format_date, sendFile, selectFile, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder
@@ -2403,6 +2424,7 @@ export default defineComponent({
 </script>
 <style scoped lang="css">
 @import '../assets/css/style.css';
+@import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
 
 
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {

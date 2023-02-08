@@ -204,10 +204,6 @@
                         <!-- <option selected="selected" value="">ธนาคาร</option> 
                         <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>-->
                       </select>
-                      <!-- &nbsp; <select id="BankTypeEdit" class="form-select form-select-sm" style="width:15rem;"
-                        v-model="OrderDataExisting.BankType">
-                       <option selected="selected" value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
-                      </select> -->
                     </div>
                   </div>
                   <div class="row p-2">
@@ -457,6 +453,7 @@ export default defineComponent({
       DataBranchToDest: [],
       BranchOrigin: "",
       BranchDest: "",
+      BankTypeData: [],
     })
     // const NewOrderDet = reactive([])
     const searchdata = ref([]);
@@ -572,7 +569,6 @@ export default defineComponent({
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
       // const res = await axios.get('/orderlist', { params })
-
       const res = await axios.get('/approvelist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
@@ -591,7 +587,26 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-      return await new Promise((resolve, reject) => {
+        //-------------get banktypedata
+      const params_banktypedata = {
+        user_id: user_id.value
+      };
+      console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
+      await axios.get('/getbanktypedata', { params })
+        .then((res) => {
+          // success callback     
+          console.log('res.data:', res.data)
+          NewOrder.BankTypeData = res.data
+          // ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
+          console.log(' NewOrder.BankTypeData: ', NewOrder.BankTypeData)
+          // console.log(NewOrder.DataBranchToDest)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
+      
+      
+        return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
@@ -1369,17 +1384,19 @@ export default defineComponent({
         getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
       }
     }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => { 
+      let type_ = ''
+      type_ = OrderDataExisting.OrderCategory
+      const params = {
+        CustomerID: CustomerID.value,
+        user_id: user_id.value,
+        type_: type_
+      };
       if (servicetype === 'branchtocash') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
         await axios.get('/getbranchdata', { params })
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
           }, (res) => {
             // error callback
             console.log(res.data.message)
@@ -1387,16 +1404,11 @@ export default defineComponent({
       }
       //--------------------------------------------
       if (servicetype === 'cashtobranch') {
-        const params = {
-          CustomerID: CustomerID.value
-        };
         await axios.get('/getcashcenterdata', { params })
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-            // console.log(OrderDataExisting.DataBranchToOrigin)
-            // console.log(OrderDataExisting.DataBranchToDest)
-          }, (res) => {
+        }, (res) => {
             // error callback
             console.log(res.data.message)
           });
