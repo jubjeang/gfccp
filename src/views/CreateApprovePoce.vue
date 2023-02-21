@@ -20,7 +20,7 @@
         <div class="row p-0" style="width: 100%">
             <div class="col-12">
                 <div style="text-align: right">
-                    <label>SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+                    <label>ค้นหาโดย:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
                 </div>
                 <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading"
                     :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
@@ -84,22 +84,7 @@
                                             <select id="BankType" class="form-select form-select-sm"
                                                 style="width:15rem;" v-model="BankType">
                                                 <option selected="selected" value="">ธนาคาร</option>
-                                                <!-- <option value="5b5480c6-6460-4377-89b6-9ff1062d65f2">AEON</option>
-                          <option value="9e6f6cff-6e64-41f1-a7be-c07335764423">AIRA</option>
-                          <option value="58194020-9eaf-4a6c-a5cc-b8fa6f628ba9">BAY</option>
-                          <option value="045426c5-9fd9-4c26-b4f0-dc0015ee96b8">BOC</option>
-                          <option value="1493f524-c52e-4c06-aee8-8ef962929242">BOT</option>
-                          <option value="ea0087c9-4172-4c03-92c5-4cc0cd9ac62d">CIMB</option>
-                          <option value="2c164463-ef08-4cb6-a200-08e70aece9ae">GSB</option>
-                          <option value="08daa272-2c66-486f-b992-a540cd25bd6c">IBANK</option>
-                          <option value="c05896c4-72ec-4b4a-8a5d-5b8f9212ce24">KBANK</option>
-                          <option value="fb790fb5-76e4-4d0e-8651-0259d73dc0b6">LHB</option>
-                          <option value="64956e74-51fe-42d5-8445-90c90740c5db">TBANK</option>
-                          <option value="40bde8fc-8a97-45e7-9907-524167975791">TTB</option> -->
-                                                <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>
-                                                <!-- <option value="836a2c05-0f18-4077-98f0-881c1bff365e">ธ.แบงก์ออฟอเมริกา</option>
-                          <option value="80cb96dd-ea99-401a-9615-bba6db501acd">ธนาคารเจพีมอร์แกนเชส</option>
-                          <option value="00399a06-5496-478b-885d-7c008a106505">ธนาคารไทยพาณิชย์</option> -->
+                                                <option value="899704cb-5844-4f97-93bc-880e288e4d1c">UOB</option>                                                
                                             </select>
                                         </div>
                                     </div>

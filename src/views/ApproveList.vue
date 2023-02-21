@@ -11,29 +11,25 @@
         <h3>รายการอนุมัติ</h3>
       </div>
     </div>
-    <!-- <div class="row p-1" style="width: 100%">
-      <div class="col d-flex justify-content-end">
-        <a href="https://drive.google.com/file/d/1IjVGVw26xSPBWqO0v3RBAck89435eTT_/view?usp=sharing" target="blank"
-          class="text-decoration-none text-gray fs-5" style="cursor: pointer">
-          <h4>ตัวอย่างไฟล์อัพโหลด</h4>
-        </a>&nbsp;<h4>|
-        </h4>&nbsp;&nbsp;&nbsp;<i class="fas fa-file-upload" data-bs-toggle="modal"
-          style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>
-        &nbsp;<h4 data-bs-target="#myModal" data-bs-toggle="modal" style="cursor: pointer">อัพโหลด</h4>&nbsp;<h4>|
-        </h4>&nbsp;<h4 data-bs-target="#myModalNew" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
-          style="cursor: pointer">รายการใหม่</h4>
+    <div class="row p-0" style="width: 100%">
+      <div class="col-2 ps-4" style="text-align: left">
+        <button type="button" class="btn btn-danger" style="width:5rem; height:2rem"
+          @click="update_cashstatus_order_all('reject')">Reject</button>&nbsp;<button class="btn btn-primary"
+          @click="update_cashstatus_order_all('approve_all')" style="width: 5rem; height: 2rem;">อนุมัติ</button>
       </div>
-    </div> -->
+      <div class="col-10">
+        <div style="text-align: right">
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch"
+              data-bs-toggle="modal">ค้นหาขั้นสูง</span>&nbsp;|&nbsp;ค้นหาโดย:</label>&nbsp;&nbsp;<input
+            v-model="searchTerm" />
+        </div>
+      </div>
+    </div>
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
-        <div style="text-align: right">
-          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance
-              Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
-        </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
-          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-          @is-finished="tableLoadingFinish" @return-checked-rows="updateCheckedRows"
-          class="table table-striped table-hover">
+          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
+          @return-checked-rows="updateCheckedRows" class="table table-striped table-hover">
         </table-lite>
       </div>
     </div>
@@ -47,14 +43,14 @@
           <div class="modal-dialog  modal-xl">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Advance Search</h5>
+                <h5 class="modal-title">ค้นหาขั้นสูง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="container">
                   <div class="row p-2">
                     <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">Advance Search</h5>
+                      <h5 class="ps-1 text-gray"></h5>
                     </div>
                   </div>
                   <!-- <div class="row p-2" v-if="message_addManual"> -->
@@ -341,8 +337,8 @@
                           <td scope="col">
                             <select class='form-select form-select-sm'
                               v-model="OrderDataExisting.OrderDataDet[index].PackageMoneyType"
-                              v-bind="{ id: 'ddlPackageMoneyTypeEdit' + (index + 1) }" @click="calamount_orderEdit(index + 1)"
-                              @keyup="calamount_orderEdit(index + 1)">
+                              v-bind="{ id: 'ddlPackageMoneyTypeEdit' + (index + 1) }"
+                              @click="calamount_orderEdit(index + 1)" @keyup="calamount_orderEdit(index + 1)">
                               <option value='Bundle'>มัด</option>
                               <option value='Piece'>ฉบับ</option>
                               <option value='Coin'>เหรียญ</option>
@@ -390,6 +386,7 @@
       </form>
     </div>
   </div>
+  <Loading v-if="loading" />
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
@@ -401,11 +398,12 @@ import { defineComponent, reactive, ref, computed, watch } from "vue";
 import TableLite from "../components/TableLite.vue";
 import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
+import Loading from "../components/Loading.vue";
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
   name: 'ApproveList',
-  components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
+  components: { Loading, TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
   setup() {
     //upload data
     const file = ref(File | null)//ref('')
@@ -459,6 +457,7 @@ export default defineComponent({
     const searchdata = ref([]);
     const Id = ref(0)
     const rowDataEdit = ref([])
+    const loading = ref(false)
     const OrderDataExisting = reactive({
       orderId: "",
       BankType: "",
@@ -476,6 +475,51 @@ export default defineComponent({
       OrderDataDet: [],
       Cashstatus: "",
     });
+    const selecteall = ref(null);
+    const update_cashstatus_order_all = (type__) => {
+      console.log('selecteall.value: ', selecteall.value)
+      let message_ = ''
+      type__ === 'reject' ? message_ = 'คุณต้องการ Reject รายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      if (confirm(message_)) {
+        const params = {
+          Id: selecteall.value,
+          Type_: type__,
+          user_id: user_id.value
+        }
+        setTimeout(() => {
+          // table.isLoading = false;
+          console.log('update_cashstatus_order_all')
+          // table.totalRecordCount = 20;              
+        }, 500)
+        // console.log('params: ', {selecteall})
+        try {
+          table.isLoading = true;
+          loading.value = true;
+          // table.isLoading = false;
+          loading.value = false;
+          console.log('cancelorder')
+          // table.totalRecordCount = 20;    
+          axios.get('/update_cashstatus_order_all', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+              console.log(obj[0])
+              // addEditItem
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+          table.isLoading = false
+          location.reload()
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+
+    }
     const sendApprove = async (e) => {
       // alert( OrderDataExisting.orderId )
       if (confirm("คุณต้องการส่งอนุมัติรายการคำสั่ง?")) {
@@ -568,11 +612,12 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
+      console.log('myRequest params: ', params)
       // const res = await axios.get('/orderlist', { params })
       const res = await axios.get('/approvelist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log("Data_: ", Data_)
+          console.log("myRequest Data_: ", Data_)
           //Data_
           // console.log(fakeData)
         }, (res) => {
@@ -587,7 +632,7 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-        //-------------get banktypedata
+      //-------------get banktypedata
       const params_banktypedata = {
         user_id: user_id.value
       };
@@ -604,9 +649,9 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-      
-      
-        return await new Promise((resolve, reject) => {
+
+
+      return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
           // Remove setTimeout() and change to your Axios request or AJAX request on here.
@@ -684,7 +729,7 @@ export default defineComponent({
         },
         {
           label: "อนุมัติโดย",
-          //field: "order_date",
+          field: "approveby",
           width: "10%",
           sortable: true,
         },
@@ -698,21 +743,33 @@ export default defineComponent({
             if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
             }
-            if (row.cashstatus === 1) {
-              sOutput = 'รอ Checker อนุมัติ'
+            else {
+              sOutput = row.RoleName + ' อนุมัติแล้ว'
             }
-            if (row.cashstatus === 2) {
-              sOutput = 'รอ Approve1 อนุมัติ'
-            }
-            if (row.cashstatus === 3) {
-              sOutput = 'รอ Approve2 อนุมัติ'
-            }
-            if (row.cashstatus === 4) {
-              sOutput = 'รอ ApproveN อนุมัติ'
-            }
+
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
           },
+          // display: function (row) {
+          //   let sOutput = ''
+          //   if (row.cashstatus === 0) {
+          //     sOutput = 'สร้างรายการคำสั่ง'
+          //   }
+          //   if (row.cashstatus === 1) {
+          //     sOutput = 'รอ Checker อนุมัติ'
+          //   }
+          //   if (row.cashstatus === 2) {
+          //     sOutput = 'รอ Approve1 อนุมัติ'
+          //   }
+          //   if (row.cashstatus === 3) {
+          //     sOutput = 'รอ Approve2 อนุมัติ'
+          //   }
+          //   if (row.cashstatus === 4) {
+          //     sOutput = 'รอ ApproveN อนุมัติ'
+          //   }
+          //   sOutput = '<span>' + sOutput + '</span>'
+          //   return (sOutput);
+          // },
         },
         {
           label: "หมายเหตุ",
@@ -728,15 +785,15 @@ export default defineComponent({
             return (
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-warning is-rows-el reject_order" style="width:5em; height:2rem">Reject</button>'
+              '" class="btn btn-warning is-rows-el reject_order" style="width: 5.5em; height: 2rem">Reject</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-success is-rows-el approve_order" style="width:6rem; height:2rem">อนุมัติ</button>'
+              '" class="btn btn-success is-rows-el approve_order" style="width: 5rem; height: 2rem">อนุมัติ</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">View</button>'
+              '" class="btn btn-info is-rows-el editorder" style="width: 5rem; height: 2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">View</button>'
             );
           },
         },
@@ -1384,7 +1441,7 @@ export default defineComponent({
         getBranchOrCashCenEdit('cashtobranch', 'BranchDest')
       }
     }
-    const getBranchOrCashCenEdit = async (servicetype, ddltype) => { 
+    const getBranchOrCashCenEdit = async (servicetype, ddltype) => {
       let type_ = ''
       type_ = OrderDataExisting.OrderCategory
       const params = {
@@ -1408,7 +1465,7 @@ export default defineComponent({
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
-        }, (res) => {
+          }, (res) => {
             // error callback
             console.log(res.data.message)
           });
@@ -1629,7 +1686,9 @@ export default defineComponent({
       console.log(rowDataEdit)
     }
     const updateCheckedRows = (rowsKey) => {
-      console.log('rowsKey: ', rowsKey);
+      selecteall.value = null
+      selecteall.value = rowsKey
+      console.log('rowsKey: ', rowsKey)
     };
     const formatPrice_noFixed = (value) => {
       let val = (value / 1)
@@ -1747,7 +1806,8 @@ export default defineComponent({
       }
     }
     return {
-      AdvSearch, AdvSearch_,
+      update_cashstatus_order_all,
+      loading, AdvSearch, AdvSearch_,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
       , OrderDataExisting, getBranchAndCashEdit, addEditItem
       , editOrder, formatPrice, router, format_date, file, error, error_addManual, message, message_addManual, message_editOrder, error_editOrder, OrderCategory, OrderType, BankType, JobDate

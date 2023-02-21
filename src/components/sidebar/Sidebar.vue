@@ -61,7 +61,7 @@ export default {
       <ul class="nav flex-column ms-1" id="submenu1" v-show="isVisible">
         <li class="w-100">
           <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="approve_level === '1'">
-            รายการคำสั่ง</SidebarLink>
+            รายการสร้างคำสั่ง</SidebarLink>
           <!-- 
           <i class="fas fa-cloud-hail-mixed"></i>
           <a href="#" class="nav-link px-0">

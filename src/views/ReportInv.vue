@@ -23,7 +23,7 @@
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col-1">
-        CCT Name:
+        ชื่อศูนย์เงินสด:
       </div>
       <div class="col-2">
         <select id="CCT_Data" class="form-select form-select-sm" style="width:15rem;" v-model="Criteria.CCT_Data">
@@ -37,7 +37,7 @@
         </select>
       </div>
       <div class="col-1">
-        Job Date:
+        วันที่ปฏิบัติการ:
       </div>
       <div class="col-2">
         <datepicker v-model="Criteria.JobDate" id="JobDate" class="form-control" style="width:15rem;"
@@ -55,8 +55,7 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">Advance
-              Search</span>&nbsp;|&nbsp;SearchBy:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
+          <label><span style="cursor: pointer;" data-bs-target="#ModalAdvSearch" data-bs-toggle="modal">ค้นหาขั้นสูง</span>&nbsp;|&nbsp;ค้นหาโดย:</label>&nbsp;&nbsp;<input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
           :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
@@ -73,14 +72,14 @@
             <div class="modal-dialog  modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Advance Search</h5>
+                  <h5 class="modal-title">ค้นหาขั้นสูง</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <div class="container">
                     <div class="row p-2">
                       <div class="col ps-4 d-flex">
-                        <h5 class="ps-1 text-gray">Advance Search</h5>
+                        <h5 class="ps-1 text-gray"></h5>
                       </div>
                     </div>
                     <!-- <div class="row p-2" v-if="message_addManual"> -->
@@ -93,7 +92,7 @@
                     </div>
                     <div class="row p-2">
                       <div class="col-sm-2 pe-0">
-                        วันที่ปฏิบัติงาน
+                        วันที่ปฏิบัติการ
                       </div>
                       <div class="col-sm-2 ps-0">
                         <datepicker v-model="AdvSearch.jobdate" id="adv_jobdate" class="form-control"
@@ -278,7 +277,7 @@ export default defineComponent({
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("res.data: ", res.data)
           console.log('Data_', Data_)
-          console.log('Data_.value[0].jobdate : ', Data_.value[0].jobdate)
+
           setTimeout(() => {
             table.isLoading = false;
             // table.totalRecordCount = 20;              
@@ -349,13 +348,13 @@ export default defineComponent({
       isLoading: false,
       columns: [
         {
-          label: "Job Date",
+          label: "วันที่ปฏิบัติการ",
           field: "jobdate",
           width: "10%",
           sortable: true,
         },
         {
-          label: "Vendor",
+          label: "ชื่อผู้ให้บริการ",
           //field: "servicetype",
           width: "5%",
           sortable: true,
@@ -366,13 +365,13 @@ export default defineComponent({
           },
         },
         {
-          label: "CCT Name",
+          label: "ชื่อศูนย์เงินสด",
           field: "cctname",
           width: "15%",
           sortable: true,
         },
         {
-          label: "Type Of Report",
+          label: "รอบรายงาน",
           field: "typeofreport",
           width: "15%",
           sortable: true,

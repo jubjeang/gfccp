@@ -98,7 +98,7 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
-          <label>SearchBy:</label>
+          <label>ค้นหาโดย:</label>
           &nbsp;&nbsp;
           <input v-model="searchTerm" />
         </div>
@@ -198,7 +198,7 @@
                       <table class="table">
                         <tr v-for="data, index in AddData.Data" :key="data.Id" class="d-flex flex-row p-1 align-middle">
                           <td class="col-1"><span @click="deleteData(index)" style="cursor: pointer">
-                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>Role:
+                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>บทบาท:
                           </td>
                           <td class="col-4" style="display: flex; align-items: top; justify-content: top;" scope="col" v-html="data.ddlRole_"></td>
                           <td class="col-1">
@@ -316,7 +316,7 @@
                         <tr v-for="data, index in editApproveData_.ApproveDataDet" :key="data.Id"
                           class="d-flex flex-row p-1 align-middle">
                           <td><span @click="delete_app_proc_det(index, data.Id)" style="cursor: pointer">
-                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>Role:
+                              <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>บทบาท:
                           </td>
                           <td scope="col">
                             <select class='form-select form-select-sm' style="width:15rem;"
@@ -329,7 +329,7 @@
                             </select><input type="hidden" v-bind="{ id: 'ApproveDataDetId' + (index + 1) }" v-model="editApproveData_.ApproveDataDet[index].Id" />
                           </td>
                           <td>
-                            User:
+                            ผู้ใช้งาน:
                           </td>
                           <td scope="col">
                             <select class='form-select form-select-sm' style="width:15rem;" v-model.trim="editApproveData_.ApproveDataDet[index].userid
