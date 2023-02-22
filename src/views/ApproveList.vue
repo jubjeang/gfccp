@@ -612,6 +612,8 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
+      console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version') )
+      console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id') )
       console.log('myRequest params: ', params)
       // const res = await axios.get('/orderlist', { params })
       const res = await axios.get('/approvelist', { params })
@@ -682,7 +684,7 @@ export default defineComponent({
         {
           label: "เลขที่คำสั่ง",
           field: "AutoID",
-          width: "10%",
+          width: "5%",
           sortable: true,
           isKey: true,
         },
@@ -695,19 +697,19 @@ export default defineComponent({
         {
           label: "ต้นทาง",
           field: "branchorigin_name",
-          width: "15%",
+          width: "10%",
           sortable: true,
         },
         {
           label: "ปลายทาง",
           field: "branchdest_name",
-          width: "15%",
+          width: "10%",
           sortable: true,
         },
         {
           label: "ยอดเงิน",
           field: "total_by_branch",
-          width: "15%",
+          width: "10%",
           sortable: true,
           display: function (row) {
             return (
@@ -728,7 +730,7 @@ export default defineComponent({
 
         },
         {
-          label: "อนุมัติโดย",
+          label: "บันทึกโดย",
           field: "approveby",
           width: "10%",
           sortable: true,
@@ -740,37 +742,72 @@ export default defineComponent({
           sortable: true,
           display: function (row) {
             let sOutput = ''
-            if (row.cashstatus === 0) {
-              sOutput = 'สร้างรายการคำสั่ง'
-            }
-            else {
-              sOutput = row.RoleName + ' อนุมัติแล้ว'
-            }
+            sOutput = row.RoleName + ' อนุมัติแล้ว'
+            sOutput = '<span>' + sOutput + '</span>'
+            return (sOutput);
+          },
+        },
+        {
+          label: "ลำดับการอนุมัติ",
+          //field: "order_date",
+          width: "10%",
+          sortable: true,
+          display: function (row) {
+            let sOutput = ''
+            // if (row.cashstatus === 0) {
+            //   sOutput = 'สร้างรายการคำสั่ง'
+            // }
+            // else {
+              sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+            //}
 
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
           },
-          // display: function (row) {
-          //   let sOutput = ''
-          //   if (row.cashstatus === 0) {
-          //     sOutput = 'สร้างรายการคำสั่ง'
-          //   }
-          //   if (row.cashstatus === 1) {
-          //     sOutput = 'รอ Checker อนุมัติ'
-          //   }
-          //   if (row.cashstatus === 2) {
-          //     sOutput = 'รอ Approve1 อนุมัติ'
-          //   }
-          //   if (row.cashstatus === 3) {
-          //     sOutput = 'รอ Approve2 อนุมัติ'
-          //   }
-          //   if (row.cashstatus === 4) {
-          //     sOutput = 'รอ ApproveN อนุมัติ'
-          //   }
-          //   sOutput = '<span>' + sOutput + '</span>'
-          //   return (sOutput);
-          // },
         },
+        // {
+        //   label: "สถานะคำสั่ง",
+        //   //field: "order_date",
+        //   width: "10%",
+        //   sortable: true,
+        //   display: function (row) {
+        //     let sOutput = ''
+        //     if (row.cashstatus === 0) {
+        //       sOutput = 'สร้างรายการคำสั่ง'
+        //     }
+        //     else if(row.next_serail_role_id !== row.RoleId){
+        //       sOutput = row.RoleName + ' อนุมัติแล้ว'
+        //       //sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+        //     }
+        //     else {
+        //       // sOutput = row.RoleName + ' อนุมัติแล้ว'
+        //       sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+        //     }
+
+        //     sOutput = '<span>' + sOutput + '</span>'
+        //     return (sOutput);
+        //   },
+        //   // display: function (row) {
+        //   //   let sOutput = ''
+        //   //   if (row.cashstatus === 0) {
+        //   //     sOutput = 'สร้างรายการคำสั่ง'
+        //   //   }
+        //   //   if (row.cashstatus === 1) {
+        //   //     sOutput = 'รอ Checker อนุมัติ'
+        //   //   }
+        //   //   if (row.cashstatus === 2) {
+        //   //     sOutput = 'รอ Approve1 อนุมัติ'
+        //   //   }
+        //   //   if (row.cashstatus === 3) {
+        //   //     sOutput = 'รอ Approve2 อนุมัติ'
+        //   //   }
+        //   //   if (row.cashstatus === 4) {
+        //   //     sOutput = 'รอ ApproveN อนุมัติ'
+        //   //   }
+        //   //   sOutput = '<span>' + sOutput + '</span>'
+        //   //   return (sOutput);
+        //   // },
+        // },
         {
           label: "หมายเหตุ",
           field: "remark",

@@ -62,17 +62,15 @@ export default {
         <li class="w-100">
           <SidebarLink to="/listorder" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="approve_level === '1'">
             รายการสร้างคำสั่ง</SidebarLink>
-          <!-- 
-          <i class="fas fa-cloud-hail-mixed"></i>
-          <a href="#" class="nav-link px-0">
-          <span class="d-none d-sm-inline">Item</span>
-          1
-        </a> -->
         </li>
         <li>
           <SidebarLink to="/approvelist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" v-show="approve_level !== '1' ">รายการอนุมัติ
           </SidebarLink>
-        </li>                
+        </li>
+        <li>
+          <SidebarLink to="/approvenlist" icon="fas fa-genderless" class="nav-link px-4" data-bs-parent="#submenu1" >รายการคำสั่ง
+          </SidebarLink>
+        </li>                         
       </ul>
     </transition>
 

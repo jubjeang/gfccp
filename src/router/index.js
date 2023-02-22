@@ -52,6 +52,11 @@ const routes = [
     component: () => import('../views/ReportInv.vue')
   },  
   {
+    path: '/approvenlist',
+    name: 'ApproveNList',
+    component: () => import('../views/ApproveNList.vue')
+  },    
+  {
     path: '/approveprocess',
     name: 'ApproveProcess',
     component: () => import('../views/ApproveProcess.vue')

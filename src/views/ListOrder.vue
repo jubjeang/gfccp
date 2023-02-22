@@ -8,7 +8,7 @@
     </div>
     <div class="row p-1" style="width: 100%">
       <div class="col text-left">
-        <h3>รายการคำสั่ง</h3>
+        <h3>รายการสร้างคำสั่ง</h3>
       </div>
     </div>
     <div class="row p-1" style="width: 100%">
@@ -794,6 +794,7 @@ export default defineComponent({
     const CustomerID = ref(localStorage.getItem('CustomerID'))
     const gfc_cct = ref(localStorage.getItem('gfc_cct'))
     const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
+    const RoleId = ref(localStorage.getItem('RoleId'))
     const router = useRouter()
     const rowData = reactive([])
     const loading = ref(false)
@@ -1324,13 +1325,17 @@ export default defineComponent({
      */
     const myRequest = async (keyword) => {
       //const fakeData = [];      
+
       const params = {
         user_id: user_id.value,
         CustomerID: CustomerID.value,
         customerID: CustomerID.value,
+        RoleId: RoleId.value,
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
-      };
+      };  
+      console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version') )
+      console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id') )
       // const params2 = {
       //   approve_setting_id: localStorage.getItem('approve_setting_id'),
       //   approve_setting_version: localStorage.getItem('approve_setting_version')
@@ -1408,7 +1413,7 @@ export default defineComponent({
         {
           label: "เลขที่คำสั่ง",
           field: "AutoID",
-          width: "10%",
+          width: "5%",
           sortable: true,
           isKey: true,
         },
@@ -1421,13 +1426,13 @@ export default defineComponent({
         {
           label: "ต้นทาง",
           field: "branchorigin_name",
-          width: "15%",
+          width: "10%",
           sortable: true,
         },
         {
           label: "ปลายทาง",
           field: "branchdest_name",
-          width: "15%",
+          width: "10%",
           sortable: true,
         },
         {
@@ -1454,7 +1459,7 @@ export default defineComponent({
 
         },
         {
-          label: "อนุมัติโดย",
+          label: "บันทึกโดย",
           field: "approveby",
           width: "10%",
           sortable: true,
@@ -1469,9 +1474,32 @@ export default defineComponent({
             if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
             }
+            else if(row.RoleName === 'Maker'){
+              // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+              sOutput = row.RoleName + ' ส่งอนุมัติแล้ว'
+            }
             else {
+              // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
               sOutput = row.RoleName + ' อนุมัติแล้ว'
             }
+            sOutput = '<span>' + sOutput + '</span>'
+            return (sOutput);
+          },
+        },
+        {
+          label: "ลำดับการอนุมัติ",
+          //field: "order_date",
+          width: "10%",
+          sortable: true,
+          display: function (row) {
+            let sOutput = ''
+            // if (row.cashstatus === 0) {
+            //   sOutput = 'สร้างรายการคำสั่ง'
+            // }
+            // else {
+              sOutput = row.next_serail_role_name
+              // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+            //}
 
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
