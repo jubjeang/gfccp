@@ -13,8 +13,8 @@
     </div>
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
-        <button type="button" class="btn btn-danger" style="width:5rem; height:2rem"
-          @click="update_cashstatus_order_all('reject')">Reject</button>&nbsp;<button class="btn btn-primary"
+        <button type="button" class="btn btn-danger" style="width:6rem; height:2rem"
+          @click="update_cashstatus_order_all('reject')">ถอนรายการ</button>&nbsp;<button class="btn btn-primary"
           @click="update_cashstatus_order_all('approve_all')" style="width: 5rem; height: 2rem;">อนุมัติ</button>
       </div>
       <div class="col-10">
@@ -70,7 +70,7 @@
                         v-model="AdvSearch.order_no">
                     </div>
                     <div class="col-sm-2">
-                      รหัสสาขา
+                      ชื่อสาขา
                     </div>
                     <div class="col-sm-2">
                       <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;"
@@ -113,8 +113,8 @@
                       <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;"
                         v-model="AdvSearch.order_type">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -126,8 +126,13 @@
                       <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"
                         v-model="AdvSearch.order_status">
                         <option value="">กรุณาเลือก</option>
-                        <option value="wait">รออนุมัติ</option>
-                        <option value="aprove">อนุมัติ</option>
+                        <option value="สร้างรายการคำสั่ง">สร้างรายการคำสั่ง</option>
+                        <option value="Maker ส่งอนุมัติแล้ว">Maker ส่งอนุมัติแล้ว</option>
+                        <option value="Checker อนุมัติ">Checker อนุมัติแล้ว</option>
+                        <option value="Approve1 อนุมัติ">Approve1 อนุมัติแล้ว</option>
+                        <option value="Approve2 อนุมัติ">Approve2 อนุมัติแล้ว</option>
+                        <option value="Approve3 อนุมัติ">Approve3 อนุมัติแล้ว</option>
+                        <option value="ApproveN อนุมัติแล้ว">ApproveN อนุมัติแล้ว</option>
                       </select>
                     </div>
                     <div class="col-sm-2">
@@ -220,8 +225,8 @@
                       <select class="form-select form-select-sm" id="OrderTypeEdit" style="width:15rem;"
                         v-model="OrderDataExisting.OrderType" @click="getBranchAndCashEdit()">
                         <option value="">Please Select One Type</option>
-                        <option value="Withdraw">Withdraw</option>
-                        <option value="Deposit">Deposit</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -476,10 +481,15 @@ export default defineComponent({
       Cashstatus: "",
     });
     const selecteall = ref(null);
+    const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
     const update_cashstatus_order_all = (type__) => {
       console.log('selecteall.value: ', selecteall.value)
       let message_ = ''
-      type__ === 'reject' ? message_ = 'คุณต้องการ Reject รายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      type__ === 'reject' ? message_ = 'คุณต้องการถอนรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
       if (confirm(message_)) {
         const params = {
           Id: selecteall.value,
@@ -681,18 +691,36 @@ export default defineComponent({
     const table = reactive({
       isLoading: false,
       columns: [
+        // {
+        //   label: "เลขที่คำสั่ง",
+        //   field: "AutoID",
+        //   width: "5%",
+        //   sortable: true,
+        //   isKey: true,
+        // },
         {
           label: "เลขที่คำสั่ง",
           field: "AutoID",
           width: "5%",
           sortable: true,
           isKey: true,
+          display: function (row) {
+            return (
+              // '<button type="button" data-id="' +
+              // row.AutoID +
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // +
+              '<span>'+row.ordernumber+'</span>'
+            );
+          },
+          
         },
         {
           label: "ประเภทบริการ",
           field: "servicetype",
           width: "5%",
           sortable: true,
+          
         },
         {
           label: "ต้นทาง",
@@ -822,7 +850,7 @@ export default defineComponent({
             return (
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-warning is-rows-el reject_order" style="width: 5.5em; height: 2rem">Reject</button>'
+              '" class="btn btn-warning is-rows-el reject_order" style="width: auto; height: 2rem">ถอนรายการ</button>'
               +
               '<button type="button" data-id="' +
               row.AutoID +
@@ -830,7 +858,7 @@ export default defineComponent({
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width: 5rem; height: 2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">View</button>'
+              '" class="btn btn-info is-rows-el editorder" style="width: auto; height: 2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">รายละเอียด</button>'
             );
           },
         },
@@ -881,7 +909,7 @@ export default defineComponent({
         if (element.classList.contains("reject_order")) {
           element.addEventListener("click", async function () {
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
+            if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'

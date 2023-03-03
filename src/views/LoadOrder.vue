@@ -75,8 +75,8 @@
                         <select class="form-select form-select-sm" id="OrderType" style="width:15rem;"
                           v-model="OrderType">
                           <option value="">Please Select One Type</option>
-                          <option value="Withdraw">Withdraw</option>
-                          <option value="Deposit">Deposit</option>
+                          <option value="Withdraw">คำสั่งเบิก</option>
+                          <option value="Deposit">คำสั่งฝาก</option>
                         </select>
                       </div>
                     </div>
@@ -196,8 +196,8 @@
                         <select class="form-select form-select-sm" id="OrderTypeNew" style="width:15rem;"
                           v-model="NewOrder.OrderTypeNew" @click="getBranchAndCash()">
                           <option value="">Please Select One Type</option>
-                          <option value="Withdraw">Withdraw</option>
-                          <option value="Deposit">Deposit</option>
+                          <option value="Withdraw">คำสั่งเบิก</option>
+                          <option value="Deposit">คำสั่งฝาก</option>
                         </select>
                       </div>
                     </div>
@@ -371,8 +371,8 @@
                         <select class="form-select form-select-sm" id="OrderTypeEdit" style="width:15rem;"
                           v-model="OrderDataExisting.OrderType" @click="getBranchAndCashEdit()">
                           <option value="">Please Select One Type</option>
-                          <option value="Withdraw">Withdraw</option>
-                          <option value="Deposit">Deposit</option>
+                          <option value="Withdraw">คำสั่งเบิก</option>
+                          <option value="Deposit">คำสั่งฝาก</option>
                         </select>
                       </div>
                     </div>
@@ -577,6 +577,11 @@
       const gfc_cct_code = ref(localStorage.getItem('gfc_cct_code'))
       const router = useRouter()
       const rowData = reactive([])
+      const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
       const NewOrder = reactive({
         OrderCategoryNew: "BankBranch",
         OrderTypeNew: "",
@@ -1124,7 +1129,7 @@
               return (
                 // '<button type="button" data-id="' +
                 // row.AutoID +
-                // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
+                // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอน</button>'
                 // +
                 '<button type="button" data-id="' +
                 row.AutoID +
@@ -1183,7 +1188,7 @@
           if (element.classList.contains("rejectorder")) {
             element.addEventListener("click", async function () {
               //  console.log(this.dataset.id + " rejectorder!!");
-              if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
+              if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
                 const params = {
                   Id: this.dataset.id,
                   Type_: 'reject'

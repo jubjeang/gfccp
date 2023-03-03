@@ -1,33 +1,40 @@
 <template>
-<nav class="navbar navbar-expand-sm navbar-dark">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <div class="navbar-nav me-auto">
+  <nav class="navbar navbar-expand-sm navbar-dark">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <div class="navbar-nav me-auto">
+        </div>
+        <form class="d-flex">
+          <span class="text-white h6">{{ user_name }}</span> <span class="text-white h6">&nbsp;|&nbsp; </span> <a
+            class="link h6 text-white text-decoration-none" style="cursor: pointer;" @click="logout">ออกจากระบบ</a>
+          <!-- <span class="text-white h6">{{ user_name }}</span> <span class="text-white h6">&nbsp;|&nbsp; </span>  <router-link to="/" class="link h6 text-white text-decoration-none" >ออกจากระบบ</router-link> -->
+        </form>
       </div>
-      <form class="d-flex">
-        <!-- <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-primary" type="button">Search</button>  -->
-        <span class="text-white h6">{{ user_name }}</span> <span class="text-white h6">&nbsp;|&nbsp; </span>  <router-link to="/" class="link h6 text-white text-decoration-none" >ออกจากระบบ</router-link>
-      </form>
     </div>
-  </div>
-</nav>
-
+  </nav>
 </template>
 <script>
+import router from '@/router'
 export default {
   name: 'Header',
-   data() {
+  data() {
     return {
       user_id: "",
       user_name: "",
       message: "",
     }
   },
-      created() {
+  methods: { 
+    logout(){ 
+      localStorage.setItem('user_id', null)
+      localStorage.setItem('user_name', null)
+      router.push('/')
+    }
+  },
+  created() {
     try {
-      this.user_name= localStorage.getItem('user_name')
-      this.user_id= localStorage.getItem('user_id')
+      this.user_name = localStorage.getItem('user_name')
+      this.user_id = localStorage.getItem('user_id')
     }
     catch (err) {
       console.log(err)
@@ -38,7 +45,10 @@ export default {
 }
 </script>
 <style scoped>
-nav{  background-color:darkgrey}
+nav {
+  background-color: darkgrey
+}
+
 #nav {
   padding: 0px;
   text-align: center;
@@ -53,5 +63,4 @@ nav{  background-color:darkgrey}
   color: whitesmoke;
   background: crimson;
   border-radius: 0.5rem;
-}
-</style>
+}</style>

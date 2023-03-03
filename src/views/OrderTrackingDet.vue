@@ -88,6 +88,11 @@ export default {
     name: 'OrderTrackingDet',
     components: { Sidebar, Header, collapsed, toggleSidebar, sidebarWidth },
     setup() {
+        const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
         return { collapsed, toggleSidebar, sidebarWidth }
     },
     data() {

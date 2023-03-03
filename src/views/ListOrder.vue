@@ -56,7 +56,7 @@
           <div class="modal-dialog  modal-xl">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">ค้นหา</h5>
+                <h5 class="modal-title">ค้นหาขั้นสูง</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -83,7 +83,7 @@
                         v-model="AdvSearch.order_no">
                     </div>
                     <div class="col-sm-2">
-                      รหัสสาขา
+                      ชื่อสาขา
                     </div>
                     <div class="col-sm-2">
                       <input type="text" id="adv_branch_code" class="form-control" style="width:10rem;"
@@ -126,8 +126,8 @@
                       <select class="form-select form-select-sm" id="adv_order_type" style="width:10rem;"
                         v-model="AdvSearch.order_type">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -139,8 +139,13 @@
                       <select class="form-select form-select-sm" id="adv_order_status" style="width:10rem;"
                         v-model="AdvSearch.order_status">
                         <option value="">กรุณาเลือก</option>
-                        <option value="wait">รออนุมัติ</option>
-                        <option value="aprove">อนุมัติ</option>
+                        <option value="สร้างรายการคำสั่ง">สร้างรายการคำสั่ง</option>
+                        <option value="Maker ส่งอนุมัติแล้ว">Maker ส่งอนุมัติแล้ว</option>
+                        <option value="Checker อนุมัติ">Checker อนุมัติแล้ว</option>
+                        <option value="Approve1 อนุมัติ">Approve1 อนุมัติแล้ว</option>
+                        <option value="Approve2 อนุมัติ">Approve2 อนุมัติแล้ว</option>
+                        <option value="Approve3 อนุมัติ">Approve3 อนุมัติแล้ว</option>
+                        <option value="ApproveN อนุมัติแล้ว">ApproveN อนุมัติแล้ว</option>
                       </select>
                     </div>
                     <div class="col-sm-2">
@@ -199,7 +204,7 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="OrderCategory" style="width:15rem;"
                         v-model="OrderCategory">
-                        <option value="BankBranch">Bank Branch</option>
+                        <option value="BankBranch">สาขา</option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
@@ -211,8 +216,8 @@
                     <div class="col">
                       <select class="form-select form-select-sm" id="OrderType" style="width:15rem;" v-model="OrderType">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -253,9 +258,15 @@
                     <div class="col">
                       แนบไฟล์
                     </div>
-                    <div class="col">
-                      <input class="form-control form-control-sm form-control-file" @change="selectFile"
-                        style="width:15rem;" type="file" id="formFile" />
+                    <div class="col text-start">
+                      <!-- <input class="form-control form-control-sm form-control-file" @change="selectFile"
+                        style="width:15rem;" type="file" id="formFile" title="เลือกไฟล์" /> -->
+
+                      <label class="input-group-text" for="formFile"
+                        style="width:5rem; height: 0.5rem; display:inline;">เลือกไฟล์</label>
+                      <input type="file" class="form-control" id="formFile" @change="selectFile" style="display: none;">
+                      <input type="text" class="form-control" id="formFileText" style="width:10rem; display:inline;">
+
                     </div>
                   </div>
                 </div>
@@ -293,7 +304,7 @@
                 <div class="container">
                   <div class="row p-2">
                     <div class="col ps-4 d-flex">
-                      <h5 class="ps-1 text-gray">สร้างรายการคำสั่ง</h5>
+                      <h5 class="ps-1 text-gray">&nbsp;</h5>
                     </div>
                   </div>
                   <div class="row p-2" v-if="message_addManual">
@@ -327,8 +338,8 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="OrderCategoryNew" style="width:15rem;"
                         v-model="NewOrder.OrderCategoryNew" @click="getOrderType()">
-                        <option value="BankBranch">Bank Branch</option>
-                        <option value="BOT">BOT</option>
+                        <option value="BankBranch">สาขา</option>
+                        <option value="BOT">ธปท.</option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
@@ -339,8 +350,8 @@
                       <select class="form-select form-select-sm" id="OrderTypeNew" style="width:15rem;"
                         v-model="NewOrder.OrderTypeNew" @click="getBranchAndCash()">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -355,8 +366,8 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <datepicker v-model="NewOrder.JobDateNew" id="JobDateNew" class="form-control" style="width:15rem;"
-                        input-format="dd/MM/yyyy" />
+                      <datepicker v-model="NewOrder.JobDateNew"  id="JobDateNew" class="form-control" style="width:15rem;"
+                      inputFormat="dd/MM/yyyy" />
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -371,7 +382,8 @@
                           , height: '0.5rem'
                         }" :disabled="VueMultiselect_.BranchOriginBG_Color === 'ffffff' ? false : true"
                         v-model="NewOrder.BranchOrigin" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        @select="getBranchForCash($event, 'BranchDest')" :value="branch_name" track-by="branch_name">
+                        @select="getBranchForCash($event, 'BranchDest')" :value="branch_name" track-by="branch_name"
+                        placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect>
                       <!-- <select class="form-select form-select-sm" name="BranchOrigin" id="BranchOrigin"
                         style="width:15rem;" v-model="NewOrder.BranchOrigin"
@@ -393,7 +405,8 @@
                           , height: '0.5rem'
                         }" :disabled="VueMultiselect_.BranchDestBG_Color === 'ffffff' ? false : true"
                         v-model="NewOrder.BranchDest" :select-label="null" :allow-empty="true" :close-on-select="true"
-                        @select="getBranchForCash($event, 'BranchOrigin')" :value="branch_name" track-by="branch_name">
+                        @select="getBranchForCash($event, 'BranchOrigin')" :value="branch_name" track-by="branch_name"
+                        placeholder="เลือก" :deselectLabel=null>
                       </VueMultiselect>
                       <!-- <select class="form-select form-select-sm" name="BranchDest" id="BranchDest" style="width:15rem;"
                         v-model="NewOrder.BranchDest" @click="getBranchForCash(NewOrder.BranchDest, 'BranchOrigin')">
@@ -516,8 +529,8 @@
                     <div class="col">
                       <select class="form-select form-select-sm" name="OrderCategoryEdit" style="width:15rem;"
                         v-model="OrderDataExisting.OrderCategory">
-                        <option value="BankBranch">Bank Branch</option>
-                        <option value="BOT">BOT</option>
+                        <option value="BankBranch">สาขา</option>
+                        <option value="BOT">ธปท.</option>
                         <!-- <option value="ForexCounting">Forex Counting</option> -->
                       </select>
                     </div>
@@ -528,8 +541,8 @@
                       <select class="form-select form-select-sm" id="OrderTypeEdit" style="width:15rem;"
                         v-model="OrderDataExisting.OrderType" @click="getBranchAndCashEdit()">
                         <option value="">กรุณาเลือก</option>
-                        <option value="Withdraw">ถอน</option>
-                        <option value="Deposit">ฝาก</option>
+                        <option value="Withdraw">คำสั่งเบิก</option>
+                        <option value="Deposit">คำสั่งฝาก</option>
                       </select>
                     </div>
                   </div>
@@ -561,7 +574,8 @@
                           width: '15rem'
                           , height: '0.5rem'
                         }" v-model="OrderDataExisting.BranchOriginSelectd" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="branch_name" track-by="branch_name">
+                        :close-on-select="true" :value="branch_name" track-by="branch_name" placeholder="เลือก"
+                        :deselectLabel=null>
                       </VueMultiselect>
                       <!-- <select class="form-select form-select-sm" name="BranchOriginEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchOriginId">
@@ -582,7 +596,8 @@
                           width: '15rem'
                           , height: '0.5rem'
                         }" v-model="OrderDataExisting.BranchDestSelectd" :select-label="null" :allow-empty="true"
-                        :close-on-select="true" :value="branch_id" track-by="branch_name">
+                        :close-on-select="true" :value="branch_id" track-by="branch_name" placeholder="เลือก"
+                        :deselectLabel=null>
                       </VueMultiselect>
                       <!-- <select class="form-select form-select-sm" name="BranchDestEdit" style="width:15rem;"
                         v-model="OrderDataExisting.BranchDestId">
@@ -718,7 +733,7 @@
         <div class="modal-dialog  modal-s">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Download Template</h5>
+              <h5 class="modal-title">โหลดรูปแบบไฟล์</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -735,7 +750,6 @@
                         style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>&nbsp;ฝาก(Deposit)</button>
                   </div>
                   <div class="col">
-
                     &nbsp;<button class="btn btn-primary" style="width:10rem; height:4rem;"
                       @click="gettemplatefile('Withdraw')"><i class="fa fa-table" aria-hidden="true"
                         style="cursor: pointer; width: 1.5rem; height: 1.5rem;"></i>&nbsp;เบิก(Withdraw)</button>
@@ -815,11 +829,14 @@ export default defineComponent({
       BranchOriginBG_Color: "",
       BranchDestBG_Color: ""
     })
+    const today = new Date();
+      const tomorrow = new Date(today);
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
       OrderTypeNew: "",
       BankTypeNew: "",
-      JobDateNew: new Date(),
+       JobDateNew: new Date( today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1) ) ,
+      //JobDateNew: ref(null),
       RefNo: "",
       RemarkNew: "",
       DataBranchToOrigin: [],
@@ -828,6 +845,7 @@ export default defineComponent({
       BranchDest: "",
       BankTypeData: [],
     })
+
     const Id = ref(0)
     const searchdata = ref([]);
     const ActitySelectd = reactive({
@@ -840,8 +858,21 @@ export default defineComponent({
     })
     // const rowDataEdit = ref([])
     const options = ['list', 'of', 'options'];
+    const hasLocalStorage =  ref(null)
+
+    //-----check session
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
     const selected = ref(null);
     const selecteall = ref(null);
+    const fileInput = ref(null);
+    const handleFileChange = () => {
+      const file = fileInput.value.files[0];
+      console.log('file: ', file);
+      // Do something with the selected file
+    }
     const update_cashstatus_order_all = (type__) => {
       console.log('selecteall.value: ', selecteall.value)
       let message_ = ''
@@ -1181,12 +1212,13 @@ export default defineComponent({
           });
       }
     }
-    const sendFile = async (e) => {
+    const sendFile = (e) => {
       // console.log( moment( JobDate.value ).format('YYYY-MM-DD') )
       const target = e.target
       if (target && target.files) {
         file.value = target.files[0];
       }
+      //document.getElementById('formFileText').value = formFile.value.files[0];
       let formData = new FormData()
       formData.append('file', file.value)
       formData.append('OrderCategory', OrderCategory.value)
@@ -1198,11 +1230,13 @@ export default defineComponent({
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
       formData.append('approve_setting_id', localStorage.getItem('approve_setting_id'))
+      formData.append('approve_setting_version', localStorage.getItem('approve_setting_version'))
+
       formData.append('roleid', 0)
       console.log('sendFile')
       formData.forEach(element => console.log(element))
       try {
-        await axios.post('/upload', formData)
+         axios.post('/upload', formData)
           .then((res) => {
             // success callback
             console.log(res.data)
@@ -1257,11 +1291,12 @@ export default defineComponent({
     const selectFile = (e) => {
       // file.value = this.$refs.file.files[0]
       file.value = e.target.files[0]
+      console.log('e.target.files[0]: ', e.target.files[0]['name'])
+      document.getElementById('formFileText').value = e.target.files[0]['name']
       //headline.value.textContent
       error.value = false
       message.value = ""
     }
-
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -1305,11 +1340,6 @@ export default defineComponent({
       let year = null//date__.getFullYear();
       // if (date_) {
       date__ = moment(date_).format('DD/MM/YYYY')
-      // console.log('date__: ' + date__)
-      // console.log('moment: ' + moment(date_).format('DD-MM-YYYY') )
-      // day = moment(date_).format('DD');//date__.getDate();
-      // month = moment(date_).format('MM')//date__.getMonth() + 1;
-      // year = moment(date_).format('YYYY')//date__.getFullYear();
       return date__;
       //return `${day}/${month}/${year}`;
       // return `${year}-${month}-${day}`;
@@ -1324,8 +1354,7 @@ export default defineComponent({
      * Get server data request
      */
     const myRequest = async (keyword) => {
-      //const fakeData = [];      
-
+      //const fakeData = [];    
       const params = {
         user_id: user_id.value,
         CustomerID: CustomerID.value,
@@ -1333,9 +1362,9 @@ export default defineComponent({
         RoleId: RoleId.value,
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
-      };  
-      console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version') )
-      console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id') )
+      };
+      console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version'))
+      console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id'))
       // const params2 = {
       //   approve_setting_id: localStorage.getItem('approve_setting_id'),
       //   approve_setting_version: localStorage.getItem('approve_setting_version')
@@ -1416,6 +1445,15 @@ export default defineComponent({
           width: "5%",
           sortable: true,
           isKey: true,
+          display: function (row) {
+            return (
+              // '<button type="button" data-id="' +
+              // row.AutoID +
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // +
+              '<span>' + row.ordernumber + '</span>'
+            );
+          },
         },
         {
           label: "ประเภทบริการ",
@@ -1474,7 +1512,11 @@ export default defineComponent({
             if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
             }
-            else if(row.RoleName === 'Maker'){
+            else if (row.cashstatus === 99) {
+              // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+              sOutput = 'รอแก้ไขคำสั่ง'
+            }
+            else if (row.RoleName === 'Maker') {
               // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
               sOutput = row.RoleName + ' ส่งอนุมัติแล้ว'
             }
@@ -1497,8 +1539,8 @@ export default defineComponent({
             //   sOutput = 'สร้างรายการคำสั่ง'
             // }
             // else {
-              sOutput = row.next_serail_role_name
-              // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
+            sOutput = row.next_serail_role_name
+            // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
             //}
 
             sOutput = '<span>' + sOutput + '</span>'
@@ -1519,7 +1561,7 @@ export default defineComponent({
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
               // +
               '<button type="button" data-id="' +
               row.AutoID +
@@ -1578,7 +1620,7 @@ export default defineComponent({
         if (element.classList.contains("rejectorder")) {
           element.addEventListener("click", async function () {
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการ Reject รายการคำสั่ง?")) {
+            if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'
@@ -1682,7 +1724,7 @@ export default defineComponent({
                   OrderDataExisting.BranchOriginSelectd = [{ branch_id: obj[0].branchorigin_code, branch_name: obj[0].branchorigin_name }]
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if (obj[0].cashstatus === 0) {
+                  if ( ( obj[0].cashstatus === 0 ) || ( obj[0].cashstatus === 99 ) ){
                     checkstatus_send_to_checker.value = true
                   }
                   else {
@@ -1708,7 +1750,8 @@ export default defineComponent({
                       Quantity: obj[0].pcs_note_new_500,
                       Amount: obj[0].note_new_500
                     })
-                  } if (obj[0].note_new_100 > 0) {
+                  } if (obj[0].note_new_100 > 0) { 
+                    console.log('obj[0].note_new_100: ',obj[0].note_new_100)
                     OrderDataExisting.OrderDataDet.push({
                       MoneyType: "100",
                       QualityMoneyType: "New",
@@ -2245,7 +2288,8 @@ export default defineComponent({
           console.log(res.data.message)
         });
     }
-    const addManualOrder = async () => {
+    // const addManualOrder = async () => {
+      const addManualOrder = () => {      
       const formData = new FormData()
       formData.append('OrderCategoryNew', NewOrder.OrderCategoryNew)
       formData.append('OrderTypeNew', NewOrder.OrderTypeNew)
@@ -2281,12 +2325,14 @@ export default defineComponent({
       console.log('add data')
       console.log('json: ', json)
       try {
-        await axios.post('/manual_add_order', json)
+        // await axios.post('/manual_add_order', json)
+        axios.post('/manual_add_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)
             // this.$refs.ClosemyModalNew.click();
             // document.getElementById('ClosemyModalNew').click();//************************** */
+            location.reload()
 
           }, (res) => {
             // error callback
@@ -2294,7 +2340,7 @@ export default defineComponent({
             message_addManual.value = res.data.message
           }).finally(() => {
             // router.push('/listorder')
-            location.reload()
+
           });
         error_addManual.value = false
       }
@@ -2540,7 +2586,9 @@ export default defineComponent({
         error_editOrder.value = true
       }
     }
-    return {
+    return { 
+      fileInput,
+      handleFileChange,
       update_cashstatus_order_all,
       loading, gettemplatefile, VueMultiselect_, selected, options, AdvSearch_, AdvSearch, ActitySelectd,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish, getOrderType
@@ -2554,9 +2602,11 @@ export default defineComponent({
   },
 })
 </script>
-<style scoped lang="css">
+
+<style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
+
 
 
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
@@ -2565,6 +2615,26 @@ export default defineComponent({
   vertical-align: middle;
 }
 
+#formFile::before {
+  content: "เลือกไฟล์";
+  position: absolute;
+  z-index: 2;
+  display: block;
+  background-color: #eee;
+  width: 1rem;
+}
+
+/* .input-group-text {
+  cursor: pointer;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #fff;
+  opacity: 0;
+} */
+
+
+
 /* #formFile::before {
   content: "Pick file";
   position: absolute;
@@ -2572,5 +2642,4 @@ export default defineComponent({
   display: block;
   background-color: #eee;
   width: 80px;
-} */
-</style>
+} */</style>

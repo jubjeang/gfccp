@@ -35,6 +35,11 @@ export default {
     }
   },
   setup() { 
+    const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
     const data = reactive({
       user_name: localStorage.getItem('user_name'),
       user_id: localStorage.getItem('user_id'),

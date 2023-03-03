@@ -177,6 +177,11 @@ export default defineComponent({
     const searchdata = ref([]);
     const loading = ref(false)
     const rowData = reactive([])
+    const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
     const AdvSearch = reactive({
       order_no: "",
       branch_code: "",

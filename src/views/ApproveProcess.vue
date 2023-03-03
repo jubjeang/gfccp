@@ -410,6 +410,11 @@ export default defineComponent({
     const classFlexShow = ref('d-flex flex-row p-1')
     const classFlexNone = ref('d-none p-1')
     const modal = ref(null);
+    const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
     // const NewOrderDet = reactive([])
     //const Id = ref(0)
     const AddData = reactive({
@@ -672,7 +677,7 @@ export default defineComponent({
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">Reject</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
               // +
               '<button type="button" data-id="' +
               row.Id +
@@ -718,7 +723,7 @@ export default defineComponent({
         if (element.classList.contains('reject_order')) {
           element.addEventListener('click', async function () {
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm('คุณต้องการ Reject รายการคำสั่ง?')) {
+            if (confirm('คุณต้องการถอนรายการคำสั่ง?')) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'

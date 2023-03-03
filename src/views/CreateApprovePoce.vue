@@ -71,8 +71,8 @@
                                             <select class="form-select form-select-sm" id="OrderType"
                                                 style="width:15rem;" v-model="OrderType">
                                                 <option value="">Please Select One Type</option>
-                                                <option value="Withdraw">Withdraw</option>
-                                                <option value="Deposit">Deposit</option>
+                                                <option value="Withdraw">คำสั่งเบิก</option>
+                                                <option value="Deposit">คำสั่งฝาก</option>
                                             </select>
                                         </div>
                                     </div>
@@ -284,8 +284,8 @@
                                                 style="width:15rem;" v-model="OrderDataExisting.OrderType"
                                                 @click="getBranchAndCashEdit()">
                                                 <option value="">Please Select One Type</option>
-                                                <option value="Withdraw">Withdraw</option>
-                                                <option value="Deposit">Deposit</option>
+                                                <option value="Withdraw">คำสั่งเบิก</option>
+                                                <option value="Deposit">คำสั่งฝาก</option>
                                             </select>
                                         </div>
                                     </div>
@@ -476,7 +476,13 @@ import Datepicker from 'vue3-datepicker'
 export default {
     name: 'CreateApproveProce',
     components: { TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
-    setup() { }
+    setup() { 
+        const hasLocalStorage =  ref(null)
+    hasLocalStorage.value =window.localStorage.getItem('user_id');
+    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+      router.push('/')
+    }
+    }
 
 
 }
