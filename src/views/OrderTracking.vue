@@ -48,9 +48,10 @@ export default {
     })
     const params = {
           CustomerID: data.CustomerID,
+          user_id: localStorage.getItem('user_id'),
           pagname: 'ordertracking'
         };
-    axios.get('/get_pbi_url', { params })
+    axios.get(process.env.VUE_APP_API_URL+'/get_pbi_url', { params })
       .then((res) => {
         data.pbi_url = JSON.parse(JSON.stringify(res.data[0].pbi_url))
         //console.log( data.pbi_url )

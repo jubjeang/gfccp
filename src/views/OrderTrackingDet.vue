@@ -114,7 +114,7 @@ export default {
     },
     created() {
         try {
-            axios.get('/ordertrackinglist')
+            axios.get(process.env.VUE_APP_API_URL+'/ordertrackinglist')
                 .then((res) => {
                     // success callback
                     this.Data_ = res.data

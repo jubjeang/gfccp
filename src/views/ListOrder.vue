@@ -27,8 +27,9 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
         <button type="button" class="btn btn-danger" style="width:5rem; height:2rem"
-          @click="update_cashstatus_order_all('cancel')">ยกเลิก</button>&nbsp;<button class="btn btn-primary"
-          @click="update_cashstatus_order_all('send_to_check')" style="width: 5rem; height: 2rem;">ส่งอนุมัติ</button>
+          @click="update_cashstatus_order_all('cancel')">ยกเลิก</button>&nbsp;
+        <button class="btn btn-primary" @click="update_cashstatus_order_all('send_to_check')"
+          style="width: 5rem; height: 2rem;">ส่งอนุมัติ</button>
       </div>
       <div class="col-10">
         <div style="text-align: right">
@@ -366,8 +367,8 @@
                       วันที่ปฎิบัติการ
                     </div>
                     <div class="col">
-                      <datepicker v-model="NewOrder.JobDateNew"  id="JobDateNew" class="form-control" style="width:15rem;"
-                      inputFormat="dd/MM/yyyy" />
+                      <datepicker v-model="NewOrder.JobDateNew" id="JobDateNew" class="form-control" style="width:15rem;"
+                        inputFormat="dd/MM/yyyy" />
                       <!-- <date-pick :format="'YYYY.MM.DD'"></date-pick> -->
                     </div>
                   </div>
@@ -768,6 +769,19 @@
     </div>
   </div>
   <Loading v-if="loading" />
+  <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
+  <div class="alert-popup" v-if="isOpen_alert_popup">
+    <div class="alert-box">
+      <div class="alert-header">โปรดยืนยัน</div>
+      <div class="alert-body">{{ alert_popup_message_inside }}</div>
+      <div class="alert-footer">
+        <!-- <button @click="onClose">ยกเลิก</button>
+        <button @click="onConfirm">ตกลง</button> -->
+        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">ยกเลิก</button>
+        <button id="button_alert_popup_submit" @click="confirmDialog">ตกลง</button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
@@ -781,14 +795,32 @@ import { useRouter } from 'vue-router'
 import Datepicker from 'vue3-datepicker'
 import VueMultiselect from 'vue-multiselect'
 import Loading from "../components/Loading.vue";
+import Alert_popup from "../components/Alert_popup.vue";
 
 // var user_id = localStorage.getItem('user_id')
 // console.log(user_id)
 export default defineComponent({
   name: 'ListOrder',
-  components: { Loading, TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, VueMultiselect },
+  components: {
+    Alert_popup,
+    Loading, TableLite, Sidebar
+    , Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, VueMultiselect
+  },
   setup() {
-    //upload data
+    const update_cashstatus_order_param = reactive({
+      Id: 0,
+      Type_: ""
+    })
+    const alert_popup_message_inside = ref('')
+    const update_cashstatus_order_all_type = ref('')
+    const isOpen_alert_popup = ref(false)
+    const function_selected = ref('')
+    const Alert_popup = ref(false)
+    const Alert_popup_message = ref('')
+    const selected = ref(null);
+    const selecteall = ref(null);
+    const fileInput = ref(null);
+    //upload data    
     const file = ref(File | null)//ref('')
     const error = ref(false)
     const checkstatus_send_to_checker = ref(false)
@@ -801,7 +833,9 @@ export default defineComponent({
     const OrderType = ref('')
     const BankType = ref('')
     const DownloadLink = ref('')
-    const JobDate = ref(new Date())
+    const today = new Date();
+    const tomorrow = new Date(today);
+    const JobDate = ref(new Date(today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1)))
     const user_id = ref(localStorage.getItem('user_id'))
     const department_id = ref(localStorage.getItem('department_id'))
     const position_id = ref(localStorage.getItem('position_id'))
@@ -829,13 +863,11 @@ export default defineComponent({
       BranchOriginBG_Color: "",
       BranchDestBG_Color: ""
     })
-    const today = new Date();
-      const tomorrow = new Date(today);
     const NewOrder = reactive({
       OrderCategoryNew: "BankBranch",
       OrderTypeNew: "",
       BankTypeNew: "",
-       JobDateNew: new Date( today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1) ) ,
+      JobDateNew: new Date(today.getDay() === 5 ? tomorrow.setDate(today.getDate() + 3) : tomorrow.setDate(today.getDate() + 1)),
       //JobDateNew: ref(null),
       RefNo: "",
       RemarkNew: "",
@@ -845,7 +877,6 @@ export default defineComponent({
       BranchDest: "",
       BankTypeData: [],
     })
-
     const Id = ref(0)
     const searchdata = ref([]);
     const ActitySelectd = reactive({
@@ -856,67 +887,8 @@ export default defineComponent({
       cashtobranch: 0,
       cashtobot: 0,
     })
-    // const rowDataEdit = ref([])
     const options = ['list', 'of', 'options'];
-    const hasLocalStorage =  ref(null)
-
-    //-----check session
-    hasLocalStorage.value =window.localStorage.getItem('user_id');
-    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
-      router.push('/')
-    }
-    const selected = ref(null);
-    const selecteall = ref(null);
-    const fileInput = ref(null);
-    const handleFileChange = () => {
-      const file = fileInput.value.files[0];
-      console.log('file: ', file);
-      // Do something with the selected file
-    }
-    const update_cashstatus_order_all = (type__) => {
-      console.log('selecteall.value: ', selecteall.value)
-      let message_ = ''
-      type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?'
-      if (confirm(message_)) {
-        const params = {
-          Id: selecteall.value,
-          Type_: type__,
-          user_id: user_id.value
-        }
-        setTimeout(() => {
-          // table.isLoading = false;
-          console.log('update_cashstatus_order_all')
-          // table.totalRecordCount = 20;              
-        }, 500)
-        // console.log('params: ', {selecteall})
-        try {
-          table.isLoading = true;
-          loading.value = true;
-          // table.isLoading = false;
-          loading.value = false;
-          console.log('cancelorder')
-          // table.totalRecordCount = 20;    
-          axios.get('/update_cashstatus_order_all', { params })
-            .then((res) => {
-              // success callback
-              let obj = JSON.parse(JSON.stringify(res.data))
-              console.log(obj[0])
-              // addEditItem
-            }, (res) => {
-              // error callback
-              console.log(res.data)
-            }).finally(() => {
-              //
-            });
-          table.isLoading = false
-          location.reload()
-        }
-        catch (err) {
-          console.log(err)
-        }
-      }
-
-    }
+    const hasLocalStorage = ref(null)
     const OrderDataExisting = reactive({
       orderId: "",
       BankType: "",
@@ -937,6 +909,95 @@ export default defineComponent({
       Cashstatus: "",
       BankTypeData: [],
     });
+
+
+    const confirmDialog = async () => {
+      if (function_selected.value === "update_cashstatus_order_all") {
+        const params = {
+          Id: selecteall.value,
+          Type_: update_cashstatus_order_all_type.value,
+          user_id: user_id.value
+        }
+        setTimeout(() => {
+          console.log('confirmDialog')
+        }, 500)
+        console.log('confirmDialog params: ', { params })
+        try {
+          table.isLoading = true;
+          loading.value = true;
+          loading.value = false;
+          await axios.get(process.env.VUE_APP_API_URL + '/update_cashstatus_order_all', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+          table.isLoading = false
+          location.reload()
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }//if (function_selected.value === "update_cashstatus_order_all") {
+      if (function_selected.value === "update_cashstatus_order") {
+        setTimeout(() => {
+          // table.isLoading = false;
+          loading.value = true
+        }, 500)
+        loading.value = false
+        const params = {
+          Id: update_cashstatus_order_param.Id,
+          Type_: update_cashstatus_order_param.Type_,
+        };
+        try {
+          loading.value = true;
+          await axios.get(process.env.VUE_APP_API_URL + '/update_cashstatus_order', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+              console.log(obj[0])
+              // router.push('/listorder')
+              loading.value = false
+              location.reload()
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    };
+    //-----check session
+    hasLocalStorage.value = window.localStorage.getItem('user_id');
+    if ((hasLocalStorage.value === 'null') || (hasLocalStorage.value === null) || (hasLocalStorage.value === '')) {
+      router.push('/')
+    }
+    //-----end check session
+    const handleFileChange = () => {
+      const file = fileInput.value.files[0];
+      console.log('file: ', file);
+      // Do something with the selected file
+    }
+    const update_cashstatus_order_all = (type__) => {
+      console.log('selecteall.value: ', selecteall.value)
+      console.log('isOpen_alert_popup.value: ', isOpen_alert_popup.value)
+      isOpen_alert_popup.value = true;
+      function_selected.value = "update_cashstatus_order_all"
+      update_cashstatus_order_all_type.value = type__
+      console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
+      // handle confirmation logic here
+      let message_ = ''
+      type__ === 'cancel' ? message_ = 'คุณต้องการยกเลิกรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการส่งอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      alert_popup_message_inside.value = message_
+    }
     const gettemplatefile = async (value) => {
       let filename = ''
       value === 'Deposit' ? filename = 'BranchtoCCTTemplate_deposit.xls' : filename = 'CCTToBranchTemplate_withdraw.xls'
@@ -947,7 +1008,7 @@ export default defineComponent({
       formData.forEach((value, key) => object[key] = value)
       var json = JSON.stringify(object)
       //console.log('json: ',json)           
-      await axios.post('/gettemplatefile', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
+      await axios.post(process.env.VUE_APP_API_URL + '/gettemplatefile', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
         const url = URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.ms-excel;charset=Windows-874' }))
         const link = document.createElement('a')
         link.href = url
@@ -974,7 +1035,7 @@ export default defineComponent({
       };
       if (NewOrder.OrderCategoryNew !== "BOT") {
         if (NewOrder.OrderTypeNew === "Withdraw") {
-          await axios.get('/getbranchforcash', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
             .then((res) => {
               // success callback           
               if (ddltype === 'BranchDest') {
@@ -989,7 +1050,7 @@ export default defineComponent({
             })
         }
         if (NewOrder.OrderTypeNew === "Deposit") {
-          await axios.get('/getbranchforcash', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/getbranchforcash', { params })
             .then((res) => {
               // success callback           
               if (ddltype === 'BranchOrigin') {
@@ -1008,16 +1069,24 @@ export default defineComponent({
       getBranchAndCash()
     }
     const getBranchAndCash = () => {
+      Alert_popup.value = false
       NewOrder.DataBranchToOrigin = []
       NewOrder.DataBranchToDest = []
       console.log("NewOrder.OrderCategoryNew: ", NewOrder.OrderCategoryNew)
       console.log("NewOrder.OrderTypeNew: ", NewOrder.OrderTypeNew)
       console.log("ActitySelectd.branchtocash: ", ActitySelectd.branchtocash)
+      console.log("ActitySelectd.cashtocash: ", ActitySelectd.cashtocash)
+      console.log("ActitySelectd.bottocash: ", ActitySelectd.bottocash)
+      console.log("ActitySelectd.branchtobranch: ", ActitySelectd.branchtobranch)
+      console.log("ActitySelectd.cashtobranch: ", ActitySelectd.cashtobranch)
+      console.log("ActitySelectd.cashtobot: ", ActitySelectd.cashtobot)  
       if (NewOrder.OrderTypeNew === "Withdraw")//------------------Withdraw
       {
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
           if (ActitySelectd.bottocash === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
+            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
+            Alert_popup.value = true
+            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1033,7 +1102,9 @@ export default defineComponent({
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
           if (ActitySelectd.cashtobranch === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
+            Alert_popup.value = true
+            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้'
+            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1049,8 +1120,9 @@ export default defineComponent({
       if (NewOrder.OrderTypeNew === "Deposit") {//------------------Deposit
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
           if (ActitySelectd.cashtobot === '0') {
-
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
+            Alert_popup.value = true
+            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
+            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1065,7 +1137,9 @@ export default defineComponent({
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
           if (ActitySelectd.branchtocash === '0') {
-            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
+            Alert_popup.value = true
+            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
+            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1095,7 +1169,7 @@ export default defineComponent({
       };
 
       if ((servicetype === 'cct') || (servicetype === 'cashtobranch')) {
-        await axios.get('/getcashcenterdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
           .then((res) => {
             // success callback 
             if (gettype === 'Add') {
@@ -1115,7 +1189,7 @@ export default defineComponent({
       }
       //---------------------------------------------      
       if (servicetype === 'bot') {
-        await axios.get('/getbotbranch', { params })
+        await axios.get(process.env.VUE_APP_API_URL + '/getbotbranch', { params })
           .then((res) => {
             // success callback  
             if (gettype === 'Add') {
@@ -1188,7 +1262,7 @@ export default defineComponent({
         type_: type_
       };
       if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL + '/getbranchdata', { params })
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -1202,7 +1276,7 @@ export default defineComponent({
         // const params = {
         //   CustomerID: CustomerID.value
         // };
-        await axios.get('/getcashcenterdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -1236,7 +1310,7 @@ export default defineComponent({
       console.log('sendFile')
       formData.forEach(element => console.log(element))
       try {
-         axios.post('/upload', formData)
+        axios.post(process.env.VUE_APP_API_URL + '/upload', formData)
           .then((res) => {
             // success callback
             console.log(res.data)
@@ -1268,7 +1342,7 @@ export default defineComponent({
         };
         console.log('params: ', params)
         try {
-          await axios.get('/update_cashstatus_order', { params })
+          await axios.get(process.env.VUE_APP_API_URL + '/update_cashstatus_order', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -1363,13 +1437,28 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
+      console.log('myRequest params: ', params)
       console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version'))
       console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id'))
-      // const params2 = {
-      //   approve_setting_id: localStorage.getItem('approve_setting_id'),
-      //   approve_setting_version: localStorage.getItem('approve_setting_version')
-      //   };
-      const res = await axios.get('/orderlist', { params })
+      await axios.get(process.env.VUE_APP_API_URL+'/getActitySelectd', { params })
+        .then((res) => {
+          //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+          let output = null
+          output = res.data.output.split(':')
+          ActitySelectd.branchtocash = output[0]
+          ActitySelectd.cashtocash = output[1]
+          ActitySelectd.bottocash = output[2]
+          ActitySelectd.branchtobranch = output[3]
+          ActitySelectd.cashtobranch = output[4]
+          ActitySelectd.cashtobot = output[5]
+          console.log('res.data: ', res.data.output)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
+      const res = await axios.get(process.env.VUE_APP_API_URL + '/orderlist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("myRequest Data_: ", Data_)
@@ -1377,7 +1466,8 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-      await axios.get('/getcashcenterdata', { params })
+      //Alert_popup.message='999'
+      await axios.get(process.env.VUE_APP_API_URL + '/getcashcenterdata', { params })
         .then((res) => {
           // success callback
           AdvSearch.DataBranchToOrigin = res.data
@@ -1390,7 +1480,7 @@ export default defineComponent({
         user_id: user_id.value
       };
       console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
-      await axios.get('/getbanktypedata', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/getbanktypedata', { params })
         .then((res) => {
           // success callback     
           console.log('res.data:', res.data)
@@ -1402,7 +1492,7 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-      await axios.get('/getdownloadlink', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/getdownloadlink', { params })
         .then((res) => {
           // success callback               
           DownloadLink.value = res.data[0].url_link
@@ -1410,7 +1500,6 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -1434,7 +1523,7 @@ export default defineComponent({
           reject();
         }
       });
-    };
+    };//const myRequest = async (keyword) => {
     // Table config
     const table = reactive({
       isLoading: false,
@@ -1449,7 +1538,7 @@ export default defineComponent({
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
               // +
               '<span>' + row.ordernumber + '</span>'
             );
@@ -1557,19 +1646,20 @@ export default defineComponent({
           label: "",
           //field: "quick",
           width: "10%",
+          height: "1%",
           display: function (row) {
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
               // +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">ยกเลิก</button>'
+              '" class="btn btn-danger is-rows-el cancelorder" style="margin-top: 0.2rem; width: 5rem; height:2rem">ยกเลิก</button><br />'
               +
               '<button type="button" data-id="' +
               row.AutoID +
-              '" class="btn btn-info is-rows-el editorder" style="width:5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">แก้ไข</button>'
+              '" class="btn btn-info is-rows-el editorder" style="margin-top: 0.2rem; width: 5rem; height:2rem" data-bs-target="#ModalEditOrder" data-bs-toggle="modal">แก้ไข</button>'
             );
           },
         },
@@ -1582,7 +1672,7 @@ export default defineComponent({
       }),
       sortable: {
         order: "AutoID",
-        sort: "asc",
+        sort: "desc",
       },
     });
     /**
@@ -1592,7 +1682,7 @@ export default defineComponent({
       () => searchTerm.value,
       // (val) => {
       //   //Data_.value
-      //   const res = axios.get('/orderlist')
+      //   const res = axios.get(process.env.VUE_APP_API_URL+'/orderlist')
       //     .then((res) => {
       //       Data_.value = JSON.parse(JSON.stringify(res.data))
       //       console.log("Data_: ", Data_)
@@ -1612,87 +1702,81 @@ export default defineComponent({
     const tableLoadingFinish = (elements) => {
       table.isLoading = false;
       Array.prototype.forEach.call(elements, function (element) {
-        if (element.classList.contains("name-btn")) {
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " name-btn click!!")
-          });
-        }
+        // if (element.classList.contains("name-btn")) {
+        //   element.addEventListener("click", function () {
+        //     console.log(this.dataset.id + " name-btn click!!")
+        //   });
+        // }
         if (element.classList.contains("rejectorder")) {
-          element.addEventListener("click", async function () {
-            //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: 'reject'
-              };
-              try {
-                loading.value = true;
-                await axios.get('/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    setTimeout(() => {
-                      // table.isLoading = false;
-                      console.log('rejectorder')
-                      // table.totalRecordCount = 20;              
-                    }, 500)
-                    loading.value = false;
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-              }
-              catch (err) {
-                console.log(err)
-              }
-            }
+          element.addEventListener("click", async function () { 
+            update_cashstatus_order_param.Id = this.dataset.id
+            update_cashstatus_order_param.Type_ = 'reject'
+            console.log('selecteall.value: ', selecteall.value)
+            console.log('isOpen_alert_popup.value: ', isOpen_alert_popup.value)
+            isOpen_alert_popup.value = true;
+            function_selected.value = "update_cashstatus_order"
+            console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
+            // handle confirmation logic here
+            let message_ = ''
+            message_ = 'คุณต้องการยกเลิกรายการคำสั่ง?'
+            alert_popup_message_inside.value = message_
+
+
+            // if (confirm("คุณต้องการถอยรายการคำสั่ง?")) {
+            //   const params = {
+            //     Id: this.dataset.id,
+            //     Type_: 'reject'
+            //   };
+            //   try {
+            //     loading.value = true;
+            //     await axios.get(process.env.VUE_APP_API_URL + '/update_cashstatus_order', { params })
+            //       .then((res) => {
+            //         // success callback
+            //         let obj = JSON.parse(JSON.stringify(res.data))
+            //         console.log(obj[0])
+            //         // router.push('/listorder')
+            //         setTimeout(() => {
+            //           // table.isLoading = false;
+            //           console.log('rejectorder')
+            //           // table.totalRecordCount = 20;              
+            //         }, 500)
+            //         loading.value = false;
+            //         location.reload()
+            //         // addEditItem
+            //       }, (res) => {
+            //         // error callback
+            //         console.log(res.data)
+            //       }).finally(() => {
+            //         //
+            //       });
+            //   }
+            //   catch (err) {
+            //     console.log(err)
+            //   }
+            // }
           });
         }
         if (element.classList.contains("cancelorder")) {
           element.addEventListener("click", async function () {
-            // console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: 'cancel'
-              };
-              try {
-                loading.value = true;
-                await axios.get('/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    setTimeout(() => {
-                      // table.isLoading = false;
-                      console.log('cancelorder')
-                      // table.totalRecordCount = 20;              
-                    }, 500)
-                    loading.value = false;
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
+            // if (confirm("คุณต้องการยกเลิกรายการคำสั่ง?")) {
+            // const params = {
+            //   Id: this.dataset.id,
+            //   Type_: 'cancel'
+            // };
+            update_cashstatus_order_param.Id = this.dataset.id
+            update_cashstatus_order_param.Type_ = 'cancel'
 
-              }
-              catch (err) {
-                console.log(err)
-              }
-
-            }
+            console.log('selecteall.value: ', selecteall.value)
+            console.log('isOpen_alert_popup.value: ', isOpen_alert_popup.value)
+            isOpen_alert_popup.value = true;
+            function_selected.value = "update_cashstatus_order"
+            console.log('isOpen_alert_popup.value before: ', isOpen_alert_popup.value)
+            // handle confirmation logic here
+            let message_ = ''
+            message_ = 'คุณต้องการยกเลิกรายการคำสั่ง?'
+            alert_popup_message_inside.value = message_
+            // }
           });
-
         }
         //----------------------------------------------------------------------event click button edit
         if (element.classList.contains("editorder")) {
@@ -1704,7 +1788,7 @@ export default defineComponent({
             //console.log( params )
             try {
               loading.value = true;
-              await axios.get('/getcashorder', { params })
+              await axios.get(process.env.VUE_APP_API_URL + '/getcashorder', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
@@ -1724,7 +1808,7 @@ export default defineComponent({
                   OrderDataExisting.BranchOriginSelectd = [{ branch_id: obj[0].branchorigin_code, branch_name: obj[0].branchorigin_name }]
                   OrderDataExisting.Remark = obj[0].remark
                   OrderDataExisting.Cashstatus = obj[0].cashstatus
-                  if ( ( obj[0].cashstatus === 0 ) || ( obj[0].cashstatus === 99 ) ){
+                  if ((obj[0].cashstatus === 0) || (obj[0].cashstatus === 99)) {
                     checkstatus_send_to_checker.value = true
                   }
                   else {
@@ -1750,8 +1834,8 @@ export default defineComponent({
                       Quantity: obj[0].pcs_note_new_500,
                       Amount: obj[0].note_new_500
                     })
-                  } if (obj[0].note_new_100 > 0) { 
-                    console.log('obj[0].note_new_100: ',obj[0].note_new_100)
+                  } if (obj[0].note_new_100 > 0) {
+                    console.log('obj[0].note_new_100: ', obj[0].note_new_100)
                     OrderDataExisting.OrderDataDet.push({
                       MoneyType: "100",
                       QualityMoneyType: "New",
@@ -2276,20 +2360,18 @@ export default defineComponent({
       const params = {
         user_id: user_id.value
       };
-      await axios.get('/getbanktypedata', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/getbanktypedata', { params })
         .then((res) => {
           // success callback       
           NewOrder.BankTypeData = res.data
-          // ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
-          // console.log(NewOrder.DataBranchToOrigin)
-          // console.log(NewOrder.DataBranchToDest)
+
         }, (res) => {
           // error callback
           console.log(res.data.message)
         });
     }
     // const addManualOrder = async () => {
-      const addManualOrder = () => {      
+    const addManualOrder = () => {
       const formData = new FormData()
       formData.append('OrderCategoryNew', NewOrder.OrderCategoryNew)
       formData.append('OrderTypeNew', NewOrder.OrderTypeNew)
@@ -2326,7 +2408,7 @@ export default defineComponent({
       console.log('json: ', json)
       try {
         // await axios.post('/manual_add_order', json)
-        axios.post('/manual_add_order', json)
+        axios.post(process.env.VUE_APP_API_URL + '/manual_add_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)
@@ -2368,16 +2450,6 @@ export default defineComponent({
       else {
         !isNaN(ddlMoneyType * tbQuantity) ? document.getElementById("tbAmountEdit" + value).value = formatPrice(ddlMoneyType * tbQuantity) : document.getElementById("tbAmountEdit" + value).value = ""
       }
-      //console.log(ddlMoneyType * tbQuantity * 5000) 
-      // let my_object = {
-      //   Id: value,
-      //   ddlMoneyType_: ddlMoneyType,
-      //   ddlQualityMoneyType_: ddlQualityMoneyType,
-      //   ddlPackageMoneyType_: ddlPackageMoneyType,
-      //   tbQuantity_: tbQuantity,
-      //   tbAmount_: document.getElementById("tbAmount" + value).value
-      // };
-      // NewOrderDet.push(my_object)
     }
     const calamount = (value) => {
       console.log(document.getElementById("ddlMoneyType" + value).value)
@@ -2563,7 +2635,7 @@ export default defineComponent({
       var json = JSON.stringify(object)
       console.log(json)
       try {
-        await axios.post('/edit_order', json)
+        await axios.post(process.env.VUE_APP_API_URL + '/edit_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)
@@ -2586,7 +2658,12 @@ export default defineComponent({
         error_editOrder.value = true
       }
     }
-    return { 
+    return {
+      confirmDialog,
+      alert_popup_message_inside,
+      isOpen_alert_popup,
+      Alert_popup_message,
+      Alert_popup,
       fileInput,
       handleFileChange,
       update_cashstatus_order_all,
@@ -2602,12 +2679,9 @@ export default defineComponent({
   },
 })
 </script>
-
 <style scoped>
 @import '../assets/css/style.css';
 @import '../../node_modules/vue-multiselect/dist/vue-multiselect.css';
-
-
 
 ::v-deep(.vtl-table .vtl-thead .vtl-thead-th) {
   background-color: #5D6D7E;
@@ -2624,6 +2698,83 @@ export default defineComponent({
   width: 1rem;
 }
 
+.alert-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-box {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 2rem rgba(0, 0, 0, 0.5);
+  max-width: 50rem;
+  width: auto;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
+
+.alert-header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: red;
+  margin-bottom: 0rem;
+  margin-left: 0rem;
+  padding-left: 0rem;
+  justify-content: left;
+  align-items: left;
+  padding-bottom: 1rem;
+}
+
+.alert-body {
+  font-size: 20px;
+  line-height: 1.5rem;
+  margin-bottom: auto;
+  padding-bottom: 2rem;
+}
+
+.alert-footer {
+  display: flex;
+  justify-content: center;
+}
+
+#button_alert_popup_cancel {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#button_alert_popup_submit {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#button_alert_popup_submit,
+#button_alert_popup_cancel :hover {
+  background-color: #2980b9;
+}
+
 /* .input-group-text {
   cursor: pointer;
 }
@@ -2632,9 +2783,6 @@ export default defineComponent({
   background-color: #fff;
   opacity: 0;
 } */
-
-
-
 /* #formFile::before {
   content: "Pick file";
   position: absolute;

@@ -484,7 +484,7 @@ export default defineComponent({
     const update_cashstatus_order_all = (type__) => {
       console.log('selecteall.value: ', selecteall.value)
       let message_ = ''
-      type__ === 'reject' ? message_ = 'คุณต้องการถอนรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      type__ === 'reject' ? message_ = 'คุณต้องการถอยรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
       if (confirm(message_)) {
         const params = {
           Id: selecteall.value,
@@ -504,7 +504,7 @@ export default defineComponent({
           loading.value = false;
           console.log('cancelorder')
           // table.totalRecordCount = 20;    
-          axios.get('/update_cashstatus_order_all', { params })
+          axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order_all', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -533,7 +533,7 @@ export default defineComponent({
           Type_: 'send_to_check'
         };
         try {
-          await axios.get('/update_cashstatus_order', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
             .then((res) => {
               // success callback
               let obj = JSON.parse(JSON.stringify(res.data))
@@ -618,8 +618,8 @@ export default defineComponent({
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
       console.log('myRequest params: ', params)
-      // const res = await axios.get('/orderlist', { params })
-      const res = await axios.get('/approvenlist', { params })
+      // const res = await axios.get(process.env.VUE_APP_API_URL+'/orderlist', { params })
+      const res = await axios.get(process.env.VUE_APP_API_URL+'/approvenlist', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("myRequest Data_: ", Data_)
@@ -629,7 +629,7 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-      await axios.get('/getcashcenterdata', { params })
+      await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
         .then((res) => {
           // success callback
           AdvSearch.DataBranchToOrigin = res.data
@@ -642,7 +642,7 @@ export default defineComponent({
         user_id: user_id.value
       };
       console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
-      await axios.get('/getbanktypedata', { params })
+      await axios.get(process.env.VUE_APP_API_URL+'/getbanktypedata', { params })
         .then((res) => {
           // success callback     
           console.log('res.data:', res.data)
@@ -701,7 +701,7 @@ export default defineComponent({
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
               // +
               '<span>' + row.ordernumber + '</span>'
             );
@@ -811,7 +811,7 @@ export default defineComponent({
             // return (
             //   '<button type="button" data-id="' +
             //   row.AutoID +
-            //   '" class="btn btn-warning is-rows-el reject_order" style="width: 5.5em; height: 2rem">ถอนรายการ</button>'
+            //   '" class="btn btn-warning is-rows-el reject_order" style="width: 5.5em; height: 2rem">ถอยรายการ</button>'
             //   +
             //   '<button type="button" data-id="' +
             //   row.AutoID +
@@ -832,7 +832,7 @@ export default defineComponent({
       }),
       sortable: {
         order: "AutoID",
-        sort: "asc",
+        sort: "desc",
       },
     });
     /**
@@ -842,7 +842,7 @@ export default defineComponent({
       () => searchTerm.value,
       // (val) => {
       //   //Data_.value
-      //   const res = axios.get('/orderlist')
+      //   const res = axios.get(process.env.VUE_APP_API_URL+'/orderlist')
       //     .then((res) => {
       //       Data_.value = JSON.parse(JSON.stringify(res.data))
       //       console.log("Data_: ", Data_)
@@ -870,13 +870,13 @@ export default defineComponent({
         if (element.classList.contains("reject_order")) {
           element.addEventListener("click", async function () {
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
+            if (confirm("คุณต้องการถอยรายการคำสั่ง?")) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'
               };
               try {
-                await axios.get('/update_cashstatus_order', { params })
+                await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                   .then((res) => {
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
@@ -907,7 +907,7 @@ export default defineComponent({
                 user_id: user_id.value
               };
               try {
-                await axios.get('/update_cashstatus_order', { params })
+                await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                   .then((res) => {
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
@@ -938,7 +938,7 @@ export default defineComponent({
             let Id_ = this.dataset.id
             //console.log( params )
             try {
-              await axios.get('/getcashorder', { params })
+              await axios.get(process.env.VUE_APP_API_URL+'/getcashorder', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
@@ -1476,7 +1476,7 @@ export default defineComponent({
         type_: type_
       };
       if (servicetype === 'branchtocash') {
-        await axios.get('/getbranchdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getbranchdata', { params })
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -1487,7 +1487,7 @@ export default defineComponent({
       }
       //--------------------------------------------
       if (servicetype === 'cashtobranch') {
-        await axios.get('/getcashcenterdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -1530,7 +1530,7 @@ export default defineComponent({
       console.log('add data')
       console.log(json)
       try {
-        await axios.post('/manual_add_order', json)
+        await axios.post(process.env.VUE_APP_API_URL+'/manual_add_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)
@@ -1570,7 +1570,7 @@ export default defineComponent({
         const params = {
           CustomerID: CustomerID.value
         };
-        await axios.get('/getbranchdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getbranchdata', { params })
           .then((res) => {
             // success callback           
             ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -1586,7 +1586,7 @@ export default defineComponent({
         const params = {
           CustomerID: CustomerID.value
         };
-        await axios.get('/getcashcenterdata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
           .then((res) => {
             // success callback
             ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -1808,7 +1808,7 @@ export default defineComponent({
       var json = JSON.stringify(object)
       console.log(json)
       try {
-        await axios.post('/edit_order', json)
+        await axios.post(process.env.VUE_APP_API_URL+'/edit_order', json)
           .then((res) => {
             // success callback
             console.log(res.data)

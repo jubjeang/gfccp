@@ -626,7 +626,7 @@
         if(NewOrder.OrderCategoryNew !=="BOT")
         {
           if (NewOrder.OrderTypeNew === "Withdraw") { 
-            await axios.get('/getbranchforcash', { params })
+            await axios.get(process.env.VUE_APP_API_URL+'/getbranchforcash', { params })
             .then((res) => {
               // success callback           
               if( ddltype === 'BranchDest' )
@@ -646,7 +646,7 @@
   
           }
           if (NewOrder.OrderTypeNew === "Deposit") { 
-            await axios.get('/getbranchforcash', { params })
+            await axios.get(process.env.VUE_APP_API_URL+'/getbranchforcash', { params })
             .then((res) => {
               // success callback           
               if( ddltype === 'BranchOrigin' )
@@ -711,7 +711,7 @@
           type_: type_
         };
         if ( (servicetype === 'cct') || (servicetype === 'cashtobranch') ) {
-          await axios.get('/getcashcenterdata', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
             .then((res) => {
               // success callback           
               ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -724,7 +724,7 @@
         }
         //---------------------------------------------      
         if (servicetype === 'bot') {
-          await axios.get('/getbotbranch', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/getbotbranch', { params })
             .then((res) => {
               // success callback           
               ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -737,7 +737,7 @@
         }
         //--------------------------------------------- 
         if (servicetype === 'branchtocash') {
-          await axios.get('/getbranchdata', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/getbranchdata', { params })
             .then((res) => {
               // success callback           
               ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -750,7 +750,7 @@
         }      
         //--------------------------------------------
         // if (servicetype === 'cashtobranch') {
-        //   await axios.get('/getcashcenterdata', { params })
+        //   await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
         //     .then((res) => {
         //       // success callback
         //       ddltype === 'BranchOrigin' ? NewOrder.DataBranchToOrigin = res.data : NewOrder.DataBranchToDest = res.data
@@ -780,7 +780,7 @@
           const params = {
             CustomerID: CustomerID.value
           };
-          await axios.get('/getbranchdata', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/getbranchdata', { params })
             .then((res) => {
               // success callback           
               ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -796,7 +796,7 @@
           const params = {
             CustomerID: CustomerID.value
           };
-          await axios.get('/getcashcenterdata', { params })
+          await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
             .then((res) => {
               // success callback
               ddltype === 'BranchOrigin' ? OrderDataExisting.DataBranchToOrigin = res.data : OrderDataExisting.DataBranchToDest = res.data
@@ -829,7 +829,7 @@
         console.log('sendFile')
         formData.forEach(element => console.log(element))
         try {
-          await axios.post('/upload', formData)
+          await axios.post(process.env.VUE_APP_API_URL+'/upload', formData)
             .then((res) => {
               // success callback
               console.log(res.data)
@@ -859,7 +859,7 @@
             Type_: 'send_to_check'
           };
           try {
-            await axios.get('/update_cashstatus_order', { params })
+            await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
               .then((res) => {
                 // success callback
                 let obj = JSON.parse(JSON.stringify(res.data))
@@ -887,7 +887,7 @@
         message.value = ""
       }
       //onMounted(async () => {
-      // const res = await axios.get('/orderlist')
+      // const res = await axios.get(process.env.VUE_APP_API_URL+'/orderlist')
       //   .then((res) => {
       //     Data_.value = JSON.parse(JSON.stringify(res.data))
       //     console.log("Data_: ",Data_)
@@ -966,7 +966,7 @@
           user_id: user_id.value,
           CustomerID: CustomerID.value
         };
-        const res = await axios.get('/orderlist', { params })
+        const res = await axios.get(process.env.VUE_APP_API_URL+'/orderlist', { params })
           .then((res) => {
             Data_.value = JSON.parse(JSON.stringify(res.data))
             console.log("Data_: ", Data_)
@@ -982,7 +982,7 @@
         };
         console.log('params_banktypedata.user_id: ', params_banktypedata.user_id)
         // await axios.get('/getbranchdata', { params })
-        await axios.get('/getbanktypedata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getbanktypedata', { params })
           .then((res) => {
             // success callback     
             console.log('res.data:', res.data)
@@ -994,7 +994,7 @@
             // error callback
             console.log(res.data.message)
           });
-        await axios.get('/getdownloadlink', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getdownloadlink', { params })
           .then((res) => {
             // success callback     
             //console.log('res.data:', res.data)
@@ -1129,7 +1129,7 @@
               return (
                 // '<button type="button" data-id="' +
                 // row.AutoID +
-                // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอน</button>'
+                // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอย</button>'
                 // +
                 '<button type="button" data-id="' +
                 row.AutoID +
@@ -1160,7 +1160,7 @@
         () => searchTerm.value,
         // (val) => {
         //   //Data_.value
-        //   const res = axios.get('/orderlist')
+        //   const res = axios.get(process.env.VUE_APP_API_URL+'/orderlist')
         //     .then((res) => {
         //       Data_.value = JSON.parse(JSON.stringify(res.data))
         //       console.log("Data_: ", Data_)
@@ -1188,13 +1188,13 @@
           if (element.classList.contains("rejectorder")) {
             element.addEventListener("click", async function () {
               //  console.log(this.dataset.id + " rejectorder!!");
-              if (confirm("คุณต้องการถอนรายการคำสั่ง?")) {
+              if (confirm("คุณต้องการถอยรายการคำสั่ง?")) {
                 const params = {
                   Id: this.dataset.id,
                   Type_: 'reject'
                 };
                 try {
-                  await axios.get('/update_cashstatus_order', { params })
+                  await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                     .then((res) => {
                       // success callback
                       let obj = JSON.parse(JSON.stringify(res.data))
@@ -1224,7 +1224,7 @@
                   Type_: 'cancel'
                 };
                 try {
-                  await axios.get('/update_cashstatus_order', { params })
+                  await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                     .then((res) => {
                       // success callback
                       let obj = JSON.parse(JSON.stringify(res.data))
@@ -1257,7 +1257,7 @@
               let Id_ = this.dataset.id
               //console.log( params )
               try {
-                await axios.get('/getcashorder', { params })
+                await axios.get(process.env.VUE_APP_API_URL+'/getcashorder', { params })
                   .then((res) => {
                     // success callback
                     let obj = JSON.parse(JSON.stringify(res.data))
@@ -1768,7 +1768,7 @@
           user_id: user_id.value
         };
         // await axios.get('/getbranchdata', { params })
-        await axios.get('/getbanktypedata', { params })
+        await axios.get(process.env.VUE_APP_API_URL+'/getbanktypedata', { params })
           .then((res) => {
             // success callback       
             NewOrder.BankTypeData = res.data
@@ -1813,7 +1813,7 @@
         console.log('add data')
         console.log(json)
         try {
-          await axios.post('/manual_add_order', json)
+          await axios.post(process.env.VUE_APP_API_URL+'/manual_add_order', json)
             .then((res) => {
               // success callback
               console.log(res.data)
@@ -2044,7 +2044,7 @@
         var json = JSON.stringify(object)
         console.log(json)
         try {
-          await axios.post('/edit_order', json)
+          await axios.post(process.env.VUE_APP_API_URL+'/edit_order', json)
             .then((res) => {
               // success callback
               console.log(res.data)

@@ -1,9 +1,9 @@
 module.exports = {
   devServer: {
       disableHostCheck: true,
-      port: 4000,
-      public: '0.0.0.0:4000',
-      proxy: "http://localhost:3344"
+      port: process.env.PORT,
+      public:  process.env.PORT_PUBLIC,
+      proxy: process.env.VUE_APP_API_URL
   },
   publicPath: "/"
 }

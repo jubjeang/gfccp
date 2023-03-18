@@ -14,87 +14,14 @@
     <div class="row p-1" style="width: 100%">
       <div class="col d-flex justify-content-end">
         &nbsp;
-        <h4 data-bs-target="#addApproveProc" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5" style="cursor: pointer" @click="openModal"  id="openModal_1">
+        <h4 data-bs-target="#addApproveProc" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
+          style="cursor: pointer" @click="openModal" id="openModal_1">
           <!-- <h4 data-bs-target="#addApproveProc" data-bs-toggle="modal" class="text-decoration-none text-gray fs-5"
           style="cursor: pointer"> -->
           สร้างรายการอนุมัติใหม่
         </h4>
       </div>
     </div>
-    <!-- <div class="row p-1 mb-5" style="width: 100%">
-      <div class="accordion" id="CreateApproveProcess">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-            <button class="accordion-button text-black-50" type="button" data-bs-toggle="collapse"
-              data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-              aria-controls="panelsStayOpen-collapseOne" style="background-color:lightgrey;">
-              สร้างรายการอนุมัติใหม่
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
-            aria-labelledby="panelsStayOpen-headingOne">
-            <div class="accordion-body">
-              <div class="container-fluid">
-                <div class="row p-2 d-flex ">
-                  <div class="col-1">ชื่อการอนุมัติ</div>
-                  <div class="col">
-                    <input type="text" id="RefNo" class="form-control" style="width: 30rem" v-model="NewOrder.RefNo" />
-                  </div>
-                </div>
-                <div class="row p-2">
-                  <div class="col-1">กิจกรรม</div>
-                </div>
-                <div class="row p-2">
-                  <div class="col-2">
-                    <input type="checkbox" id="john" value="John" v-model="checkedNames" class="form-check-input" />
-                    <label for="john" class="form-check-label">
-                      สาขา-ศูนย์เงินสด
-                    </label>
-                  </div>
-                  <div class="col-2">
-                    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" class="form-check-input" />
-                    <label for="jack" class="form-check-label">
-                      ศูนย์เงินสด-ศูนย์เงินสด
-                    </label>
-                  </div>
-                  <div class="col-2">
-                    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" class="form-check-input" />
-                    <label for="mike" class="form-check-label">
-                      ธปท-ศูนย์เงินสด
-                    </label>
-                  </div>
-                  <div class="col-2">
-                    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" class="form-check-input" />
-                    <label for="mike" class="form-check-label">
-                      สาขา-สาขา
-                    </label>
-                  </div>
-                </div>
-                <div class="row p-2">
-                  <div class="col-2">
-                    <input type="checkbox" id="john2" value="John2" v-model="checkedNames" class="form-check-input" />
-                    <label for="john2" class="form-check-label">
-                      ศูนย์เงินสด-สาขา
-                    </label>
-                  </div>
-                  <div class="col-1"></div>
-                  <div class="col-4">
-                    <input type="checkbox" id="mike2" value="Mike2" v-model="checkedNames" class="form-check-input" />
-                    <label for="mike2" class="form-check-label">
-                      ศูนย์เงินสด-ธปท
-                    </label>
-                  </div>
-                  <div class="col"></div>
-                </div>
-                <div class="row p-2">
-                  <div class="col-2  align-middle"><a href="#" class="pe-auto" data-bs-target="#addApproveProc" data-bs-toggle="modal"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตั้งค่ารายการอนุมัติ</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>col-1
-    </div> -->
     <div class="row p-0" style="width: 100%">
       <div class="col-12">
         <div style="text-align: right">
@@ -103,9 +30,8 @@
           <input v-model="searchTerm" />
         </div>
         <table-lite :is-static-mode="true" :has-checkbox="true" :is-loading="table.isLoading" :columns="table.columns"
-          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-          @is-finished="tableLoadingFinish" @return-checked-rows="updateCheckedRows"
-          class="table table-striped table-hover"></table-lite>
+          :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="tableLoadingFinish"
+          @return-checked-rows="updateCheckedRows" class="table table-striped table-hover"></table-lite>
       </div>
     </div>
     <!-- </div> -->
@@ -125,7 +51,8 @@
                 <div class="container-fluid">
                   <div class="row p-2" v-if="error_addApproveProc">
                     <div class="col">
-                      <div :class="`alert ${error_addApproveProc ? 'alert-danger' : 'alert-success'}`">{{ message_addApproveProc
+                      <div :class="`alert ${error_addApproveProc ? 'alert-danger' : 'alert-success'}`">{{
+                        message_addApproveProc
                       }}</div>
                     </div>
                   </div>
@@ -141,29 +68,29 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4">
-                      <input type="checkbox" id="BranchToCash" value="1" v-model="ApproveData_.BranchToCash" :disabled="isDisabled(ActitySelectd.branchtocash)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="BranchToCash" value="1" v-model="ApproveData_.BranchToCash"
+                        :disabled="isDisabled(ActitySelectd.branchtocash)" class="form-check-input" />
                       <label for="BranchToCash" class="form-check-label">
                         สาขา-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-3">
-                      <input type="checkbox" id="CashToCash" value="1" v-model="ApproveData_.CashToCash" :disabled="isDisabled(ActitySelectd.cashtocash)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="CashToCash" value="1" v-model="ApproveData_.CashToCash"
+                        :disabled="isDisabled(ActitySelectd.cashtocash)" class="form-check-input" />
                       <label for="CashToCash" class="form-check-label">
                         ศูนย์เงินสด-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
-                      <input type="checkbox" id="BOTToCash" value="1" v-model="ApproveData_.BOTToCash" :disabled="isDisabled(ActitySelectd.bottocash)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="BOTToCash" value="1" v-model="ApproveData_.BOTToCash"
+                        :disabled="isDisabled(ActitySelectd.bottocash)" class="form-check-input" />
                       <label for="BOTToCash" class="form-check-label">
                         ธปท-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
-                      <input type="checkbox" id="BranchToBranch" value="1" v-model="ApproveData_.BranchToBranch" :disabled="isDisabled(ActitySelectd.branchtobranch)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="BranchToBranch" value="1" v-model="ApproveData_.BranchToBranch"
+                        :disabled="isDisabled(ActitySelectd.branchtobranch)" class="form-check-input" />
                       <label for="BranchToBranch" class="form-check-label">
                         สาขา-สาขา
                       </label>
@@ -171,16 +98,16 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4">
-                      <input type="checkbox" id="CashToBranch" value="1" v-model="ApproveData_.CashToBranch" :disabled="isDisabled(ActitySelectd.cashtobranch)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="CashToBranch" value="1" v-model="ApproveData_.CashToBranch"
+                        :disabled="isDisabled(ActitySelectd.cashtobranch)" class="form-check-input" />
                       <label for="CashToBranch" class="form-check-label">
                         ศูนย์เงินสด-สาขา
                       </label>
                     </div>
                     <div class="col-2"></div>
                     <div class="col-4">
-                      <input type="checkbox" id="CashToBOT" value="1" v-model="ApproveData_.CashToBOT" :disabled="isDisabled(ActitySelectd.cashtobot)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="CashToBOT" value="1" v-model="ApproveData_.CashToBOT"
+                        :disabled="isDisabled(ActitySelectd.cashtobot)" class="form-check-input" />
                       <label for="CashToBOT" class="form-check-label">
                         ศูนย์เงินสด-ธปท
                       </label>
@@ -200,7 +127,8 @@
                           <td class="col-1"><span @click="deleteData(index)" style="cursor: pointer">
                               <i class="fa fa-minus-square align-middle fa-1x" aria-hidden="true"></i></span>บทบาท:
                           </td>
-                          <td class="col-4" style="display: flex; align-items: top; justify-content: top;" scope="col" v-html="data.ddlRole_"></td>
+                          <td class="col-4" style="display: flex; align-items: top; justify-content: top;" scope="col"
+                            v-html="data.ddlRole_"></td>
                           <td class="col-1">
                             ชื่อผู้ใช้:
                           </td>
@@ -242,7 +170,8 @@
                 <div class="container-fluid">
                   <div class="row p-2" v-if="error_editApproveProc">
                     <div class="col">
-                      <div :class="`alert ${error_editApproveProc ? 'alert-danger' : 'alert-success'}`">{{ message_editApproveProc
+                      <div :class="`alert ${error_editApproveProc ? 'alert-danger' : 'alert-success'}`">{{
+                        message_editApproveProc
                       }}</div>
                     </div>
                   </div>
@@ -265,22 +194,22 @@
                       </label>
                     </div>
                     <div class="col-3">
-                      <input type="checkbox" id="edtCashToCash" v-model="editApproveData_.CashToCash" :checked="chekChecked(editApproveData_.CashToCash)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="edtCashToCash" v-model="editApproveData_.CashToCash"
+                        :checked="chekChecked(editApproveData_.CashToCash)" class="form-check-input" />
                       <label for="edtCashToCash" class="form-check-label">
                         ศูนย์เงินสด-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
                       <input type="checkbox" id="edtBOTToCash" v-model="editApproveData_.BOTToCash"
-                      :checked="chekChecked(editApproveData_.BOTToCash)" class="form-check-input" />
+                        :checked="chekChecked(editApproveData_.BOTToCash)" class="form-check-input" />
                       <label for="edtBOTToCash" class="form-check-label">
                         ธปท-ศูนย์เงินสด
                       </label>
                     </div>
                     <div class="col-2">
-                      <input type="checkbox" id="edtBranchToBranch"  v-model="editApproveData_.BranchToBranch" :checked="chekChecked(editApproveData_.BranchToBranch)"
-                       class="form-check-input" />
+                      <input type="checkbox" id="edtBranchToBranch" v-model="editApproveData_.BranchToBranch"
+                        :checked="chekChecked(editApproveData_.BranchToBranch)" class="form-check-input" />
                       <label for="edtBranchToBranch" class="form-check-label">
                         สาขา-สาขา
                       </label>
@@ -288,8 +217,8 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4">
-                      <input type="checkbox" id="edtCashToBranch" v-model="editApproveData_.CashToBranch" :checked="chekChecked(editApproveData_.CashToBranch)"
-                        class="form-check-input" />
+                      <input type="checkbox" id="edtCashToBranch" v-model="editApproveData_.CashToBranch"
+                        :checked="chekChecked(editApproveData_.CashToBranch)" class="form-check-input" />
                       <label for="edtCashToBranch" class="form-check-label">
                         ศูนย์เงินสด-สาขา
                       </label>
@@ -297,7 +226,7 @@
                     <div class="col-2"></div>
                     <div class="col-4">
                       <input type="checkbox" id="edtCashToBOT" v-model="editApproveData_.CashToBOT"
-                      :checked="chekChecked(editApproveData_.CashToBOT)" class="form-check-input" />
+                        :checked="chekChecked(editApproveData_.CashToBOT)" class="form-check-input" />
                       <label for="edtCashToBOT" class="form-check-label">
                         ศูนย์เงินสด-ธปท
                       </label>
@@ -306,8 +235,8 @@
                   </div>
                   <div class="row p-2">
                     <div class="col-4  align-middle">
-                      <a @click.prevent="addEditItem()"><i class="fa fa-plus-circle fa-1x" aria-hidden="true"
-                          style="cursor: pointer;"></i></a>&nbsp;&nbsp;ตั้งค่ารายการอนุมัติ (เรียงจากบนลงล่าง)
+                      <!-- <a @click.prevent="addEditItem()"><i class="fa fa-plus-circle fa-1x" aria-hidden="true"
+                          style="cursor: pointer;"></i></a> -->&nbsp;&nbsp;ตั้งค่ารายการอนุมัติ (เรียงจากบนลงล่าง)
                     </div>
                   </div>
                   <div class="row p-2 ">
@@ -324,9 +253,10 @@
                               v-bind="{ id: 'ddlRoleEdit' + (index + 1) }">
                               <option v-for="data in Role_.RoleData" :key="data.RoleId" :value="data.RoleId"
                                 :selected="(data.RoleId === editApproveData_.ApproveDataDet[index].roleid)">
-                                {{data.RoleName}}
+                                {{ data.RoleName }}
                               </option>
-                            </select><input type="hidden" v-bind="{ id: 'ApproveDataDetId' + (index + 1) }" v-model="editApproveData_.ApproveDataDet[index].Id" />
+                            </select><input type="hidden" v-bind="{ id: 'ApproveDataDetId' + (index + 1) }"
+                              v-model="editApproveData_.ApproveDataDet[index].Id" />
                           </td>
                           <td>
                             ผู้ใช้งาน:
@@ -336,7 +266,7 @@
                             " v-bind="{ id: 'ddlUserEdit' + (index + 1) }">
                               <option v-for="data in User_Edit.UserData" :key="data.id" :value="data.id"
                                 :selected="(data.id.trim === editApproveData_.ApproveDataDet[index].userid.trim)">
-                                {{data.name}}
+                                {{ data.name }}
                               </option>
                             </select>
                           </td>
@@ -348,7 +278,8 @@
               </div>
               <div class="modal-footer pt-0 justify-content-center">
                 <div class="align-top pt-1 d-flex justify-content-center">
-                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
+                  <button class="btn btn-primary" style="width:4rem; height:2rem;">บันทึก</button><button
+                    class="btn btn-secondary" data-bs-dismiss="modal" type="reset" ref="ClosemyModalEidt"
                     style="width:4rem; height:2rem;" id="ClosemyModalEidt">ยกเลิก</button>
                 </div>
               </div>
@@ -361,6 +292,7 @@
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
+import Alert_popup from "../components/Alert_popup.vue";
 import {
   collapsed,
   toggleSidebar,
@@ -382,10 +314,13 @@ export default defineComponent({
     collapsed,
     toggleSidebar,
     sidebarWidth,
+    Alert_popup,
     Datepicker
   },
   setup() {
-    //upload data
+    const Alert_popup = ref(false)
+    const Alert_popup_message = ref('')   
+    //upload data    
     const file = ref(File | null) //ref('')
     const error = ref(false)
     const checkstatus_send_to_checker = ref(false)
@@ -410,18 +345,15 @@ export default defineComponent({
     const classFlexShow = ref('d-flex flex-row p-1')
     const classFlexNone = ref('d-none p-1')
     const modal = ref(null);
-    const hasLocalStorage =  ref(null)
-    hasLocalStorage.value =window.localStorage.getItem('user_id');
-    if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
+    const hasLocalStorage = ref(null)
+    hasLocalStorage.value = window.localStorage.getItem('user_id');
+    if ((hasLocalStorage.value === 'null') || (hasLocalStorage.value === null) || (hasLocalStorage.value === '')) {
       router.push('/')
     }
-    // const NewOrderDet = reactive([])
-    //const Id = ref(0)
     const AddData = reactive({
       Id: 0,
       Data: []
     })
-    // const rowDataEdit = ref([])    
     const Role_ = reactive({
       RoleData: [],
       Role1: null,
@@ -454,7 +386,7 @@ export default defineComponent({
       User6: null,
       User7: null,
       User8: null,
-    })    
+    })
     const ApproveData_ = reactive({
       Name: '',
       BranchToCash: '0',
@@ -483,48 +415,48 @@ export default defineComponent({
       branchtobranch: 0,
       cashtobranch: 0,
       cashtobot: 0,
-    })    
-    const openModal = async() => {
+    })
+    const openModal = async () => {
       // // Get the modal element using the ref
       //document.getElementById("openModal_1").click();
-      ApproveData_.Name=''
-      ApproveData_.BranchToCash='0'
-      ApproveData_.CashToCash='0'
-      ApproveData_.CashToBranch='0'
-      ApproveData_.BOTToCash='0'
-      ApproveData_.BranchToBranch='0'
-      ApproveData_.CashToBOT='0'
+      ApproveData_.Name = ''
+      ApproveData_.BranchToCash = '0'
+      ApproveData_.CashToCash = '0'
+      ApproveData_.CashToBranch = '0'
+      ApproveData_.BOTToCash = '0'
+      ApproveData_.BranchToBranch = '0'
+      ApproveData_.CashToBOT = '0'
       AddData.Id = 0
       AddData.Data = []
       console.log('openModal')
       const params = {
-              user_id: user_id.value
-             ,customerID: CustomerID.value             
+        user_id: user_id.value
+        , customerID: CustomerID.value
       }
-      const getActitySelectd = await axios.get('/getActitySelectd', { params })
-      .then((res) => { 
-        //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
-        let output = null
-        output = res.data.output.split(':')
-        ActitySelectd.branchtocash = output[0]
-        ActitySelectd.cashtocash = output[1]
-        ActitySelectd.bottocash = output[2]
-        ActitySelectd.branchtobranch = output[3]
-        ActitySelectd.cashtobranch = output[4]
-        ActitySelectd.cashtobot = output[5]
-        console.log('res.data: ', res.data.output)
-      }, (res) => {
-        // error callback
-        console.log( res.data.message )
-        console.log( 'console.log( res.data.message ): ',console.log( res.data.message ) )
-        // ActitySelectd.branchtobranch
-      });   
+      const getActitySelectd = await axios.get(process.env.VUE_APP_API_URL+'/getActitySelectd', { params })
+        .then((res) => {
+          //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
+          let output = null
+          output = res.data.output.split(':')
+          ActitySelectd.branchtocash = output[0]
+          ActitySelectd.cashtocash = output[1]
+          ActitySelectd.bottocash = output[2]
+          ActitySelectd.branchtobranch = output[3]
+          ActitySelectd.cashtobranch = output[4]
+          ActitySelectd.cashtobot = output[5]
+          console.log('res.data: ', res.data.output)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+          console.log('console.log( res.data.message ): ', console.log(res.data.message))
+          // ActitySelectd.branchtobranch
+        });
 
     }
-    const isDisabled =(value)=>{
+    const isDisabled = (value) => {
       let output = null
       value === '1' ? output = true : output = false
-      console.log('value ',value)
+      // console.log('value ', value)
       return output
     }
     const format_date = (date_) => {
@@ -579,16 +511,17 @@ export default defineComponent({
         CustomerID: CustomerID.value,
         RoleId: RoleId.value
       }
-      const res = await axios.get('/approveProcList', { params }).then(
+      console.log('myRequest params: ', params)
+      const res = await axios.get(process.env.VUE_APP_API_URL+'/approveProcList', { params }).then(
         (res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
-          console.log('Data_.value: ',Data_.value)
+          console.log('Data_.value: ', Data_.value)
         },
         (res) => {
           console.log(res.data)
         }
       )
-      const getrole = await axios.get('/getrole', { params })
+      const getrole = await axios.get(process.env.VUE_APP_API_URL+'/getrole', { params })
         .then((res) => {
           Role_.RoleData = res.data
           console.log(' Role_.RoleData: ', Role_.RoleData)
@@ -596,7 +529,7 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-      const getuser = await axios.get('/getuser', { params })
+      const getuser = await axios.get(process.env.VUE_APP_API_URL+'/getuser', { params })
         .then((res) => {
           // success callback           
           User_.UserData = res.data //res.data[0].url_link          
@@ -605,15 +538,15 @@ export default defineComponent({
           // error callback
           console.log(res.data.message)
         });
-      const getuserEdit = await axios.get('/getuserEdit', { params })
-      .then((res) => {
-        // success callback           
-        User_Edit.UserData = res.data //res.data[0].url_link          
-        console.log('User_Edit.UserData: ', User_Edit.UserData)
-      }, (res) => {
-        // error callback
-        console.log(res.data.message)
-      });        
+      const getuserEdit = await axios.get(process.env.VUE_APP_API_URL+'/getuserEdit', { params })
+        .then((res) => {
+          // success callback           
+          User_Edit.UserData = res.data //res.data[0].url_link          
+          console.log('User_Edit.UserData: ', User_Edit.UserData)
+        }, (res) => {
+          // error callback
+          console.log(res.data.message)
+        });
       return await new Promise((resolve, reject) => {
         try {
           table.isLoading = true;
@@ -646,25 +579,15 @@ export default defineComponent({
           label: 'ประเภทบริการ',
           width: '60%',
           display: function (row) {
-            //branchtocash,cashtobranch, cashtocash, bottocash, cashtobot, branchtobranch
-            // let checkhave=0
-            let pic_selected = "<i class='fa fa-check' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
-            //let pic_unselect = "<i class='fa fa-times' data-bs-toggle='modal' style='width: 1rem; height: 1rem;'></i>&nbsp;"
             let data = '';
-            // row.branchtocash === '1' ? data += pic_selected + 'สาขา-ศูนย์เงินสด' : data += pic_unselect + 'สาขา-ศูนย์เงินสด'
-            // row.cashtobranch === '1' ? data += pic_selected + 'ศูนย์เงินสด-สาขา' : data += pic_unselect + 'ศูนย์เงินสด-สาขา'
-            // row.cashtocash === '1' ? data += pic_selected + 'ศูนย์เงินสด-ศูนย์เงินสด' : data += pic_unselect + 'ศูนย์เงินสด-ศูนย์เงินสด'
-            // row.bottocash === '1' ? data += pic_selected + 'ธปท-ศูนย์เงินสด' : data += pic_unselect + 'ธปท-ศูนย์เงินสด'
-            // row.cashtobot === '1' ? data += pic_selected + 'ศูนย์เงินสด-ธปท' : data += pic_unselect + 'ศูนย์เงินสด-ธปท'
-            // row.branchtobranch === '1' ? data += pic_selected + 'สาขา-สาขา' : data += pic_unselect + 'สาขา-สาขา'
-            //-------------------------
-            row.branchtocash === '1' && ( data += 'สาขา-ศูนย์เงินสด&nbsp;|&nbsp; ' )
-            row.cashtobranch === '1' && ( data += 'ศูนย์เงินสด-สาขา&nbsp;|&nbsp;' )
-            row.cashtocash === '1' && ( data += 'ศูนย์เงินสด-ศูนย์เงินสด&nbsp;|&nbsp;' )
-            row.bottocash === '1' && ( data += 'ธปท-ศูนย์เงินสด&nbsp;|&nbsp;' )
-            row.cashtobot === '1' && ( data += 'ศูนย์เงินสด-ธปท&nbsp;|&nbsp;' )
-            row.branchtobranch === '1' && ( data += 'สาขา-สาขา&nbsp;|&nbsp;' )
-            return ( data.substr(0, (data.length-1)-12 ) )
+            row.branchtocash === '1' && (data += 'สาขา-ศูนย์เงินสด&nbsp;|&nbsp;')
+            row.cashtobranch === '1' && (data += 'ศูนย์เงินสด-สาขา&nbsp;|&nbsp;')
+            row.cashtocash === '1' && (data += 'ศูนย์เงินสด-ศูนย์เงินสด&nbsp;|&nbsp;')
+            row.bottocash === '1' && (data += 'ธปท-ศูนย์เงินสด&nbsp;|&nbsp;')
+            row.cashtobot === '1' && (data += 'ศูนย์เงินสด-ธปท&nbsp;|&nbsp;')
+            row.branchtobranch === '1' && (data += 'สาขา-สาขา&nbsp;|&nbsp;')
+             return (data.substr(0, (data.length - 1) - 12))
+            //return (data)
           }
         },
         {
@@ -677,14 +600,14 @@ export default defineComponent({
             return (
               // '<button type="button" data-id="' +
               // row.AutoID +
-              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอนรายการ</button>'
+              // '" class="btn btn-warning is-rows-el rejectorder" style="width:5rem; height:2rem">ถอยรายการ</button>'
               // +
               '<button type="button" data-id="' +
               row.Id +
-              '" class="btn btn-danger is-rows-el cancelorder" style="width:5rem; height:2rem">ยกเลิก</button>'
+              '" class="btn btn-danger is-rows-el cancel_process" style="width:5rem; height:2rem">ยกเลิก</button>&nbsp;'
               +
               '<button type="button" data-id="' +
-              row.Id +':'+row.approve_setting_id+':'+ row.version +
+              row.Id + ':' + row.approve_setting_id + ':' + row.version +
               '" class="btn btn-info is-rows-el editapprove_process" style="width:5rem; height:2rem" data-bs-target="#ModalEditApprovProc" data-bs-toggle="modal">แก้ไข</button>'
             );
           }
@@ -723,14 +646,14 @@ export default defineComponent({
         if (element.classList.contains('reject_order')) {
           element.addEventListener('click', async function () {
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm('คุณต้องการถอนรายการคำสั่ง?')) {
+            if (confirm('คุณต้องการถอยรายการคำสั่ง?')) {
               const params = {
                 Id: this.dataset.id,
                 Type_: 'reject'
               }
               try {
                 await axios
-                  .get('/update_cashstatus_order', { params })
+                  .get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                   .then(
                     (res) => {
                       // success callback
@@ -764,7 +687,7 @@ export default defineComponent({
               }
               try {
                 await axios
-                  .get('/update_cashstatus_order', { params })
+                  .get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
                   .then(
                     (res) => {
                       // success callback
@@ -789,12 +712,12 @@ export default defineComponent({
           })
         }
         if (element.classList.contains('editapprove_process')) {
-          element.addEventListener('click', async function () { 
+          element.addEventListener('click', async function () {
             let value = this.dataset.id.split(':')
             const params = {
               Id: value[0]
-              ,version: value[2] 
-              ,approve_setting_id: value[1]
+              , version: value[2]
+              , approve_setting_id: value[1]
               ,
             }
             let Id_ = value[0]
@@ -809,7 +732,7 @@ export default defineComponent({
             editApproveData_.BranchToBranch = 0//obj[0].branchtobranch
             editApproveData_.CashToBOT = 0//obj[0].cashtobot
             try {
-              await axios.get('/get_approveProcData', { params })
+              await axios.get(process.env.VUE_APP_API_URL+'/get_approveProcData', { params })
                 .then((res) => {
                   // success callback
                   let obj = JSON.parse(JSON.stringify(res.data))
@@ -825,12 +748,12 @@ export default defineComponent({
                   editApproveData_.version = obj[0].version
                   editApproveData_.ApproveDataDet = []
                   //------------------------------------------------
-                  axios.get('/get_approveProcDataDet', { params })
+                  axios.get(process.env.VUE_APP_API_URL+'/get_approveProcDataDet', { params })
                     .then((res) => {
                       // success callback
-                      let obj = JSON.parse( JSON.stringify( res.data ) )
+                      let obj = JSON.parse(JSON.stringify(res.data))
                       editApproveData_.ApproveDataDet = obj
-                      console.log("get_approveProcDataDet: ", editApproveData_.ApproveDataDet )
+                      console.log("get_approveProcDataDet: ", editApproveData_.ApproveDataDet)
                       AddData.Id = editApproveData_.ApproveDataDet.length
                     }, (res) => {
                       // error callback
@@ -838,7 +761,7 @@ export default defineComponent({
                     }).finally(() => {
                       //
                     });
-                    console.log( 'editApproveData_: ', editApproveData_ )
+                  console.log('editApproveData_: ', editApproveData_)
 
                 }, (res) => {
                   // error callback
@@ -853,12 +776,55 @@ export default defineComponent({
             }
           })
         }
-        // if (element.classList.contains("quick-btn")) {
-        //   element.addEventListener("click", function (event) {
-        //     event.stopPropagation(); // prevents further propagation of the current event in the capturing and bubbling phases.
-        //     console.log(this.dataset.id + " quick-btn click!!");
-        //   });
-        // }
+        if (element.classList.contains('cancel_process')) {
+          element.addEventListener('click', async function () { 
+            let value = this.dataset.id.split(':')
+            Alert_popup.value = false
+            if (confirm('คุณต้องการรายการอนุมัติ ?')) {
+              const params = {
+                Id: value[0]
+                , version: value[2]
+                , approve_setting_id: value[1]
+                ,
+              }
+              let Id_ = value[0]
+              try {
+                await axios
+                  .get(process.env.VUE_APP_API_URL+'/set_cancel_approve_proc_data', { params })
+                  .then(
+                    (res) => {
+                      // success callback
+                      let obj = JSON.parse(JSON.stringify(res.data))
+                      console.log('set_cancel_approve_proc_data: ',obj[0].result )
+                      //1 delete from server success
+                      if(  obj[0].result > 0)
+                      {
+                         // router.push('/listorder')
+                        location.reload()
+                      }
+                      else
+                      {
+                        Alert_popup.value = true
+                        Alert_popup_message.value = 'ไม่สามารถลบรายการตั้งค่ารายการอนุมัติได้'
+                        // alert('ไม่สามารถลบรายการตั้งค่ารายการอนุมัติได้')
+                      }                     
+                    },
+                    (res) => {
+                      // error callback
+                      console.log(res.data)
+                    }
+                  )
+                  .finally(() => {
+                    //
+                  })
+              } catch (err) {
+                console.log(err)
+              }
+            }
+
+          })
+        }
+
       })
     }
     // Get data on first rendering
@@ -889,7 +855,7 @@ export default defineComponent({
         const params = {
           CustomerID: CustomerID.value
         }
-        await axios.get('/getbranchdata', { params }).then(
+        await axios.get(process.env.VUE_APP_API_URL+'/getbranchdata', { params }).then(
           (res) => {
             // success callback
             ddltype === 'BranchOrigin'
@@ -909,7 +875,7 @@ export default defineComponent({
         const params = {
           CustomerID: CustomerID.value
         }
-        await axios.get('/getcashcenterdata', { params }).then(
+        await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params }).then(
           (res) => {
             // success callback
             ddltype === 'BranchOrigin'
@@ -925,7 +891,7 @@ export default defineComponent({
     const addApproveProc = async () => {
       const formData = new FormData()
       formData.append('ap_name', ApproveData_.Name)
-      formData.append('BranchToCash', ApproveData_.BranchToCash  === true ? '1' : '0')
+      formData.append('BranchToCash', ApproveData_.BranchToCash === true ? '1' : '0')
       formData.append('CashToCash', ApproveData_.CashToCash === true ? '1' : '0')
       formData.append('BOTToCash', ApproveData_.BOTToCash === true ? '1' : '0')
       formData.append('BranchToBranch', ApproveData_.BranchToBranch === true ? '1' : '0')
@@ -951,11 +917,10 @@ export default defineComponent({
       formData.forEach((value, key) => (object[key] = value))
       var json = JSON.stringify(object)
       console.log('add data')
-      console.log('json:',json)
-      try
-       {
+      console.log('json:', json)
+      try {
         await axios
-          .post('/add_approveProc', json)
+          .post(process.env.VUE_APP_API_URL+'/add_approveProc', json)
           .then(
             (res) => {
               // success callback
@@ -974,10 +939,9 @@ export default defineComponent({
             //document.getElementById('ClosemyModalNew').click();            
             // table.rows = Data_;
           })
-          error_addApproveProc.value = false
-      } 
-      catch (err) 
-      {
+        error_addApproveProc.value = false
+      }
+      catch (err) {
         console.log(err)
         message_addApproveProc.value = 'Something went wrong: ' + err
         error_addApproveProc.value = true
@@ -1120,91 +1084,85 @@ export default defineComponent({
         ddlUser_: ddlUser
       }
       AddData.Data.push(my_object)
-    }    
+    }
     const deleteData = (index) => {
       console.log(index)
       AddData.Data.splice(index, 1)
       AddData.Id--
     }
-    const delete_app_proc_det = async (index,Id) => { 
-      if (confirm("คุณต้องการยกเลิกรายการอนุมัติ?")) {               
-        console.log('index: ',index)
-        console.log('Id: ',Id)
-        
-        const params = { Id: Id, user_id : user_id.value }
-              try {
-                await axios.get('/delete_app_proc_det', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    //location.reload()
-                    // addEditItem
-                    editApproveData_.ApproveDataDet.splice(index, 1)
-                    AddData.Id--
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-              }
-              catch (err) {
-                console.log(err)
-              }
+    const delete_app_proc_det = async (index, Id) => {
+      if (confirm("คุณต้องการยกเลิกรายการอนุมัติ?")) {
+        console.log('index: ', index)
+        console.log('Id: ', Id)
+
+        const params = { Id: Id, user_id: user_id.value }
+        try {
+          await axios.get(process.env.VUE_APP_API_URL+'/delete_app_proc_det', { params })
+            .then((res) => {
+              // success callback
+              let obj = JSON.parse(JSON.stringify(res.data))
+              console.log(obj[0])
+              // router.push('/listorder')
+              //location.reload()
+              // addEditItem
+              editApproveData_.ApproveDataDet.splice(index, 1)
+              AddData.Id--
+            }, (res) => {
+              // error callback
+              console.log(res.data)
+            }).finally(() => {
+              //
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
       }
 
-    }    
+    }
     const chekChecked = (value) => {
       let output = false
-      if (value === "1" )
-      {
-        output=true
+      if (value === "1") {
+        output = true
       }
-      else
-      {
-        output=false
-      }   
-      return output   
+      else {
+        output = false
+      }
+      return output
     }
     const chekSelecteValue = (value) => {
       let output = false
-      if (value === "1" )
-      {
-        output=true
-      }      
-      else if(value === "0")
-      {
-        output=false
+      if (value === "1") {
+        output = true
       }
-      else if(value === true)
-      {
-        output=true
+      else if (value === "0") {
+        output = false
       }
-      else if(value === false)
-      {
-        output=false
-      }      
-      return output   
-    }    
+      else if (value === true) {
+        output = true
+      }
+      else if (value === false) {
+        output = false
+      }
+      return output
+    }
     const editApproveProc = async () => {
-      console.log('editApproveData_.CashToCash  === true : ',(editApproveData_.CashToCash  === true) )
-      console.log('editApproveData_.CashToCash : ',(editApproveData_.CashToCash) )
+      console.log('editApproveData_.CashToCash  === true : ', (editApproveData_.CashToCash === true))
+      console.log('editApproveData_.CashToCash : ', (editApproveData_.CashToCash))
       const formData = new FormData()
       formData.append('gfc_cct_code', gfc_cct_code.value)
       formData.append('user_id', user_id.value)
       formData.append('CustomerID', CustomerID.value)
       formData.append('Id', editApproveData_.Id)
       formData.append('ap_name', editApproveData_.Name)
-      formData.append('branchtocash',chekSelecteValue( editApproveData_.BranchToCash ) === true ? '1' : '0')
-      formData.append('cashtocash', chekSelecteValue( editApproveData_.CashToCash ) === true ? '1' : '0')
-      formData.append('bottocash', chekSelecteValue( editApproveData_.BOTToCash ) === true ? '1' : '0')
-      formData.append('branchtobranch', chekSelecteValue( editApproveData_.BranchToBranch ) === true ? '1' : '0')
-      formData.append('cashtobranch', chekSelecteValue( editApproveData_.CashToBranch ) === true ? '1' : '0')
-      formData.append('cashtobot', chekSelecteValue( editApproveData_.CashToBOT ) === true ? '1' : '0')
+      formData.append('branchtocash', chekSelecteValue(editApproveData_.BranchToCash) === true ? '1' : '0')
+      formData.append('cashtocash', chekSelecteValue(editApproveData_.CashToCash) === true ? '1' : '0')
+      formData.append('bottocash', chekSelecteValue(editApproveData_.BOTToCash) === true ? '1' : '0')
+      formData.append('branchtobranch', chekSelecteValue(editApproveData_.BranchToBranch) === true ? '1' : '0')
+      formData.append('cashtobranch', chekSelecteValue(editApproveData_.CashToBranch) === true ? '1' : '0')
+      formData.append('cashtobot', chekSelecteValue(editApproveData_.CashToBOT) === true ? '1' : '0')
       formData.append('AllRowsDet', AddData.Id)
-      for (var index = 0; index < AddData.Id; index++) { 
+      for (var index = 0; index < AddData.Id; index++) {
         formData.append('ApproveProcDetId' + (index + 1), document.getElementById('ApproveDataDetId' + (index + 1)).value)
         if (document.getElementById('ddlRoleEdit' + (index + 1))) {
           let Role = document.getElementById('ddlRoleEdit' + (index + 1));
@@ -1222,10 +1180,10 @@ export default defineComponent({
       // console.log('edit data')
       formData.forEach((value, key) => (object[key] = value))
       var json = JSON.stringify(object)
-      console.log('json: ',json)      
+      console.log('json editApproveProc: ', json)
       try {
         await axios
-          .post('/edit_approveproc', json)
+          .post(process.env.VUE_APP_API_URL+'/edit_approveproc', json)
           .then(
             (res) => {
               // success callback
@@ -1252,6 +1210,8 @@ export default defineComponent({
       }
     }
     return { 
+      Alert_popup_message,
+      Alert_popup,
       ActitySelectd,
       isDisabled,
       modal,
@@ -1310,8 +1270,7 @@ export default defineComponent({
     }
   }
 })
-</script>
-  
+</script>  
 <style scoped lang="css">
 @import '../assets/css/style.css';
 
@@ -1320,19 +1279,5 @@ export default defineComponent({
   border-color: #eaeded;
   vertical-align: middle;
 }
-
-/* .horizontal-scrollable>.row {
-  overflow-x: auto;
-  white-space: nowrap;
-} */
-
-/* #formFile::before {
-    content: "Pick file";
-    position: absolute;
-    z-index: 2;
-    display: block;
-    background-color: #eee;
-    width: 80px;
-  } */
 </style>
   

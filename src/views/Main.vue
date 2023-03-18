@@ -34,6 +34,7 @@ export default {
   },
   setup() { 
     const hasLocalStorage =  ref(null)
+    const user_id = ref(localStorage.getItem('user_id'))
     hasLocalStorage.value =window.localStorage.getItem('user_id');
     if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
       router.push('/')
@@ -46,9 +47,10 @@ export default {
     })
     const params = {
           CustomerID: data.CustomerID,
-          pagname: 'main'
+          pagname: 'main',
+          user_id: localStorage.getItem('user_id'),
         };
-    axios.get('/get_pbi_url', { params })
+    axios.get(process.env.VUE_APP_API_URL+'/get_pbi_url', { params })
       .then((res) => {
         data.pbi_url = JSON.parse(JSON.stringify(res.data[0].pbi_url))
         //console.log( data.pbi_url )

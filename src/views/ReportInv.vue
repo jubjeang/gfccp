@@ -202,22 +202,6 @@ export default defineComponent({
     })
     const Id = ref(0)
     const rowDataEdit = ref([])
-    // const NewOrderDet = reactive([])
-    // const DownloadLink_ = async () => { 
-    //   let filesrcs=[{
-    //       title: 'template.zip',
-    //       src: 'http://localhost:4000/dd',//require('~/assets/images/template.zip'),
-    //     }]
-
-    //   await axios.get(filesrcs.src,{responseType: 'blob'}).then((response) => {
-    //     let fileurl = window.URL.createObjectURL(new Blob([response.data]))
-    //     let filelink = document.createElement('a')
-    //     filelink.href = fileurl
-    //     filelink.setAttribute('download', filesrcs.title)
-    //     document.body.appendChild(filelink)
-    //     filelink.click()
-    //   })
-    // }
     const format_date = (date_) => {
       // console.log('date_: ' + date_)
       let date__ = null
@@ -277,7 +261,7 @@ export default defineComponent({
         customerID: CustomerID.value
       };
       loading.value = true;
-      const res = await axios.get('/getdownloadreports', { params })
+      const res = await axios.get(process.env.VUE_APP_API_URL+'/getdownloadreports', { params })
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("res.data: ", res.data)
@@ -311,7 +295,7 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
-      const res = await axios.get('/getcct_data', { params })
+      const res = await axios.get(process.env.VUE_APP_API_URL+'/getcct_data', { params })
         .then((res) => {
           Criteria.CCT_DataSource = JSON.parse(JSON.stringify(res.data))
           console.log("Criteria.CCT_DataSource: ", Criteria.CCT_DataSource)
@@ -320,7 +304,7 @@ export default defineComponent({
           // error callback
           console.log(res.data)
         })
-      await axios.get('/getcashcenterdata', { params })
+      await axios.get(process.env.VUE_APP_API_URL+'/getcashcenterdata', { params })
         .then((res) => {
           // success callback
           AdvSearch.DataBranchToOrigin = res.data
@@ -410,7 +394,7 @@ export default defineComponent({
       }),
       sortable: {
         order: "AutoID",
-        sort: "asc",
+        sort: "desc",
       },
     });
     /**
@@ -444,7 +428,7 @@ export default defineComponent({
             var json = JSON.stringify(object)
             //console.log('json: ',json)
             let data_ = this.dataset.id.split(':')
-            await axios.post('/generateCSV', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
+            await axios.post(process.env.VUE_APP_API_URL+'/generateCSV', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
               console.log('response.data: ', response.data)
               //var csvContent = "ทดสอบ\n";
               const url = URL.createObjectURL(new Blob([response.data], { type: 'text/csv; charset=Windows-874' }))
@@ -477,7 +461,7 @@ export default defineComponent({
             var json = JSON.stringify(object)
             //console.log('json: ',json)
             let data_ = this.dataset.id.split(':')
-            await axios.post('/generateXLS', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
+            await axios.post(process.env.VUE_APP_API_URL+'/generateXLS', json, { responseType: 'blob', charset: 'Windows-874', responseEncodig: 'UTF-8' }).then(function (response) {
               const url = URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.ms-excel;charset=Windows-874' }))
               const link = document.createElement('a')
               link.href = url
