@@ -41,6 +41,7 @@ export default {
 </script>
 <style scoped>
 nav{  background-color:darkgrey}
+
 #nav {
   padding: 0px;
   text-align: center;
@@ -50,7 +51,6 @@ nav{  background-color:darkgrey}
   font-weight: bold;
   color: #2c3e50;
 }
-
 #nav a.router-link-exact-active {
   color: whitesmoke;
   background: crimson;

@@ -558,10 +558,14 @@
                     <div class="col">
                       วันที่ปฎิบัติการ
                     </div>
-                    <div class="col">
+                    <!-- <div class="col">
                       <datepicker v-model="OrderDataExisting.JobDate"
                         :value="formatdate_show(new Date(OrderDataExisting.JobDate))" id="JobDateEdit"
                         class="form-control" style="width:15rem;" input-format="dd/MM/yyyy" />
+                    </div> -->
+                    <div class="col">
+                      <datepicker v-model="OrderDataExisting.JobDate" id="JobDateEdit" class="form-control"
+                        style="width:15rem;" input-format="dd/MM/yyyy" />
                     </div>
                   </div>
                   <div class="row p-2">
@@ -772,13 +776,13 @@
   <Alert_popup :message="Alert_popup_message" v-if="Alert_popup" />
   <div class="alert-popup" v-if="isOpen_alert_popup">
     <div class="alert-box">
-      <div class="alert-header">โปรดยืนยัน</div>
+      <div class="alert-header"></div>
       <div class="alert-body">{{ alert_popup_message_inside }}</div>
       <div class="alert-footer">
         <!-- <button @click="onClose">ยกเลิก</button>
         <button @click="onConfirm">ตกลง</button> -->
-        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">ยกเลิก</button>
         <button id="button_alert_popup_submit" @click="confirmDialog">ตกลง</button>
+        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">ยกเลิก</button>
       </div>
     </div>
   </div>
@@ -807,6 +811,7 @@ export default defineComponent({
     , Header, collapsed, toggleSidebar, sidebarWidth, Datepicker, VueMultiselect
   },
   setup() {
+    // const order_status = ref(null)
     const update_cashstatus_order_param = reactive({
       Id: 0,
       Type_: ""
@@ -1072,21 +1077,13 @@ export default defineComponent({
       Alert_popup.value = false
       NewOrder.DataBranchToOrigin = []
       NewOrder.DataBranchToDest = []
-      console.log("NewOrder.OrderCategoryNew: ", NewOrder.OrderCategoryNew)
-      console.log("NewOrder.OrderTypeNew: ", NewOrder.OrderTypeNew)
-      console.log("ActitySelectd.branchtocash: ", ActitySelectd.branchtocash)
-      console.log("ActitySelectd.cashtocash: ", ActitySelectd.cashtocash)
-      console.log("ActitySelectd.bottocash: ", ActitySelectd.bottocash)
-      console.log("ActitySelectd.branchtobranch: ", ActitySelectd.branchtobranch)
-      console.log("ActitySelectd.cashtobranch: ", ActitySelectd.cashtobranch)
-      console.log("ActitySelectd.cashtobot: ", ActitySelectd.cashtobot)  
       if (NewOrder.OrderTypeNew === "Withdraw")//------------------Withdraw
       {
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
           if (ActitySelectd.bottocash === '0') {
-            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
-            Alert_popup.value = true
-            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้')
+            // Alert_popup.value = true
+            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ธปท-ศูนย์เงินสด ได้'
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1102,9 +1099,9 @@ export default defineComponent({
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
           if (ActitySelectd.cashtobranch === '0') {
-            Alert_popup.value = true
-            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้'
-            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
+            // Alert_popup.value = true
+            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้' 
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1120,9 +1117,9 @@ export default defineComponent({
       if (NewOrder.OrderTypeNew === "Deposit") {//------------------Deposit
         if (NewOrder.OrderCategoryNew === "BOT") {//------------------BOT
           if (ActitySelectd.cashtobot === '0') {
-            Alert_popup.value = true
-            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
-            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
+            // Alert_popup.value = true
+            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้'
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-ธปท ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1137,9 +1134,9 @@ export default defineComponent({
         }//------------------End BOT
         if (NewOrder.OrderCategoryNew === "BankBranch") {
           if (ActitySelectd.branchtocash === '0') {
-            Alert_popup.value = true
-            Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
-            // alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
+            // Alert_popup.value = true
+            // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้'
+            alert('ไม่มีสิทธิให้ประเภทบริการฝาก สาขา-ศูนย์เงินสด ได้')
             document.getElementById("OrderTypeNew").value = ""
             NewOrder.OrderTypeNew = "";
           }
@@ -1189,6 +1186,11 @@ export default defineComponent({
       }
       //---------------------------------------------      
       if (servicetype === 'bot') {
+        console.log('servicetype === bot :', servicetype)
+        console.log('gettype :', gettype)
+        console.log('getBranchOrCashCen params:', params)
+
+
         await axios.get(process.env.VUE_APP_API_URL + '/getbotbranch', { params })
           .then((res) => {
             // success callback  
@@ -1409,14 +1411,8 @@ export default defineComponent({
     const formatdate_show = (date_) => {
       console.log('date_: ' + date_)
       let date__ = null
-      let day = null//date__.getDate();
-      let month = null//date__.getMonth() + 1;
-      let year = null//date__.getFullYear();
-      // if (date_) {
       date__ = moment(date_).format('DD/MM/YYYY')
       return date__;
-      //return `${day}/${month}/${year}`;
-      // return `${year}-${month}-${day}`;
     }
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -1437,10 +1433,10 @@ export default defineComponent({
         approve_setting_id: localStorage.getItem('approve_setting_id'),
         approve_setting_version: localStorage.getItem('approve_setting_version')
       };
+      // Alert_popup.value = true
+      // Alert_popup_message.value = 'ไม่มีสิทธิให้ประเภทบริการฝาก ศูนย์เงินสด-สาขา ได้' 
       console.log('myRequest params: ', params)
-      console.log('user approve_setting_version: ', localStorage.getItem('approve_setting_version'))
-      console.log('user approve_setting_id: ', localStorage.getItem('approve_setting_id'))
-      await axios.get(process.env.VUE_APP_API_URL+'/getActitySelectd', { params })
+      await axios.get(process.env.VUE_APP_API_URL + '/getActitySelectd', { params })
         .then((res) => {
           //(@branchtocash+':'+@cashtocash+':'+@bottocash+':'+@branchtobranch+':'+@cashtobranch+':'+@cashtobot) as output
           let output = null
@@ -1462,6 +1458,9 @@ export default defineComponent({
         .then((res) => {
           Data_.value = JSON.parse(JSON.stringify(res.data))
           console.log("myRequest Data_: ", Data_)
+          Data_.value.forEach(function (value) {
+            console.log('Data_.value.forEach(function (value) : ',value);
+          });
         }, (res) => {
           // error callback
           console.log(res.data)
@@ -1596,7 +1595,8 @@ export default defineComponent({
           //field: "order_date",
           width: "10%",
           sortable: true,
-          display: function (row) {
+          display:  function (row) { 
+
             let sOutput = ''
             if (row.cashstatus === 0) {
               sOutput = 'สร้างรายการคำสั่ง'
@@ -1614,7 +1614,9 @@ export default defineComponent({
               sOutput = row.RoleName + ' อนุมัติแล้ว'
             }
             sOutput = '<span>' + sOutput + '</span>'
-            return (sOutput);
+            return ( sOutput            
+            
+              );
           },
         },
         {
@@ -1628,9 +1630,9 @@ export default defineComponent({
             //   sOutput = 'สร้างรายการคำสั่ง'
             // }
             // else {
-            sOutput = row.next_serail_role_name
-            // sOutput = 'รอ '+row.next_serail_role_name +' อนุมัติ'
-            //}
+            
+            sOutput = row.next_serail_role_name +' อนุมัติ'
+            // }
 
             sOutput = '<span>' + sOutput + '</span>'
             return (sOutput);
@@ -1708,7 +1710,7 @@ export default defineComponent({
         //   });
         // }
         if (element.classList.contains("rejectorder")) {
-          element.addEventListener("click", async function () { 
+          element.addEventListener("click", async function () {
             update_cashstatus_order_param.Id = this.dataset.id
             update_cashstatus_order_param.Type_ = 'reject'
             console.log('selecteall.value: ', selecteall.value)
@@ -2790,4 +2792,5 @@ export default defineComponent({
   display: block;
   background-color: #eee;
   width: 80px;
-} */</style>
+} */
+</style>

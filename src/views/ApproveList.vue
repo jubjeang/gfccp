@@ -14,7 +14,7 @@
     <div class="row p-0" style="width: 100%">
       <div class="col-2 ps-4" style="text-align: left">
         <button type="button" class="btn btn-danger" style="width:6rem; height:2rem"
-          @click="update_cashstatus_order_all('reject')">รายการ</button>&nbsp;<button class="btn btn-primary"
+          @click="update_cashstatus_order_all('reject')">ถอยรายการ</button>&nbsp;<button class="btn btn-primary"
           @click="update_cashstatus_order_all('approve_all')" style="width: 5rem; height: 2rem;">อนุมัติ</button>
       </div>
       <div class="col-10">
@@ -392,6 +392,18 @@
     </div>
   </div>
   <Loading v-if="loading" />
+    <div class="alert-popup" v-if="isOpen_alert_popup">
+    <div class="alert-box">
+      <div class="alert-header"></div>
+      <div class="alert-body">{{ alert_popup_message_inside }}</div>
+      <div class="alert-footer">
+        <!-- <button @click="onClose">ยกเลิก</button>
+        <button @click="onConfirm">ตกลง</button> -->
+        <button id="button_alert_popup_submit" @click="confirmDialog">ตกลง</button>
+        <button id="button_alert_popup_cancel" @click="isOpen_alert_popup = false">ยกเลิก</button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import Sidebar from '../components/sidebar/Sidebar'
@@ -410,6 +422,15 @@ export default defineComponent({
   name: 'ApproveList',
   components: { Loading, TableLite, Sidebar, Header, collapsed, toggleSidebar, sidebarWidth, Datepicker },
   setup() {
+    const update_cashstatus_order_param = reactive({
+      Id: 0,
+      Type_: "",
+      user_id: 0
+    })
+    const alert_popup_message_inside = ref('')
+    const update_cashstatus_order_all_type = ref('')
+    const isOpen_alert_popup = ref(false)
+    const function_selected = ref('')
     //upload data
     const file = ref(File | null)//ref('')
     const error = ref(false)
@@ -486,11 +507,9 @@ export default defineComponent({
     if ( ( hasLocalStorage.value ==='null') || ( hasLocalStorage.value === null) || ( hasLocalStorage.value === '')) {
       router.push('/')
     }
-    const update_cashstatus_order_all = (type__) => {
-      console.log('selecteall.value: ', selecteall.value)
-      let message_ = ''
-      type__ === 'reject' ? message_ = 'คุณต้องการถอยรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
-      if (confirm(message_)) {
+    const confirmDialog = async () => {
+      if (function_selected.value === "update_cashstatus_order_all") {
+
         const params = {
           Id: selecteall.value,
           Type_: type__,
@@ -527,7 +546,116 @@ export default defineComponent({
         catch (err) {
           console.log(err)
         }
+
+      }//if (function_selected.value === "update_cashstatus_order_all") {
+      if (function_selected.value === "update_cashstatus_order") {
+        setTimeout(() => {
+          // table.isLoading = false;
+          loading.value = true
+        }, 500)
+        loading.value = false
+        if(update_cashstatus_order_param.Type_ = 'reject')
+        { 
+          const params = {
+            Id: update_cashstatus_order_param.Id,
+            Type_: update_cashstatus_order_param.Type_,
+          };
+          try {
+            await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
+              .then((res) => {
+                // success callback
+                let obj = JSON.parse(JSON.stringify(res.data))
+                console.log(obj[0])
+                // router.push('/listorder')
+                location.reload()
+                // addEditItem
+              }, (res) => {
+                // error callback
+                console.log(res.data)
+              }).finally(() => {
+                //
+              });
+          }
+          catch (err) {
+            console.log(err)
+          }
+        }
+        if(update_cashstatus_order_param.Type_ = 'approve')
+        { 
+            const params = {
+              Id: update_cashstatus_order_param.Id,
+              Type_: update_cashstatus_order_param.Type_,
+              user_id: update_cashstatus_order_param.user_id = user_id.value
+            };
+              try {
+                await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
+                  .then((res) => {
+                    // success callback
+                    let obj = JSON.parse(JSON.stringify(res.data))
+                    console.log(obj[0])
+                    // router.push('/listorder')
+                    location.reload()
+                    // addEditItem
+                  }, (res) => {
+                    // error callback
+                    console.log(res.data)
+                  }).finally(() => {
+                    //
+                  });
+              }
+              catch (err) {
+                console.log(err)
+              }
+        }   
       }
+    };
+    const update_cashstatus_order_all = (type__) => {
+      console.log('selecteall.value: ', selecteall.value)
+       isOpen_alert_popup.value = true;
+      function_selected.value = "update_cashstatus_order_all"
+      update_cashstatus_order_all_type.value = type__
+
+      let message_ = ''
+      type__ === 'reject' ? message_ = 'คุณต้องการถอยรายการอนุมัติที่เลือกไว้ ?' : message_ = 'คุณต้องการอนุมัติรายการคำสั่งที่เลือกไว้ ?'
+      alert_popup_message_inside.value = message_
+      // if (confirm(message_)) {
+      //   const params = {
+      //     Id: selecteall.value,
+      //     Type_: type__,
+      //     user_id: user_id.value
+      //   }
+      //   setTimeout(() => {
+      //     // table.isLoading = false;
+      //     console.log('update_cashstatus_order_all')
+      //     // table.totalRecordCount = 20;              
+      //   }, 500)
+      //   // console.log('params: ', {selecteall})
+      //   try {
+      //     table.isLoading = true;
+      //     loading.value = true;
+      //     // table.isLoading = false;
+      //     loading.value = false;
+      //     console.log('cancelorder')
+      //     // table.totalRecordCount = 20;    
+      //     axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order_all', { params })
+      //       .then((res) => {
+      //         // success callback
+      //         let obj = JSON.parse(JSON.stringify(res.data))
+      //         console.log(obj[0])
+      //         // addEditItem
+      //       }, (res) => {
+      //         // error callback
+      //         console.log(res.data)
+      //       }).finally(() => {
+      //         //
+      //       });
+      //     table.isLoading = false
+      //     location.reload()
+      //   }
+      //   catch (err) {
+      //     console.log(err)
+      //   }
+      // }
 
     }
     const sendApprove = async (e) => {
@@ -908,65 +1036,87 @@ export default defineComponent({
         }
         if (element.classList.contains("reject_order")) {
           element.addEventListener("click", async function () {
+            
+            update_cashstatus_order_param.Id = this.dataset.id
+            update_cashstatus_order_param.Type_ = 'reject'
+            update_cashstatus_order_param.user_id = user_id.value
+            console.log('selecteall.value: ', selecteall.value)
+            console.log('isOpen_alert_popup.value: ', isOpen_alert_popup.value)
+            isOpen_alert_popup.value = true;
+            function_selected.value = "update_cashstatus_order"
+            let message_ = ''
+            message_ = 'คุณต้องการยกเลิกรายการคำสั่ง?'
+            alert_popup_message_inside.value = message_
+            
             //  console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการถอยรายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: 'reject'
-              };
-              try {
-                await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
-              }
-              catch (err) {
-                console.log(err)
-              }
-            }
+            // if (confirm("คุณต้องการถอยรายการคำสั่ง?")) {
+              // const params = {
+              //   Id: this.dataset.id,
+              //   Type_: 'reject'
+              // };
+              // try {
+              //   await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
+              //     .then((res) => {
+              //       // success callback
+              //       let obj = JSON.parse(JSON.stringify(res.data))
+              //       console.log(obj[0])
+              //       // router.push('/listorder')
+              //       location.reload()
+              //       // addEditItem
+              //     }, (res) => {
+              //       // error callback
+              //       console.log(res.data)
+              //     }).finally(() => {
+              //       //
+              //     });
+              // }
+              // catch (err) {
+              //   console.log(err)
+              // }
+            // }
           });
         }
         if (element.classList.contains("approve_order")) {
           element.addEventListener("click", async function () {
             // console.log(this.dataset.id + " rejectorder!!");
-            if (confirm("คุณต้องการอนุมัติรายการคำสั่ง?")) {
-              const params = {
-                Id: this.dataset.id,
-                Type_: RoleId.value,
-                user_id: user_id.value
-              };
-              try {
-                await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
-                  .then((res) => {
-                    // success callback
-                    let obj = JSON.parse(JSON.stringify(res.data))
-                    console.log(obj[0])
-                    // router.push('/listorder')
-                    location.reload()
-                    // addEditItem
-                  }, (res) => {
-                    // error callback
-                    console.log(res.data)
-                  }).finally(() => {
-                    //
-                  });
+            update_cashstatus_order_param.Id = this.dataset.id
+            update_cashstatus_order_param.Type_ = 'approve'
+            update_cashstatus_order_param.user_id = user_id.value
+            console.log('selecteall.value: ', selecteall.value)
+            console.log('isOpen_alert_popup.value: ', isOpen_alert_popup.value)
+            isOpen_alert_popup.value = true;
+            function_selected.value = "update_cashstatus_order"
+            let message_ = ''
+            message_ = 'คุณต้องการอนุมัติรายการคำสั่ง?'
+            alert_popup_message_inside.value = message_
+            // if (confirm("คุณต้องการอนุมัติรายการคำสั่ง?")) {
+              // const params = {
+              //   Id: this.dataset.id,
+              //   Type_: RoleId.value,
+              //   user_id: user_id.value
+              // };
+              // try {
+              //   await axios.get(process.env.VUE_APP_API_URL+'/update_cashstatus_order', { params })
+              //     .then((res) => {
+              //       // success callback
+              //       let obj = JSON.parse(JSON.stringify(res.data))
+              //       console.log(obj[0])
+              //       // router.push('/listorder')
+              //       location.reload()
+              //       // addEditItem
+              //     }, (res) => {
+              //       // error callback
+              //       console.log(res.data)
+              //     }).finally(() => {
+              //       //
+              //     });
+              // }
+              // catch (err) {
+              //   console.log(err)
+              // }
 
-              }
-              catch (err) {
-                console.log(err)
-              }
-
-            }
+            // }
+            
           });
         }
         if (element.classList.contains("editorder")) {
@@ -1870,7 +2020,10 @@ export default defineComponent({
         error_editOrder.value = true
       }
     }
-    return {
+    return { 
+      confirmDialog,
+      isOpen_alert_popup,
+      alert_popup_message_inside,
       update_cashstatus_order_all,
       loading, AdvSearch, AdvSearch_,
       searchTerm, table, sidebarWidth, Data_, updateCheckedRows, tableLoadingFinish
@@ -1890,6 +2043,83 @@ export default defineComponent({
   background-color: #5D6D7E;
   border-color: #EAEDED;
   vertical-align: middle;
+}
+
+.alert-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-box {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 2rem rgba(0, 0, 0, 0.5);
+  max-width: 50rem;
+  width: auto;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
+
+.alert-header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: red;
+  margin-bottom: 0rem;
+  margin-left: 0rem;
+  padding-left: 0rem;
+  justify-content: left;
+  align-items: left;
+  padding-bottom: 1rem;
+}
+
+.alert-body {
+  font-size: 20px;
+  line-height: 1.5rem;
+  margin-bottom: auto;
+  padding-bottom: 2rem;
+}
+
+.alert-footer {
+  display: flex;
+  justify-content: center;
+}
+
+#button_alert_popup_cancel {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#button_alert_popup_submit {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#button_alert_popup_submit,
+#button_alert_popup_cancel :hover {
+  background-color: #2980b9;
 }
 
 /* #formFile::before {

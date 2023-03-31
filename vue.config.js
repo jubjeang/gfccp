@@ -1,5 +1,6 @@
 module.exports = {
-  devServer: {
+  devServer: { 
+      https:true,
       disableHostCheck: true,
       port: process.env.PORT,
       public:  process.env.PORT_PUBLIC,
